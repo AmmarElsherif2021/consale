@@ -1,0 +1,161 @@
+.stock {
+    background: none;
+
+    position: fixed;
+    top: 0;
+    width: 75vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.stock-table {
+    background: none;
+    justify-content: stretch;
+}
+
+.input {
+
+    border: black solid 3px;
+
+
+}
+
+.input:focus {
+    border-color: rgb(39, 102, 99);
+}
+
+.table-btn {
+    border: solid black 2px;
+    background: none;
+    margin: 3px;
+
+}
+
+
+.search-input {
+
+
+    border: solid black 2px;
+
+    background-color: none;
+
+
+
+}
+
+.search-input:focus {
+    border-color: rgb(39, 102, 99);
+}
+
+.add-stock {
+
+    background: none;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.add-item-btn {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(75, 128, 75);
+    border: solid black 5px;
+    justify-content: center;
+    margin: 10px;
+
+}
+
+.add-item-btn:hover {
+    width: 50px;
+    height: 50px;
+    background-color: rgb(72, 156, 114);
+    border: solid rgb(26, 24, 24) 4px;
+
+}
+
+.add-img {
+    position: absolute;
+    width: 30px;
+    left: 5px;
+    top: 5px
+}
+
+.data-table {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin-top: 5px;
+    width: 74vw;
+
+}
+
+
+
+
+
+
+.export-link {
+    position: fixed;
+    right: 75px;
+    top: 210px;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+    width: 100px;
+    height: 30px;
+    background: rgb(75, 128, 75);
+    border: solid black 5px;
+    border-radius: 10px;
+    justify-content: center;
+    padding: 7px;
+    z-index: 900;
+}
+
+.export-link:hover {
+    width: 102px;
+    height: 33px;
+    background-color: rgb(72, 156, 114);
+    border: solid rgb(26, 24, 24) 4px;
+
+    text-decoration: none;
+
+
+}
+
+.filter {
+    background: rgb(0, 0, 0);
+    width: 75vw;
+
+
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 30px;
+    position: relative;
+
+
+}
+
+.edit {
+    background-color: none;
+    border: none;
+}
+
+.edit:hover {
+    background-color: rgb(105, 174, 177);
+}
+
+.delete {
+    background-color: none;
+    border: none;
+}
+
+.delete:hover {
+    background-color: rgb(241, 147, 147);
+}

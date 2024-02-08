@@ -1,0 +1,39 @@
+[
+  
+    {
+            "id": "101",
+            "parameter": "units",
+            "name": "item1",
+            "image": "",
+            "discription": "it is a discription of the item1",
+            "stock_quantity": "100",
+            "price_unit": "20",
+            "unit":"unit"
+            
+        
+    },
+
+    {
+        "id": "102",
+        "parameter": "length",
+        "unit": "m",
+        "name": "item2",
+        "image": "",
+        "discription": "it is a discription of the item2",
+        "stock_quantity": "20",
+        "price_unit": "293"
+    
+         },
+        {
+            "id": "103",
+            "parameter": "weight",
+            "unit": "kg",
+            "name": "Example Name",
+            "image": "",
+            "discription": "it is a discription of the item3",
+            "stock_quantity": "60",
+            "price_unit": "620"
+        
+        }
+        
+]

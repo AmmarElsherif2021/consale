@@ -1,0 +1,48 @@
+.acc-card {
+    width: 20vw;
+    height: 32vh;
+    overflow: hidden;
+    border: 5px solid black;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    padding: 20px;
+    margin: 10px;
+    ;
+    border-radius: 15px;
+    background: rgb(124, 177, 156);
+}
+
+.card-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.card-img {
+
+    background: none;
+
+    margin: 0;
+    padding: 0;
+    width: 60%;
+
+
+    object-fit: cover;
+
+}
+
+.card-p {
+    background: none;
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    object-fit: cover;
+    font: black;
+
+    opacity: 1;
+    -webkit-animation: flipinx 2s ease 1s 1 normal;
+    -moz-animation: flipinx 2s ease 1s 1 normal;
+    -ms-animation: flipinx 2s ease 1s 1 normal;
+    animation: flipinx 2s ease 1s 1 normal;
+}

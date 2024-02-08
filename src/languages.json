@@ -1,0 +1,99 @@
+
+{ 
+  "startTxt":{
+    "ar": "كونسيل",
+    "eng": "CONSALE"
+  },
+  "toggleButtonTxt":{
+    "ar": "عربي",
+    "eng": "English"
+  },
+  "confirmTxt": {
+    "ar": "تأكيد",
+    "eng": "confirm"
+  },
+  "cancelTxt": {
+    "ar": "الغاء",
+    "eng": "cancel"
+  },
+  "nameTxt": {
+    "ar": "الاسم",
+    "eng": "name"
+  },
+  "startHeroTxt": {
+    "ar": "",
+    "eng": ""
+  },
+  "loginTxt": {
+    "ar": "تسجيل دخول",
+    "eng": "Log in"
+  },
+  "passwordTxt": {
+    "ar": "ادخل كلمة المرور",
+    "eng": "Enter password"
+  },
+  "dashboardTxt": {
+    "ar": "اعدادات الحسابات",
+    "eng": "dashboard"
+  },
+  "dashboardHeaderTxt": {
+    "ar": "حسابات الموظفين",
+    "eng": "Accounts"
+  },
+  "lastClosedTxt": {
+    "ar": "اخر تسجيل خروج",
+    "eng": "Last closed"
+  },
+  "lastOpenedTxt": {
+    "ar": "اخر تسجيل دخول",
+    "eng": "Last opened"
+  },
+  "shortTxt": {
+    "ar": "عجز",
+    "eng": "short"
+  },
+  "addAccTxt": {
+    "ar": "اضف حساب جديد",
+    "eng": "Add new account"
+  },
+  "editAccTxt": {
+    "ar": "قم بتعديل بيانات الحساب",
+    "eng": "edit account data"
+  },
+  "setPasswordTxt": {
+    "ar": "ادخل كلمة المرور",
+    "eng": "set password"
+  },
+  "confirmPasswordTxt": {
+    "ar": "أكد كلمة المرور",
+    "eng": "confirm password"
+  },
+  "delAccTxt": {
+    "ar": "احذف الحساب",
+    "eng": "Delete Account"
+  },
+  "delAccMsgTxt": {
+    "ar": "! هل انت متأكد من انك ترغب في حذف هذا الحساب بشكل نهائي",
+    "eng": "Are you sure you want to permanently delete this account !"
+  },
+  "stockTxt": {
+    "ar": "المخزن",
+    "eng": "Stock"
+  },
+  "itemIdTxt": {
+    "ar": "مسلسل",
+    "eng": "Id"
+  },
+  "itemNameTxt": {
+    "ar": "الاسم",
+    "eng": "name"
+  },
+  "quantityStockTxt": {
+    "ar": "الكمية المتاحة",
+    "eng": "available"
+  },
+  "unitTxt": {
+    "ar": "وحدة",
+    "eng": "unit"
+  }
+}

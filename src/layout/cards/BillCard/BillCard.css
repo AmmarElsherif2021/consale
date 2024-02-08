@@ -1,0 +1,51 @@
+.bill-card {
+    width: 20vw;
+    height: 20vh;
+    overflow: hidden;
+    border: 5px solid black;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 15px;
+    background: #DACCA0;
+    margin: 5px;
+
+}
+
+.card-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    max-height: 10vh;
+
+}
+
+.card-img {
+
+    background: none;
+
+    margin: 0;
+    padding: 0;
+    width: 5vw;
+
+
+    object-fit: cover;
+
+}
+
+.bill-card-p {
+    background: none;
+    max-height: 5vh;
+    margin: 0;
+
+    width: 90%;
+
+    object-fit: cover;
+    font: black;
+
+    opacity: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+}

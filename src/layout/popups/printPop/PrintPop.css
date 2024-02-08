@@ -1,0 +1,120 @@
+.print-pop {
+    width: 46vw;
+    height: 50vh;
+    position: fixed;
+    left: 30vw;
+    top: 15vh;
+    background: rgb(151, 199, 177);
+    border: solid black 5px;
+    border-radius: 35px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    overflow: hidden;
+}
+
+
+
+.cancel-print-pop {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: solid black 5px;
+    background-color: rgb(216, 44, 44);
+    border-radius: 50%;
+
+}
+
+.cancel-icon {
+    width: 40px;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+
+
+.print-card-header {
+
+    display: flex;
+    flex-direction: row;
+    background: none;
+    justify-content: space-around;
+    align-items: center;
+
+    .print-pop-img {
+        width: 150px;
+    }
+
+}
+
+.print-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.print-card-p {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.print-pop-btn {
+
+    border: solid black 2px;
+    background: none;
+    margin: 3px;
+    width: 100%;
+    max-width: 100%;
+}
+
+
+
+
+.print-table {
+    text-align: center;
+    vertical-align: middle;
+    background: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: baseline;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    table {
+        border: black dotted 2px;
+        min-width: 150px;
+
+
+        th {
+            background-color: #658278;
+            max-width: 100px;
+        }
+
+        td {
+            max-width: 100px;
+        }
+    }
+
+
+
+}
+
+.confirm-print-btn {
+    background-color: #26654e;
+    border: solid black 2px;
+    font-weight: 600;
+    margin-top: 20px;
+
+
+}
+
+.confirm-print-btn:hover {
+    background-color: #21805d;
+    border: solid #1E1E20 3px;
+}

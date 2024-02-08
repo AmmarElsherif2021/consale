@@ -1,0 +1,105 @@
+.start {
+    background: white;
+    width: 100vw;
+
+    min-height: 95vh;
+    justify-content: center;
+    align-items: center;
+    padding-top: 5vh;
+
+
+
+}
+
+.login-btn {
+    position: absolute;
+    left: 45vw;
+    width: 10vw;
+}
+
+.login-btn:hover {
+    background-color: #1c7983;
+}
+
+.logout-btn {
+    position: absolute;
+    left: 7vw;
+    top: 90vh;
+    width: 10vw;
+}
+
+.logout-btn:hover {
+    background-color: #1c7983;
+}
+
+
+
+.layout {
+    background: rgb(209, 213, 218);
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    min-height: 100vh;
+    z-index: 100000;
+}
+
+.start-header {
+
+    background: none;
+
+}
+
+.sidebar-header {
+    background: none;
+    color: aliceblue;
+
+}
+
+.sidebar {
+    background: black;
+    height: 100vw;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    width: 25vw;
+    margin-right: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10000;
+
+}
+
+.sidebar-list {
+    list-style-type: none;
+    background: none;
+    height: 55vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 50px;
+    ;
+    margin-top: 20px;
+
+}
+
+.sidebar-link {
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.start-link {
+    color: rgb(255, 255, 255);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.route-content {
+    position: absolute;
+    left: 25vw;
+    top: 8px;
+    width: 73vw;
+
+    height: 100%;
+}

@@ -1,0 +1,8 @@
+@font-face {
+  font-family: "my-font";
+  src: url("./fonts/Bronkoh-Bold-BF65519bc885abc.otf") format("opentype");
+}
+
+* {
+  font-family: 'my-font';
+}
