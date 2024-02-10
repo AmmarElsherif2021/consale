@@ -1,11 +1,12 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect, useContext } from 'react';
+//import { db, migrateDb, getDbVersion, setDbVersion } from './db';
 import Database from "tauri-plugin-sql-api";
 
-// Create a context
-const DbContext = createContext();
+const db = await Database.load("sqlite:test.db");
 
+// ... Migration functions (migrateDb, getDbVersion, setDbVersion) remain the same
 const migrations = {
-    1: [
+    queries: [
         `CREATE TABLE IF NOT EXISTS items_table (
       id TEXT PRIMARY KEY, 
       name TEXT,
@@ -13,7 +14,11 @@ const migrations = {
       unit TEXT,
       price_unit INTEGER,
       quantity_stock REAL
-    );`,
+    );
+    INSERT INTO items_table (id, name, description, unit, price_unit, quantity_stock) VALUES (
+        "ITEM_ID", "Item Name", "Item Description", "Unit", 10, 5.0
+      );
+    `,
         `CREATE TABLE IF NOT EXISTS bills_table (
       bid TEXT PRIMARY KEY,
       c_name TEXT,
@@ -42,117 +47,106 @@ const migrations = {
       FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
     );`
     ],
-    2: [
-        `CREATE TABLE IF NOT EXISTS items_table (
-      id TEXT PRIMARY KEY, 
-      name TEXT,
-      description TEXT,
-      unit TEXT,
-      price_unit INTEGER,
-      quantity_stock REAL
-    );`,
-        `CREATE TABLE IF NOT EXISTS bills_table (
-      bid TEXT PRIMARY KEY,
-      c_name TEXT,
-      c_phone TEXT,
-      date TEXT,
-      b_total INTEGER,
-      debt INTEGER,
-      paid INTEGER,
-      discount INTEGER
-    );`,
-        `CREATE TABLE IF NOT EXISTS bill_items_table (
-      ibid TEXT PRIMARY KEY,
-      id TEXT,
-      name TEXT,
-      bid TEXT,
-      req_qty INTEGER,
-      total INTEGER,
-      FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE, 
-      FOREIGN KEY(id) REFERENCES items_table(id) ON DELETE CASCADE 
-    );`,
-        `CREATE TABLE IF NOT EXISTS records_table (
-      date TEXT PRIMARY KEY,
-      bid TEXT,
-      added_items TEXT,
-      restored_items TEXT,
-      FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
-    );`
-    ],
-    // Add new versions here...
 };
 
 async function migrateDb(db, currentVersion) {
     for (const version in migrations) {
         if (version > currentVersion) {
-            for (const migration of migrations[version]) {
+            for (const migration of migrations.queries) {
                 try {
                     await db.execute(migration);
                 } catch (error) {
                     console.error('Error executing migration:', error);
+                    throw error; // Re-throw to halt migration process
                 }
             }
-            // Update version in database...
+            // Update version in database after successful migrations
+            await setDbVersion(db, version);
         }
     }
 }
+
 async function getDbVersion(db) {
     try {
-        const result = await db.query('PRAGMA user_version');
+        const result = await db.select('PRAGMA user_version');
         const version = result[0]?.user_version;
         console.log('Database version:', version);
         return version;
     } catch (error) {
         console.error('Error getting database version:', error);
-    }
-};
-async function setDbVersion(db, version) {
-    try {
-        await db.execute(`PRAGMA user_version = ${version}`);
-    } catch (error) {
-        console.error('Error setting database version:', error);
+        throw error; // Re-throw for proper handling
     }
 }
-;
 
+async function setDbVersion(db, version) {
+    try {
+        await db.execute(`PRAGMA user_version = ${version + 1}`);
+    } catch (error) {
+        console.error('Error setting database version:', error);
+        throw error; // Re-throw for proper handling
+    }
+}
+
+
+const DbContext = createContext();
 
 export function StockProvider({ children }) {
-
-    const [db, setDb] = useState(null);
-
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         async function loadAndMigrateDb() {
             try {
-                // 1. Load the database first
-                const db = await Database.load("sqlite:test.db");
-
-                // 2. Get the current database version
-                const currentVersion = await getDbVersion(db);
-                await setDbVersion(currentVersion + 1)
-                // 3. Perform migrations if needed
-                await migrateDb(db, currentVersion + 1);
-
-                // 4. Set the database state after successful loading and migration
-                setDb(db);
+                await migrateDb(db);
             } catch (error) {
-                console.error('Error loading or migrating database:', error);
-                // Handle errors appropriately, e.g., display user feedback
+                setError(error);
+            } finally {
+                setIsLoading(false);
             }
         }
 
         loadAndMigrateDb();
     }, []);
 
-
     return (
-        <DbContext.Provider value={db}>
+        <DbContext.Provider value={{ db, isLoading, setIsLoading, error, setError }}>
             {children}
         </DbContext.Provider>
     );
 }
-
 // Create a hook to use the context
+// useDb.js
+
+
+
 export function useDb() {
-    return useContext(DbContext);
+    const { db, isLoading, setIsLoading, setError } = useContext(DbContext);
+
+    const [items, setItems] = useState([]);
+    const [bills, setBills] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                const [itemsResult, billsResult] = await Promise.all([
+                    db.select('SELECT * FROM items_table'),
+                    db.select('SELECT * FROM bills_table'),
+                ]);
+                setItems(itemsResult);
+                setBills(billsResult);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        // Load data only when DB or loading state changes
+        db && items.length == 0 && fetchData();
+    }, [db, isLoading]); // Only trigger if db or isLoading changes
+    console.log('types of db and items')
+    console.log(typeof db);
+    console.log(typeof items);
+    return { db, items, bills, isLoading };
 }

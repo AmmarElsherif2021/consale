@@ -16,7 +16,7 @@ const AddItemPop = (props) => {
   const handleAddPopSubmit = (e) => {
     e.preventDefault();
     handleAddSubmit(newAddedItem);
-    addRecord(newAddedItem.id, newAddedItem.name, newAddedItem.description, newAddedItem.unit, newAddedItem.price_unit, newAddedItem.quantity_stock);
+    addRecord(newAddedItem);
   }
 
   const handleInputChange = (event) => {
