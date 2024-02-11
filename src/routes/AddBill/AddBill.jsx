@@ -39,33 +39,11 @@ const getDate = () => {
 }
 
 const AddBill = () => {
-  const [db, setDb] = useState([])
-  /*
-  useEffect(() => {
-    if (db) {
-      async function getTables() {
-        // Query the table names
-        const result = await db.select("SELECT name FROM sqlite_master WHERE type='table';");
+  const { db, items, billsRecords, isLoading, setItems } = useDb();
 
-        // Log the result
-        console.log(`OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO` + JSON.stringify(result));
-      }
-
-      getTables();
-    }
-  }, []);*/
-
-
-
-
-  //rust*************************************************************************************
-  //*****************************************************************************************
-  //
-  //***************************************************************************************
-  //****************************************************************************** */////////
 
   // Create new actual bill
-  //const {newBill,setNewBill}=useBill();
+
   const [newBill, setNewBill] = useState({
     bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
     c_name: "",

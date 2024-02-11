@@ -19,7 +19,7 @@ const migrations = {
         "ITEM_ID", "Item Name", "Item Description", "Unit", 10, 5.0
       );
     `,
-        `CREATE TABLE IF NOT EXISTS bills_table (
+        `CREATE TABLE IF NOT EXISTS billsRecords_table (
       bid TEXT PRIMARY KEY,
       c_name TEXT,
       c_phone TEXT,
@@ -36,7 +36,7 @@ const migrations = {
       bid TEXT,
       req_qty INTEGER,
       total INTEGER,
-      FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE, 
+      FOREIGN KEY(bid) REFERENCES billsRecords_table(bid) ON DELETE CASCADE, 
       FOREIGN KEY(id) REFERENCES items_table(id) ON DELETE CASCADE 
     );`,
         `CREATE TABLE IF NOT EXISTS records_table (
@@ -44,7 +44,7 @@ const migrations = {
       bid TEXT,
       added_items TEXT,
       restored_items TEXT,
-      FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
+      FOREIGN KEY(bid) REFERENCES billsRecords_table(bid) ON DELETE CASCADE 
     );`
     ],
 };
@@ -123,18 +123,18 @@ export function useDb() {
     const { db, isLoading, setIsLoading, setError } = useContext(DbContext);
 
     const [items, setItems] = useState([]);
-    const [bills, setBills] = useState([]);
+    const [billsRecords, setBillsRecords] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const [itemsResult, billsResult] = await Promise.all([
+                const [itemsResult, billsRecordsResult] = await Promise.all([
                     db.select('SELECT * FROM items_table'),
-                    db.select('SELECT * FROM bills_table'),
+                    db.select('SELECT * FROM billsRecords_table'),
                 ]);
                 setItems(itemsResult);
-                setBills(billsResult);
+                setBillsRecords(billsRecordsResult);
             } catch (error) {
                 setError(error);
             } finally {
@@ -148,5 +148,5 @@ export function useDb() {
     console.log('types of db and items')
     console.log(typeof db);
     console.log(typeof items);
-    return { db, items, bills, isLoading, setItems };
+    return { db, items, billsRecords, isLoading, setItems };
 }

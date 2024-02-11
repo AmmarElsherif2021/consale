@@ -50,7 +50,7 @@ const Export = ({ onExport }) => (
 
 function Stock() {
 
-    const { db, items, bills, isLoading, setItems } = useDb();
+    const { db, items, billsRecords, isLoading, setItems } = useDb();
     const [stockData, setStockData] = useState([]);
     const [filterText, setFilterText] = useState('');
     const [itemPop, setItemPop] = useState({}); // Item edit popup state
@@ -91,7 +91,7 @@ function Stock() {
       `, [item.id, item.name, item.description, item.unit, item.price_unit, item.quantity_stock]);
 
             console.log('Item added successfully!');
-            setStockData(() => items);
+
         } catch (error) {
             console.error('Error adding item:', error);
         }
@@ -251,7 +251,8 @@ function Stock() {
     }
 
     //confirm add submit............................................................................................
-    const handleAddSubmit = (newAdded) => {
+    const handleAddSubmit = (e, newAdded) => {
+        e.preventDefault();
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
@@ -259,14 +260,15 @@ function Stock() {
             id: prev.id,
             ...restOfNewAdded
         }));
-        setStockData([...items]);
+        addItem({ ...newAdded })
+        setStockData(items);
         // Reset addedItemPop state
         setAddedItemPop({});
 
 
 
     };
-    useEffect(() => console.log('add item pop state has changed'), [addedItemPop])
+    useEffect(() => setStockData(items), [addedItemPop])
 
 
 
@@ -277,7 +279,7 @@ function Stock() {
 
         setStockData(() => items)
     }
-        , [items, stockData, itemPop, delItemPop, addedItemPop]);
+        , [items, addedItemPop, itemPop, delItemPop]);
     //trigger changes
     useEffect(() => console.log(stockData), [items, stockData]);
 
