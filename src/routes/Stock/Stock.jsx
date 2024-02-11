@@ -21,57 +21,7 @@ import { AgGridReact } from 'ag-grid-react';
 
 
 
-// Function to confirm deletion with the user
-const confirmDelete = () => {
-    if (window.confirm("Are you sure you want to flush all database tables and records? This action cannot be undone.")) {
-        return true;
-    }
-    return false;
-};
 
-// Function to flush the database tables and records
-async function flushDatabase() {
-    if (!confirmDelete()) {
-        return; // Early return if user cancels confirmation
-    }
-
-    try {
-        // Load the database
-        const db = await Database.load("sqlite:test.db"); // Replace with your database path
-
-        // Get all table names
-        const tables = await db.all("SELECT name FROM sqlite_master WHERE type = 'table'");
-
-        // Execute DELETE statements for each table
-        await Promise.all(
-            tables.map(async (table) => {
-                await db.execute(`DELETE FROM ${table.name}`);
-            })
-        );
-
-        console.log("Database flushed successfully!");
-    } catch (error) {
-        console.error("Error flushing database:", error);
-        // Handle errors gracefully, e.g., display an error message to the user
-    }
-}
-
-// Use the flushDatabase function responsibly
-const FlushButton = () => {
-    const [isFlushing, setIsFlushing] = useState(false);
-
-    const handleFlush = async () => {
-        setIsFlushing(true); // Indicate flushing in progress
-        await flushDatabase();
-        setIsFlushing(false); // Indicate flushing completion
-    };
-
-    return (
-        <button onClick={handleFlush} disabled={isFlushing}>
-            {isFlushing ? "Flushing..." : "Flush Database"}
-        </button>
-    );
-};
 
 //export csv component
 
@@ -100,18 +50,28 @@ const Export = ({ onExport }) => (
 
 function Stock() {
 
-
-
-    const { db, items, bills, isLoading } = useDb();
-    useEffect(() => console.log(`TYPES ARE ${typeof db},${typeof items}`), [])
+    const { db, items, bills, isLoading, setItems } = useDb();
     const [stockData, setStockData] = useState([]);
-    useEffect(() => { setStockData(() => items) }, [items])
-    //trigger changes
-    useEffect(() => console.log(stockData), [stockData]);
+    const [filterText, setFilterText] = useState('');
+    const [itemPop, setItemPop] = useState({}); // Item edit popup state
+    const [delItemPop, setDelItemPop] = useState({}); // Item delete popup state
+    const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    // Optimized useEffect to trigger updates only when necessary
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await db.select("SELECT * FROM items_table");
+                setItems(result)
+                setStockData(result);
+            } catch (error) {
+                console.error('Error fetching stock data:', error);
+            }
+        };
 
+        fetchData();
+    }, [itemPop, delItemPop, addedItemPop]); // Only reruns if dependencies change
 
-    useEffect(() => console.log(`TYPES ARE ${typeof db},${typeof items}`), [])
-    //add to db
     async function addItem(item) {
         try {
             // Check if an item with the same ID already exists
@@ -131,6 +91,7 @@ function Stock() {
       `, [item.id, item.name, item.description, item.unit, item.price_unit, item.quantity_stock]);
 
             console.log('Item added successfully!');
+            setStockData(() => items);
         } catch (error) {
             console.error('Error adding item:', error);
         }
@@ -161,6 +122,7 @@ function Stock() {
       WHERE id = ?;
     `, [itemId]);
             console.log('Item deleted successfully!');
+
         } catch (error) {
             console.error('Error deleting item:', error);
         }
@@ -168,36 +130,22 @@ function Stock() {
 
 
 
-    //trigger changes
-    useEffect(() => console.log(...items), [stockData]);
+
 
     //.............................................................................................
 
-    // Fetch initial item data
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                //const result = await db.select('SELECT * FROM items_table'); // Assuming you want all columns
-                setStockData(() => items);
-                console.log(`STOCK DATA >>> >>> >>> >>>${stockData.map((x) => x.JSON.stringify())}`)
-            } catch (error) {
-                console.error('Error fetching stock data:', error);
-            }
-        };
 
-        fetchData();
-    }, [items]);
-    useEffect(() => console.log('stock data'), [stockData])
+
 
 
     //Edit an item popup ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    const [itemPop, setItemPop] = useState({});
 
 
     const handleOpenEdit = (e, iid) => {
         // Stop default form submission if applicable
         e.preventDefault();
-        const item = stockData.find((x) => x.id === iid); // Find the correct item
+        const item = items.filter((x) => x.id
+            == iid)[0]; // Find the correct item
 
         if (item) {
             setItemPop({ ...item }); // Set popup state with item data
@@ -208,15 +156,7 @@ function Stock() {
 
     useEffect(() => console.log(`ItemPop ----->${itemPop}`), [itemPop]);
 
-    useEffect(() => {
-        async function fetchData() {
-            //const result = await db.select("SELECT * FROM items_table");
 
-            setStockData(...items);
-        }
-
-        fetchData();
-    }, [itemPop]);
 
     // cancel item pop:
     const cancelItemPop = () => {
@@ -250,20 +190,13 @@ function Stock() {
     };
 
     //Delete Item |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    const [delItemPop, setDelItemPop] = useState({});
-    useEffect(() => {
-        async function fetchData() {
-            //const result = await db.select("SELECT * FROM items_table");
-            setStockData(...items);
-        }
 
-        fetchData();
-    }, [delItemPop]);
+
 
     const handleItemDel = (e, iid) => {
         e.preventDefault
-        const item = items.filter((x) => x.id == iid)
-        setDelItemPop({ ...item[0] })
+        let item = items.filter((x) => x.id && x.id == iid)[0]
+        setDelItemPop({ ...item })
     };
     // delete item pop:
     const cancelDelItemPop = () => {
@@ -276,21 +209,22 @@ function Stock() {
         e.preventDefault();
         deleteItem(iid);
         //const newStock = stockData.filter((x) => x.id != iid);
+
+        setDelItemPop(() => { });
         setStockData([...items]);
-        setDelItemPop({});
     }
-    useEffect(() => console.log(`del item pop`), [delItemPop])
+    useEffect(() => delItemPop && delItemPop.id && console.log(`del item pop${delItemPop.id}`), [delItemPop]);
 
 
 
 
 
     // Add item pop:|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    //|||||||||||||||||||||||||||||||||||||||
-    const [addedItemPop, setAddedItemPop] = useState({});
+
 
     const cancelAddItemPop = () => {
         setAddedItemPop({})
+        setStockData([...items]);
         console.log(`AddedItemPop ----->${{ ...addedItemPop }}`)
     };
 
@@ -307,9 +241,7 @@ function Stock() {
         const newId = generateRandomId();
         setAddedItemPop({
             id: newId.toString(),
-
             name: '',
-
             description: '',
             quantity_stock: 0,
             price_unit: 0,
@@ -327,37 +259,30 @@ function Stock() {
             id: prev.id,
             ...restOfNewAdded
         }));
-        //const {name,description,quantity_stock,price_unit,unit}=addedItemPop;
-        //addItem(addedItemStock);
-
+        setStockData([...items]);
         // Reset addedItemPop state
         setAddedItemPop({});
 
+
+
     };
     useEffect(() => console.log('add item pop state has changed'), [addedItemPop])
+
+
+
+
+
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                //const result = await db.select('SELECT * FROM items_table'); // Assuming you want all columns
-                setStockData(() => items);
-                console.log(`STOCK DATA >>> >>> >>> >>>${items.map((x) => x.JSON.stringify())}`)
-            } catch (error) {
-                console.error('Error fetching stock data:', error);
-            }
-        };
 
-        fetchData();
-    }, [addedItemPop, items]);
+        setStockData(() => items)
+    }
+        , [items, stockData, itemPop, delItemPop, addedItemPop]);
+    //trigger changes
+    useEffect(() => console.log(stockData), [items, stockData]);
 
+    //Search ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
-
-
-
-
-
-    //Search |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-    const [filterText, setFilterText] = useState('');
-    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = stockData && stockData.length && stockData.filter(
         item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
     );
@@ -396,20 +321,6 @@ function Stock() {
 
 
     //TEST:
-    useEffect(() => {
-        (async () => {
-            if (db) {
-                const result = await db.execute("SELECT name, sql FROM sqlite_master WHERE type='table'");
-                // Log the result
-                console.log(`|||||||||||||||||||||||||||||||||||||||--------------------------------|||||||||||||||||||||||||||||||||||||||`);
-                if (result && result.length) {
-                    console.log(result.map((x) => JSON.stringify(x)));
-                } else {
-                    console.log('result or result.rows is undefined');
-                }
-            }
-        })();
-    }, [items]);
 
 
 
@@ -427,29 +338,41 @@ function Stock() {
         {
             headerName: '',
             field: 'actions',
-            width: 228,
+            width: 110,
             cellRenderer: params => (
                 <div>
                     <button
                         className='table-btn edit'
-                        onClick={(e) => handleOpenEdit(e, params.id)} // Replace with your edit logic
+                        onClick={(e) => handleOpenEdit(e, params.data.id)} // Replace with your edit logic
                     >
                         Edit
                     </button>
+
+                </div>
+            ),
+        },
+        {
+            headerName: '',
+            field: 'actions',
+            width: 110,
+            cellRenderer: params => (
+                <div>
+
                     <button
                         className='table-btn delete'
-                        onClick={(e) => handleItemDel(e, params.id)}
+                        onClick={(e) => handleItemDel(e, params.data.id)}
                     >
                         Delete
                     </button>
                 </div>
             ),
-        },
+        }
     ];
+
     return (
         <div className="route-content stock">
-            <FlushButton />
-            {itemPop && itemPop.id ?
+
+            {itemPop && JSON.stringify(itemPop) != "{}" ?
                 <ItemPop cancelItemPop={cancelItemPop} id={itemPop.id}
                     img={itemPop.image} name={itemPop.name} discription={itemPop.discription} unit={itemPop.unit}
                     priceUnit={itemPop.price_unit} qtyStock={itemPop.quantity_stock} handleItemEdit={handleItemEdit} />
@@ -459,7 +382,7 @@ function Stock() {
 
 
             {
-                delItemPop && delItemPop.id ? <DelItemPop confirmDelItem={confirmDelItem}
+                delItemPop && JSON.stringify(delItemPop) != "{}" ? <DelItemPop confirmDelItem={confirmDelItem}
                     cancelDelItemPop={cancelDelItemPop} name={delItemPop.name} id={delItemPop.id} /> : <div></div>
             }
 

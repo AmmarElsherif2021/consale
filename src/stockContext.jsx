@@ -144,9 +144,9 @@ export function useDb() {
 
         // Load data only when DB or loading state changes
         db && items.length == 0 && fetchData();
-    }, [db, isLoading]); // Only trigger if db or isLoading changes
+    }, [db, items, isLoading]); // Only trigger if db or isLoading changes
     console.log('types of db and items')
     console.log(typeof db);
     console.log(typeof items);
-    return { db, items, bills, isLoading };
+    return { db, items, bills, isLoading, setItems };
 }

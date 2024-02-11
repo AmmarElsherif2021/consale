@@ -1,7 +1,9 @@
 import './DelItemPop.css';
 import cancelIcon from '../../../assets/cancel.svg';
+import { useEffect } from 'react';
 const DelItemPop = (props) => {
     const { cancelDelItemPop, confirmDelItem } = props;
+    useEffect(() => console.log(`props.id=============>`, props.id), [])
     return (
         <div className='del-item-pop'>
             <button className='cancel-del-item-pop' onClick={cancelDelItemPop}><img className='cancel-icon' src={cancelIcon} /></button>
