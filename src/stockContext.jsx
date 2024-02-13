@@ -19,7 +19,7 @@ const migrations = {
         "ITEM_ID", "Item Name", "Item Description", "Unit", 10, 5.0
       );
     `,
-        `CREATE TABLE IF NOT EXISTS billsRecords_table (
+        `CREATE TABLE IF NOT EXISTS bills_table (
       bid TEXT PRIMARY KEY,
       c_name TEXT,
       c_phone TEXT,
@@ -28,7 +28,11 @@ const migrations = {
       debt INTEGER,
       paid INTEGER,
       discount INTEGER
-    );`,
+    );
+    INSERT INTO items_table (bid, c_name, c_phone, date, b_total, debt,paid,discount) VALUES (
+        "bill_ID", "c Name", "010009292888", "........", 110, 50,60,0
+      );
+    `,
         `CREATE TABLE IF NOT EXISTS bill_items_table (
       ibid TEXT PRIMARY KEY,
       id TEXT,
@@ -36,9 +40,13 @@ const migrations = {
       bid TEXT,
       req_qty INTEGER,
       total INTEGER,
-      FOREIGN KEY(bid) REFERENCES billsRecords_table(bid) ON DELETE CASCADE, 
+      FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE, 
       FOREIGN KEY(id) REFERENCES items_table(id) ON DELETE CASCADE 
-    );`,
+    );
+    INSERT INTO items_table (ibid,id, name,bid, req_qty, total) VALUES (
+        "ITEM_IBID","ITEM_ID", "Item Name", "bid", 10, 40
+      );
+    `,
         `CREATE TABLE IF NOT EXISTS records_table (
       date TEXT PRIMARY KEY,
       bid TEXT,
@@ -121,20 +129,25 @@ export function StockProvider({ children }) {
 
 export function useDb() {
     const { db, isLoading, setIsLoading, setError } = useContext(DbContext);
-
+    //stock state
     const [items, setItems] = useState([]);
+    //bills table state
     const [billsRecords, setBillsRecords] = useState([]);
-
+    const [billsItems, setBillsItems] = useState([])
+    //billsHistory... ??!!
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setIsLoading(true);
-                const [itemsResult, billsRecordsResult] = await Promise.all([
+                const [itemsResult, billsRecordsResult, billItemsResult] = await Promise.all([
                     db.select('SELECT * FROM items_table'),
-                    db.select('SELECT * FROM billsRecords_table'),
+                    db.select('SELECT * FROM bills_table'),
+                    db.select('SELECT * FROM bill_items_table'),
                 ]);
                 setItems(itemsResult);
                 setBillsRecords(billsRecordsResult);
+                setBillsItems(billItemsResult)
+                console.log(`bill items table length ${billItemsResult.length}`)
             } catch (error) {
                 setError(error);
             } finally {
@@ -148,5 +161,5 @@ export function useDb() {
     console.log('types of db and items')
     console.log(typeof db);
     console.log(typeof items);
-    return { db, items, billsRecords, isLoading, setItems };
+    return { db, items, billsRecords, isLoading, setItems, setIsLoading, billsItems, setBillsItems };
 }

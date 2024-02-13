@@ -7,14 +7,34 @@
       - items
         - date
           - time
+
+
+
+
+            `CREATE TABLE IF NOT EXISTS bill_items_table (
+      ibid TEXT PRIMARY KEY,
+      id TEXT,
+      name TEXT,
+      bid TEXT,
+      req_qty INTEGER,
+      total INTEGER,
+      FOREIGN KEY(bid) REFERENCES billsRecords_table(bid) ON DELETE CASCADE, 
+      FOREIGN KEY(id) REFERENCES items_table(id) ON DELETE CASCADE 
+    )
 */
 import './BillPop.css';
 
 import AnonPic from "../../../assets/bill-icon.svg";
 import cancelIcon from '../../../assets/cancel.svg';
+import { useDb } from '../../../stockContext';
+import { useEffect } from 'react';
 
 const BillPop = (props) => {
     const { cancelBillPop, openBill } = props;
+    const { db, items, billsRecords, isLoading, setItems, setIsLoading } = useDb();
+
+
+
     return (
         <div className='oldbill-pop'>
             <button className='cancel-bill-pop' onClick={cancelBillPop}><img className='cancel-icon' src={cancelIcon} /></button>

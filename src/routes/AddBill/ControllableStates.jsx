@@ -10,28 +10,29 @@ export default function ControllableStates(props) {
   const [inputValue, setInputValue] = useState('');
   useEffect(() => console.log('input value changed'), [inputValue])
 
+  // Filter options to include only items with id
+  const optionsWithId = props.options.filter(option => option.name && option.id !== undefined);
+
   return (
     <div>
-
       <Autocomplete
         value={value}
         onChange={(event, newValue) => {
-          const newObj = props.options.filter((x) => x == newValue)[0]
+          const newObj = optionsWithId.filter((x) => x == newValue)[0]
           setValue(newObj);
-          console.log('Selected item:', newValue);
-          console.log('Selected item ID:', newObj.id);
-          console.log('Selected item name:', newObj.name);
           handleNewItemPop(event, newObj.id)
         }}
         disablePortal
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
         id="controllable-states-demo"
-        options={props.options}
-        getOptionLabel={(option) => option.name}
+        options={optionsWithId} // Pass filtered options
+        getOptionLabel={(option) => option.name} // Display only name
         sx={{ width: 500, zIndex: 10000 }}
         renderInput={(params) => <TextField {...params} />}
       />
     </div>
   );
 }
+
+

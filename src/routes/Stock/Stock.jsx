@@ -58,19 +58,7 @@ function Stock() {
     const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     // Optimized useEffect to trigger updates only when necessary
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await db.select("SELECT * FROM items_table");
-                setItems(result)
-                setStockData(result);
-            } catch (error) {
-                console.error('Error fetching stock data:', error);
-            }
-        };
 
-        fetchData();
-    }, [itemPop, delItemPop, addedItemPop]); // Only reruns if dependencies change
 
     async function addItem(item) {
         try {
@@ -256,30 +244,38 @@ function Stock() {
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
-        setAddedItemPop(prev => ({
+        setAddedItemPop((prev) => ({
             id: prev.id,
             ...restOfNewAdded
         }));
-        addItem({ ...newAdded })
+        addItem({ ...newAdded });
         setStockData(items);
         // Reset addedItemPop state
         setAddedItemPop({});
 
 
 
+
     };
-    useEffect(() => setStockData(items), [addedItemPop])
-
-
-
 
 
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await db.select("SELECT * FROM items_table");
+                setItems(result)
+                setStockData(result);
+            } catch (error) {
+                console.error('Error fetching stock data:', error);
+            }
+        };
 
-        setStockData(() => items)
-    }
-        , [items, addedItemPop, itemPop, delItemPop]);
+        fetchData();
+    }, [itemPop, delItemPop, addedItemPop]);
+
+
+
     //trigger changes
     useEffect(() => console.log(stockData), [items, stockData]);
 
@@ -298,11 +294,16 @@ function Stock() {
         };
 
         return (
-            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} /></div>
+            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
         );
     }, [filterText, resetPaginationToggle]);
 
-
+    const handleClear = () => {
+        if (filterText) {
+            setResetPaginationToggle(!resetPaginationToggle);
+            setFilterText('');
+        }
+    };
     const customStyles = {
         headCells: {
             style: {
@@ -399,18 +400,31 @@ function Stock() {
                     /> : <div></div>
             }
             <h1>إدارة المخزن</h1>
-
             <div className='add-stock'>
                 <h3>اضف صنف جديد</h3>
+
                 <div><button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}><img className='add-img' src={addPlus} /></button></div>
             </div>
             <div className='data-table'>
                 <div className='ag-theme-quartz' style={{ height: '500px', width: '100%' }}>
+                    <FilterComponent
+                        onFilter={e => setFilterText(e.target.value)}
+                        onClear={handleClear}
+                        filterText={filterText}
+                        placeHolder={'ابحث باسم الصنف'}
+                    />
                     <AgGridReact
+
+
                         rowData={filteredItems}
                         columnDefs={columnDefs}
                         pagination={true}
                         paginationPageSize={10}
+                        paginationAutoPageSize={resetPaginationToggle}
+                        subHeaderComponent={subHeaderComponentMemo}
+                        rowSelection="multiple"
+                        domLayout='autoHeight'
+                        onGridReady={actionsMemo}
                     />
                 </div>
 

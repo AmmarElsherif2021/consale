@@ -39,7 +39,7 @@ const getDate = () => {
 }
 
 const AddBill = () => {
-  const { db, items, billsRecords, isLoading, setItems } = useDb();
+  const { db, items, billsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
 
 
   // Create new actual bill
@@ -58,16 +58,9 @@ const AddBill = () => {
 
     ],
   });
-  useEffect(() => {
-    !newBill.bid && setNewBill((prevBill) => ({
-      ...prevBill,
-      bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
-      date: getDate(),
-    }));
 
-  }, []);
 
-  useEffect(() => console.log('newBill changed'), [newBill])
+
   //Left section >> Create bill section ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   //|||||||||||||||||||||||||||||||||||||||||||||---||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   //||||||||||||||||||||||||||||||||||||||||||---|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -85,12 +78,7 @@ const AddBill = () => {
   };
 
 
-  useEffect(() => {
-    fetchData();
 
-  }, []);
-
-  useEffect(() => console.log(`stock retrieved ${[...stockData]}`), [stockData])
   //state of new added item object
   const [newAdded, setNewAdded] = useState({});
   //assure newAdded 
@@ -104,16 +92,9 @@ const AddBill = () => {
   //add new item to bill  
   const handleNewItemPop = (e, id) => {
     e.preventDefault();
-    //const itemsArr=stockData.map((x)=>x.JSON.stringify())
     const newItem = stockData.filter((x) => x.id == id)[0];
     const prevReq = addedItems.filter((x) => x.id == id)[0] ? addedItems.filter((x) => x.id == id)[0] : {};
-    /*
-      prevReq && prevReq.id ? setNewAdded({
-      ...prevReq,
-      req_qty: prevReq.req_qty,
-      total: newItem.req_qty * newItem.price_unit,
-    }) :
-    */
+
     setNewAdded({
       ...newItem,
       ibid: uuidv4(),
@@ -159,7 +140,6 @@ const AddBill = () => {
     e.preventDefault();
 
     if (newAdded && newAdded.id === id) {
-      //setAddedItems((prev) => [...prev.filter(x => x.id !== id)]);
       setAddedItems((prev) => [...prev.filter(x => x.id !== id), newAdded]); // Add newAdded regardless of addedItems' length
 
     } else {
@@ -188,23 +168,24 @@ const AddBill = () => {
     const newBills = await db.select('SELECT * FROM bills_table');
     setBills([...newBills])
   };
-  useEffect(() => {
 
-    fetchBillsData();
-  }, [newBill]);
-
-
-  useEffect(() => { console.log(`bills..> `) }, [bills]);
-  useEffect(() => { fetchBillsData() }, [newBill, bills]);
 
   //handle click on card:
   const [oldBillPop, setOldBillPop] = useState({});
 
-  const handleCardClick = (e, id) => {
-    e.preventDefault()
+
+  const handleCardClick = async (e, id) => {
+    e.preventDefault();
     const clicked = bills && bills.length ? bills.filter((x) => x.bid == id)[0] : {};
-    setOldBillPop({ ...clicked })
+    const items = await fetchBillItemsData(id);
+    setOldBillPop({
+      ...clicked,
+      items: items && items.length ? [...items] : []
+    });
   };
+
+
+
   const cancelBillPop = () => {
     setOldBillPop({})
   };
@@ -221,11 +202,9 @@ const AddBill = () => {
   }
 
   const openBill = async () => {
-    const newItems = [];
-    //await fetchBillItemsData(oldBillPop.bid);
+    const oldItems = await fetchBillItemsData(oldBillPop.bid);
 
-    setNewBill((prev) => ({
-      ...prev,
+    setNewBill(() => ({
       bid: oldBillPop.bid,
       c_name: oldBillPop.c_name,
       c_phone: oldBillPop.c_phone,
@@ -233,23 +212,19 @@ const AddBill = () => {
       debt: oldBillPop.debt,
       paid: oldBillPop.paid,
       records: oldBillPop.records && oldBillPop.records.length ? [...oldBillPop.records] : [],
-      items: [...newItems]
+      items: [...oldItems]
     }));
 
     setOldBillPop({});
     setRestored([]);
   }
 
-  useEffect(() => {
-    oldBillPop && fetchBillItemsData(newBill.bid);
-  }, [oldBillPop]);
+
 
   //filter old bills memo:
   //Search |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   const [filterText, setFilterText] = useState('');
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-  useEffect(() => console.log('filtering'), [filterText]);
-  useEffect(() => console.log('paginating'), [resetPaginationToggle]);
 
   const filteredItems = bills.filter(
     item => item.c_name && item.c_name.toLowerCase().includes(filterText.toLowerCase()),
@@ -263,8 +238,6 @@ const AddBill = () => {
 
   //arrange bills based on debt |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   const [arranged, setArranged] = useState(false);
-  useEffect(() => console.log('arranging?'), [arranged]);
-  useEffect(() => console.log(arranged), [arranged, bills]);
 
 
   const handleArrange = (e) => {
@@ -291,13 +264,10 @@ const AddBill = () => {
   */
   const [confirmSave, setConfirmSave] = useState(false);
   const [printableBill, setPrintableBill] = useState({});
-  useEffect(() => setPrintableBill({ bid: newBill.bid, c_name: newBill.c_name, c_phone: newBill.c_phone }), []);
-  useEffect(() => console.log(`bills updated..`), [bills])
-  const confirmSaveBill = (id, bTotal, p, d, items) => {
 
+  const confirmSaveBill = (id, bTotal, p, d, items) => {
     let totalPaid = Number(Number(p) + Number(newBill.paid));
     setPrintableBill(() => ({
-
       bid: id,
       c_name: newBill.c_name == "" ? "anon" : newBill.c_name,
       c_phone: newBill.c_phone,
@@ -331,48 +301,24 @@ const AddBill = () => {
             },
           ],
     }))
-
-
-
-
     console.log(`JSON NEW BILL ||||||||||||||||||||||||||||||||||||>>>> ${JSON.stringify(newBill)}`);
-    //setNewBill((x)=>({...x,newBill}));
-
-
-
-
     setConfirmSave(false);
     setPrintPop(true);
-    //setBills((prev)=>(
-    //[...prev.filter((x)=>x.bid!=id),printableBill]));
-
-
     console.log(`bills 1 ${bills.map((x) => x.bid)}`);
-
 
   };
 
-
-
-  useEffect(() => console.log(`update bill and bills`), [printableBill, bills])
   const cancelSaveBillPop = () => {
     setConfirmSave(false);
-    //setNewBill((prev) => ({ ...prev, items: [...items] }));
-
   };
 
 
   const handleAddBill = (e) => {
-
     setConfirmSave(true);
-    // setNewBill((prev) => ({ ...prev, items: [...newBill.items, ...addedItems] }));
 
   };
 
 
-  useEffect(() => console.log(`confirm save ?${confirmSave}`), [confirmSave]);
-  //useEffect(()=>console.log(''),[confirmSave,bills]);
-  useEffect(() => console.log(`bills 11111111111111111111111111 ${bills.map((x) => x.bid)}`), [bills]);
 
 
   //Final stage of confirm pop that substracts the actual db data|||||||||||||||||||||||||||||||||||||||||;
@@ -391,7 +337,7 @@ const AddBill = () => {
     |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
     */
   const [printPop, setPrintPop] = useState(false);
-  useEffect(() => console.log('printpop triggered'), [printPop]);
+
 
 
   //add new bill to db:
@@ -408,25 +354,20 @@ const AddBill = () => {
     }
   }
   //add items to bill in db:
-  async function addItemBillRecord(ibid, id, bid, req_qty, total) {
+  async function addItemBillRecord(ibid, id, name, bid, req_qty, total) {
     // Check if the item already exists in the table
-    const itemExists = await db.select('SELECT ibid FROM items_table WHERE ibid = ?', [ibid]);
-    // const name = itemExists.name;
-    await db.execute("INSERT INTO bill_items_table VALUES (?, ? ,?, ?, ?)", [ibid, id, bid, req_qty, total]);
-  }
-  useEffect(() => {
-    fetchBillsData();
-  }, []);
-  useEffect(() => {
-    fetchBillsData();
-  }, [newBill]);
+    const itemExists = await db.select('SELECT ibid FROM bill_items_table WHERE ibid = ?', [ibid]);
+    if (itemExists.length == 0) {
+      await db.execute("INSERT INTO bill_items_table VALUES (?, ? ,?,?, ?, ?)", [ibid, id, name, bid, req_qty, total]);
+    }
+  };
+
 
 
   const handlePrint = () => {
     printPop && printableBill.items && printableBill.items.length &&
       console.log(`Ready to print ${JSON.stringify(printableBill)}`);
-    // setBills((prev) => (
-    //   [...prev.filter((x) => x.bid != printableBill.bid), printableBill]));
+
     setNewBill(() => ({
 
       bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
@@ -465,12 +406,61 @@ const AddBill = () => {
 
 
 
+  // 01033619196 .. .. .. 
 
 
 
+  //useEffect
+
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  useEffect(() => console.log('newBill changed'), [newBill]);
+
+  useEffect(() => {
+    fetchBillsData();
+  }, [newBill, printPop]);
+
+
+  useEffect(() => console.log(`stock retrieved ${[...stockData]}`), [stockData])
+
+
+  useEffect(() => { console.log(`bills..> `) }, [bills]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        // Check if the table exists
+        const tableCheck = await db.select("SELECT name FROM sqlite_master WHERE type='table' AND name='bill_items_table';");
+        if (tableCheck.length > 0) {
+          // If the table exists, fetch the data
+          const result = await db.select("SELECT * FROM bill_items_table");
+          setNewBill((prev) => ({ ...prev, items: result && result.length ? [...result] : [] }))
+        } else {
+          console.log("bill_items_table does not exist.");
+        }
+      } catch (error) {
+        console.error('Error fetching stock data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [oldBillPop]);
 
 
 
+  useEffect(() => console.log('filtering'), [filterText]);
+  useEffect(() => console.log('paginating'), [resetPaginationToggle]);
+  useEffect(() => console.log('arranging?'), [arranged]);
+  useEffect(() => console.log(arranged), [arranged, bills]);
+  useEffect(() => setPrintableBill({ bid: newBill.bid, c_name: newBill.c_name, c_phone: newBill.c_phone }), []);
+  useEffect(() => console.log(`bills updated..`), [bills]);
+  useEffect(() => console.log(`update bill and bills`), [printableBill, bills]);
+  useEffect(() => console.log(`confirm save ?${confirmSave}`), [confirmSave]);
+  useEffect(() => console.log(`bills ${bills.map((x) => x.bid)}`), [bills]);
+  useEffect(() => console.log('printpop triggered'), [printPop]);
 
 
 
@@ -700,7 +690,7 @@ const AddBill = () => {
 
         <div className="right-pane old-bills-section">
           <div className='right-section-header'>
-            <div className='filter-bills'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} /></div>
+            <div className='filter-bills'><FilterComponent placHolder={'ابحث باسم العميل'} onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} /></div>
             <button className='arrange' onClick={(e) => handleArrange(e)} ><img className='cancel-icon' src={sortIcon} /></button>
           </div>
 
