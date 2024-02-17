@@ -65,7 +65,7 @@
     position: relative;
     border: black solid 3px;
 
-    height: auto;
+    height: 20vh;
 
     width: 22vw;
     display: flex;

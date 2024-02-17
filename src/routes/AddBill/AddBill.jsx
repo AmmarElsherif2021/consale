@@ -29,6 +29,8 @@ import DataTable from 'react-data-table-component';
 import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop';
 import { useDb } from '../../stockContext';
+import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
+import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop';
 
 const getDate = () => {
   const today = new Date();
@@ -39,25 +41,30 @@ const getDate = () => {
 }
 
 const AddBill = () => {
-  const { db, items, billsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
+  const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
 
 
   // Create new actual bill
 
   const [newBill, setNewBill] = useState({
-    bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
-    c_name: "",
-    c_phone: "",
-    b_total: 0,
-    discount: 0,
-    items: [],
-    paid: 0,
-    debt: 0,
-    date: getDate(),
-    records: [
 
-    ],
   });
+  useEffect(() =>
+    setNewBill({
+      bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
+      c_name: "",
+      c_phone: "",
+      b_total: 0,
+      discount: 0,
+      items: [],
+      paid: 0,
+      debt: 0,
+      date: getDate(),
+      records: [
+
+      ],
+    })
+    , [])
 
 
 
@@ -79,10 +86,110 @@ const AddBill = () => {
 
 
 
+
+
+
+  //restore item from bill:
+  const [restored, setRestored] = useState([]);
+
+
+  useEffect(() => console.log(`item  restored------------------------------------------------------`), [restored]);
+
+
+  const [countRestoredPop, setCountRestoredPop] = useState({})
+  const handleOldItem = (x, bid, num) => {
+    newBill && newBill.bid == bid && newBill.items.map((y) => {
+      y.ibid == x.ibid && setCountRestoredPop({
+
+        bid: newBill.bid, id: y.id, ibid: y.ibid, name: y.name, req_qty: y.req_qty, unit: y.unit, price_unit: y.price_unit
+      })
+    })
+  };
+
+
+  const confirmCountRestored = async (id, ibid, restQty, bid) => {
+    const items = await db.select(`SELECT * FROM items_table WHERE id=?;`, [id]);
+    const newQty = Number(items[0].quantity_stock) + Number(restQty);
+    const itemFromTable = await db.select(`SELECT * FROM bill_items_table WHERE ibid=?;`, [ibid]);
+    const newReq = Number(itemFromTable[0].req_qty) - Number(restQty);
+    const newTotal = newReq * itemFromTable[0].price_unit;
+    const newDebt = restQty * itemFromTable[0].price_unit;
+    const restoredText = JSON.stringify(restored)
+
+    if (restQty != 0) {
+      try {
+        await db.execute(`
+              UPDATE items_table
+              SET 
+              quantity_stock=?
+              WHERE id = ?;
+              
+              UPDATE bill_items_table
+              SET 
+              req_qty =?,
+              total=?
+              WHERE ibid = ?;
+
+              UPDATE bills_table
+              SET 
+              debt = ?
+              WHERE bid = ?;
+
+              UPDATE records_table
+              SET 
+              restored_items = ?
+              WHERE bid = ?;
+          `, [newQty, id, newReq, newTotal, ibid, newDebt, bid, restoredText, bid]);
+        setCountRestoredPop({});
+        newBill && newBill.bid && fetchBillData(newBill.bid);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+
+  }
+  const confirmRestoredPop = async (id, ibid, restQty) => {
+    const items = await db.select(`SELECT * FROM items_table WHERE id=?;`, [id]);
+    const itemFromTable = await db.select(`SELECT * FROM bill_items_table WHERE ibid=?;`, [ibid]);
+    const newReq = Number(itemFromTable[0].req_qty) - Number(restQty);
+
+    const newTotal = newReq * itemFromTable[0].price_unit;
+
+    const restoredText = JSON.stringify(restored)
+    setRestored((prev) => [...prev,
+    {
+      name: items[0].name,
+      qty: restQty,
+      price_unit: items[0].price_unit,
+      //total: newDebt
+    }
+    ]);
+    setNewBill((prev) => ({
+      ...prev,
+      items: newReq == 0 ? newBill.items.filter((x) => x.ibid != ibid) : [...newBill.items.filter((x) => x.ibid != ibid), { id: id, ibid: ibid, name: itemFromTable[0].name, price_unit: itemFromTable[0].price_unit, req_qty: itemFromTable[0].req_qty, total: newTotal, unit: itemFromTable[0].unit }]
+    }))
+    console.log(`RESTORED: ${JSON.stringify(restored)}`);
+    setCountRestoredPop({})
+  }
+  const deleteOldItem = (x, id, num) => {
+    newBill && newBill.bid == id && setNewBill((prev) => ({
+      ...prev,
+      items: [...prev.items.filter((y) => y.ibid != x.ibid)]
+
+    }));
+    newBill && newBill.items && setRestored((prev) => ([...prev, x]));
+
+  }
+  // del newItem
+  const deleteNewItem = (x) => {
+    setAddedItems((prev) => prev.filter((y) => y.ibid != x.ibid))
+  }
+
   //state of new added item object
   const [newAdded, setNewAdded] = useState({});
   //assure newAdded 
-  useEffect(() => console.log('newAdded activated'), [newAdded])
+
   //added items list to bill
   const [addedItems, setAddedItems] = useState([]);
   // assure addedItems on 1st render
@@ -100,6 +207,7 @@ const AddBill = () => {
       ibid: uuidv4(),
       req_qty: 0,
       total: newItem.req_qty * newItem.price_unit,
+
     });
 
 
@@ -111,26 +219,6 @@ const AddBill = () => {
 
 
 
-
-  //restore item from bill:
-  const [restored, setRestored] = useState([]);
-
-  useEffect(() => console.log(`item  restored------------------------------------------------------`), [restored])
-  const deleteOldItem = (x, id) => {
-    newBill && newBill.bid == id && setNewBill((prev) => ({
-      ...prev,
-      items: [...prev.items.filter((y) => y.ibid != x.ibid)]
-
-    }));
-    newBill && newBill.items && setRestored((prev) => ([...prev, x]));
-    console.log(`RESTORED: ${restored.map((y) => JSON.stringify(y))}`)
-  }
-
-
-
-  const deleteNewItem = (x) => {
-    setAddedItems((prev) => prev.filter((y) => y.ibid != x.ibid))
-  }
   const cancelItemToBill = () => {
     setNewAdded({})
   }
@@ -163,11 +251,35 @@ const AddBill = () => {
   //||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   //let billsData=[...billsDataArr];
   const [bills, setBills] = useState([]);
+  async function fetchBillsData() {
+    // Use db.execute to delete the bill from the database
+    try {
+      let newBills = await db.select('SELECT * FROM bills_table');
+      // Update the bills state
+      setBillsRecords(newBills);
+      setBills(newBills);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  }
+  async function fetchBillData(bid) {
+    // Use db.execute to delete the bill from the database
+    try {
+      const newBill = await db.select('SELECT * FROM bills_table WHERE bid=?', [bid]);
+      const newItems = await db.select('SELECT * FROM bill_items_table WHERE bid=?', [bid]);
+      const records = await db.select('SELECT * FROM records_table WHERE bid=?', [bid]);
+      // Update the bills state
+      const sameBill = bills.filter((x) => x.bid == bid)[0]
+      setNewBill({
+        ...sameBill,
+        items: newItems,
+        records: records
+      })
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  }
 
-  const fetchBillsData = async () => {
-    const newBills = await db.select('SELECT * FROM bills_table');
-    setBills([...newBills])
-  };
 
 
   //handle click on card:
@@ -180,6 +292,7 @@ const AddBill = () => {
     const items = await fetchBillItemsData(id);
     setOldBillPop({
       ...clicked,
+      b_total: items && items.length ? clicked.b_total : 0,
       items: items && items.length ? [...items] : []
     });
   };
@@ -205,12 +318,7 @@ const AddBill = () => {
     const oldItems = await fetchBillItemsData(oldBillPop.bid);
 
     setNewBill(() => ({
-      bid: oldBillPop.bid,
-      c_name: oldBillPop.c_name,
-      c_phone: oldBillPop.c_phone,
-      date: oldBillPop.date,
-      debt: oldBillPop.debt,
-      paid: oldBillPop.paid,
+      ...oldBillPop,
       records: oldBillPop.records && oldBillPop.records.length ? [...oldBillPop.records] : [],
       items: [...oldItems]
     }));
@@ -263,12 +371,20 @@ const AddBill = () => {
   |||||||||||||||||||||||||||||||||||||||||||||||||||||....||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
   */
   const [confirmSave, setConfirmSave] = useState(false);
-  const [printableBill, setPrintableBill] = useState({});
+  const [printableBill, setPrintableBill] = useState({ ...newBill });
+  const fetchHistoryBillData = async (bid) => {
+    try {
+      const result = await db.select("SELECT * FROM records_table WHERE bid=?", [bid]);
+      setPrintableBill(result);
+    } catch (error) {
+      console.error('Error fetching History data:', error);
+    }
+  };
 
-  const confirmSaveBill = (id, bTotal, p, d, items) => {
+  const confirmSaveBill = (bid, bTotal, p, d) => {
     let totalPaid = Number(Number(p) + Number(newBill.paid));
     setPrintableBill(() => ({
-      bid: id,
+      bid: bid,
       c_name: newBill.c_name == "" ? "anon" : newBill.c_name,
       c_phone: newBill.c_phone,
       debt: d,
@@ -296,12 +412,12 @@ const AddBill = () => {
               paid: totalPaid,
               debt: d,
               b_total: bTotal,
-              added_items: addedItems.length && [...addedItems],
-              restored_items: restored.length && [...restored]
+              added_items: addedItems.length && JSON.stringify([...addedItems]).replace(/\\/g, ''),
+              restored_items: restored.length && JSON.stringify([...restored]).replace(/\\/g, '')
             },
           ],
     }))
-    console.log(`JSON NEW BILL ||||||||||||||||||||||||||||||||||||>>>> ${JSON.stringify(newBill)}`);
+    console.log(`JSON PRINTABLE BILL |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||>>>> ${JSON.stringify(printableBill)}`);
     setConfirmSave(false);
     setPrintPop(true);
     console.log(`bills 1 ${bills.map((x) => x.bid)}`);
@@ -353,49 +469,63 @@ const AddBill = () => {
       await db.execute("UPDATE bills_table SET b_total = ?, debt = ?, paid = ? WHERE bid = ?", [b_total, debt, paid, bid]);
     }
   }
+
+
+
   //add items to bill in db:
-  async function addItemBillRecord(ibid, id, name, bid, req_qty, total) {
+  async function addItemBillRecord(ibid, id, name, bid, unit, price_unit, req_qty, total) {
     // Check if the item already exists in the table
-    const itemExists = await db.select('SELECT ibid FROM bill_items_table WHERE ibid = ?', [ibid]);
-    if (itemExists.length == 0) {
-      await db.execute("INSERT INTO bill_items_table VALUES (?, ? ,?,?, ?, ?)", [ibid, id, name, bid, req_qty, total]);
+    const ibidExists = await db.select('SELECT ibid FROM bill_items_table WHERE ibid = ?', [ibid]);
+    if (ibidExists.length == 0) {
+      await db.execute("INSERT INTO bill_items_table VALUES (?,?,?,?,?,?,?,?)", [ibid, id, name, bid, unit, price_unit, req_qty, total]);
+    }
+    const idExists = await db.select('SELECT * FROM items_table WHERE id = ?', [id]);
+    if (idExists) {
+      const newQtyStock = Number(idExists[0].quantity_stock) - req_qty
+      await db.execute("UPDATE items_table SET quantity_stock=? WHERE id=?", [newQtyStock, id]);
     }
   };
 
+  //add new bill to db:
+  async function addBillHistoryRecord(bid, date, b_total, debt, paid, added, restored) {
+    // Check if the item already exists in the table
+    //const billExists = await db.select('SELECT * FROM bills_table WHERE bid = ? AND c_name = ?', [bid, c_name]);
 
+    try { await db.execute("INSERT INTO records_table VALUES (?, ?, ?, ?, ?, ?,?)", [date, bid, added, restored, b_total, paid, debt]); }
+    catch (error) {
+      console.log('error adding history', error)
+    }
 
+  }
+
+  //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> print
   const handlePrint = () => {
     printPop && printableBill.items && printableBill.items.length &&
       console.log(`Ready to print ${JSON.stringify(printableBill)}`);
-
-    setNewBill(() => ({
-
-      bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
-      c_name: "",
-      c_phone: "",
-      b_total: 0,
-      discount: 0,
-      items: [],
-      paid: 0,
-      debt: 0,
-      date: getDate(),
-      records: []
-
-
-    }));
-    setRestored([]);
-    const { bid, c_name, c_phone, date, b_total, debt, paid, discount } = printableBill;
+    restored.map((x) => confirmCountRestored(x.id, x.ibid, x.qty, printableBill.bid))
+    const { bid, c_name, c_phone, date, b_total, debt, paid, discount, records } = printableBill;
     addBillRecord(bid, c_name, c_phone, date, b_total, debt, paid, discount);
     addedItems.map((x) => {
-      const { ibid, name, id, req_qty, total } = x;
-      addItemBillRecord(ibid, id, name, bid, req_qty, total)
-    })
+      const { ibid, name, id, unit, price_unit, req_qty, total } = x;
+      addItemBillRecord(ibid, id, name, bid, unit, price_unit, req_qty, total)
+    });
+    const lastRecord = records.length > 0 ? records[records.length - 1] : null;
+    const restoredText = JSON.stringify(restored)
+    // lastRecord && lastRecord.restored_items ? JSON.stringify(lastRecord.restored_items) : '';
+    const addedText = JSON.stringify(addedItems)
+    //lastRecord && lastRecord.added_items ? JSON.stringify(addedItems) : '';
 
+    if (lastRecord) {
+      addBillHistoryRecord(bid, lastRecord.date, lastRecord.b_total, lastRecord.debt, lastRecord.paid, addedText, restoredText);
+      console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`, restoredText)
+    }
+
+    setRestored([]);
     setAddedItems([]);
 
     setPrintPop(false);
-
   }
+
 
 
   const handleCancelPrint = () => {
@@ -421,21 +551,39 @@ const AddBill = () => {
   useEffect(() => {
     fetchBillsData();
   }, [newBill, printPop]);
-
+  /* useEffect(() => {
+     fetchBillData(newBill.bid);
+   }, [countRestoredPop]);*/
 
   useEffect(() => console.log(`stock retrieved ${[...stockData]}`), [stockData])
+  useEffect(() => {
+    setNewBill(() => ({
+      bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
+      c_name: "",
+      c_phone: "",
+      b_total: 0,
+      discount: 0,
+      items: [],
+      paid: 0,
+      debt: 0,
+      date: getDate(),
+      records: [
 
+      ],
+    })
+    );
+  }
+
+    , [])
 
   useEffect(() => { console.log(`bills..> `) }, [bills]);
   useEffect(() => {
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        // Check if the table exists
         const tableCheck = await db.select("SELECT name FROM sqlite_master WHERE type='table' AND name='bill_items_table';");
         if (tableCheck.length > 0) {
-          // If the table exists, fetch the data
-          const result = await db.select("SELECT * FROM bill_items_table");
+          const result = await db.select("SELECT * FROM bill_items_table WHERE bid = ?", [newBill.bid]);
           setNewBill((prev) => ({ ...prev, items: result && result.length ? [...result] : [] }))
         } else {
           console.log("bill_items_table does not exist.");
@@ -449,8 +597,8 @@ const AddBill = () => {
     fetchData();
   }, [oldBillPop]);
 
-
-
+  useEffect(() => setAddedItems([]), [newBill]);
+  useEffect(() => console.log('newAdded activated'), [newAdded, countRestoredPop]);
   useEffect(() => console.log('filtering'), [filterText]);
   useEffect(() => console.log('paginating'), [resetPaginationToggle]);
   useEffect(() => console.log('arranging?'), [arranged]);
@@ -459,8 +607,11 @@ const AddBill = () => {
   useEffect(() => console.log(`bills updated..`), [bills]);
   useEffect(() => console.log(`update bill and bills`), [printableBill, bills]);
   useEffect(() => console.log(`confirm save ?${confirmSave}`), [confirmSave]);
+  useEffect(() => console.log(JSON.stringify(newBill)), [confirmSave]);
   useEffect(() => console.log(`bills ${bills.map((x) => x.bid)}`), [bills]);
   useEffect(() => console.log('printpop triggered'), [printPop]);
+
+
 
 
 
@@ -499,6 +650,23 @@ const AddBill = () => {
           :
           <div></div>
       }
+      {
+        countRestoredPop && countRestoredPop.ibid ?
+          <div>
+            <CountRestoredPop
+              name={countRestoredPop.name}
+              ibid={countRestoredPop.ibid}
+              id={countRestoredPop.id}
+              bid={countRestoredPop.bid}
+              unit={countRestoredPop.unit}
+              priceUnit={countRestoredPop.price_unit}
+              cancelCountRestoredPop={() => setCountRestoredPop({})}
+              confirmRestoredPop={confirmRestoredPop}
+              reqQty={countRestoredPop.req_qty} />
+          </div>
+          :
+          <div></div>
+      }
 
 
       {
@@ -527,7 +695,7 @@ const AddBill = () => {
             key={newBill.bid}
             bid={newBill.bid}
             cName={newBill.c_name}
-            items={[...newBill.items, ...addedItems]}
+            items={addedItems ? [...newBill.items, ...addedItems] : [...newBill.items]}
             confirmSaveBill={confirmSaveBill}
             cancelSaveBillPop={cancelSaveBillPop}
             bTotal={newBill.b_total}
@@ -640,15 +808,16 @@ const AddBill = () => {
                   <th>سعر الوحدة</th>
                   <th>اجمالي</th>
                 </tr>
-                {newBill.items && newBill.items.length ? newBill.items.map((x) =>
-                (<tr key={x.ibid}>
-                  <td style={{ backgroundColor: "#5e9b88" }}>{x.name}</td>
-                  <td>{x.req_qty}</td>
-                  <td>{x.unit}</td>
-                  <td>${x.price_unit}</td>
-                  <td>${x.total}</td>
-                  <td><button className='del-row' key={x.ibid} onClick={() => deleteOldItem(x, newBill.bid)}><img src={delIcon} style={{ width: "20px" }} /></button></td>
-                </tr>))
+                {newBill.items && newBill.items.length ? newBill.items.map((x) => x.req_qty > 0 &&
+                  <tr key={x.ibid}>
+                    <td style={{ backgroundColor: "#5e9b88" }}>{x.name}</td>
+                    <td>{x.req_qty}</td>
+                    <td>{x.unit}</td>
+                    <td>${x.price_unit}</td>
+                    <td>${x.total}</td>
+                    <td><button className='del-row' key={x.ibid} onClick={() => handleOldItem(x, newBill.bid, 7)}><img src={delIcon} style={{ width: "20px" }} /></button></td>
+                  </tr>
+                )
                   : (<tr></tr>)}
                 {addedItems.length ? addedItems.map((x) =>
                 (<tr key={x.ibid}>
@@ -675,7 +844,14 @@ const AddBill = () => {
             <table>
               <tr>
                 <th>اجمالي الفاتورة</th>
-                <td className='total-cell'>{newBill.items && newBill.items.length && addedItems.length && [...newBill.items, ...addedItems].reduce((acc, obj) => acc + obj.total, 0)}</td>
+                <td className='total-cell'>
+                  {
+                    addedItems.length && newBill.items && newBill.items.length ? [...addedItems, ...newBill.items].reduce((acc, obj) => acc + obj.total, 0)
+                      :
+                      newBill.items && newBill.items.length ? newBill.items.reduce((acc, obj) => acc + obj.total, 0)
+                        :
+                        addedItems.length && addedItems.reduce((acc, obj) => acc + obj.total, 0)
+                  }</td>
               </tr>
             </table>
           </div>
@@ -690,7 +866,9 @@ const AddBill = () => {
 
         <div className="right-pane old-bills-section">
           <div className='right-section-header'>
-            <div className='filter-bills'><FilterComponent placHolder={'ابحث باسم العميل'} onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} /></div>
+            <div className='filter-bills'>
+              <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear()} filterText={filterText} />
+            </div>
             <button className='arrange' onClick={(e) => handleArrange(e)} ><img className='cancel-icon' src={sortIcon} /></button>
           </div>
 
@@ -700,11 +878,10 @@ const AddBill = () => {
 
             <div style={{ fontSize: 8 }} className="bills-roll">
 
-              {//bills&&bills.length>0 ?
+              {
                 bills && bills.length > 0 ?
-                  //bills. map(
                   bills.map(
-                    (x) =>
+                    (x) => x.bid &&
                       <div onClick={(e) => handleCardClick(e, x.bid)}>
                         <BillCard
                           bid={x.bid}

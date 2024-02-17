@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { BillProvider, useBill } from '../../../billContext';
 import { ProgressBar } from 'react-bootstrap';
 import { Table } from '@material-ui/core';
+import { useDb } from '../../../stockContext';
+
 const getDate = () => {
   const today = new Date();
   const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
@@ -15,33 +17,54 @@ const getDate = () => {
 
 
 const SaveBillPop = (props) => {
+  const { db, items, billsRecords, isLoading, setItems } = useDb();
+
   //const {newBill,setNewBill}=useBill();
   const billTotal = props.items.reduce((acc, obj) => acc + obj.total, 0);
+
   const { cancelSaveBillPop, confirmSaveBill } = props;
-  const [saved, setSaved] = useState(false);
-
-
 
   const [paid, setPaid] = useState(0);
   const [debt, setDebt] = useState(0);
-  //useEffect(()=>setPaid(props.paid),[]);
+  const [records, setRecords] = useState('');
 
-  useEffect(() => setDebt(billTotal - paid - props.paid), [paid]);
+
+  useEffect(() => {
+    const fetchRecordsData = async () => {
+      try {
+        const result = await db.select("SELECT * FROM records_table WHERE bid=?", [props.bid]);
+        setRecords(result)
+        console.log(`records   ${result}======================================= &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& --> ${JSON.stringify(result)}`)
+      } catch (error) {
+        console.error('Error fetching stock data:', error);
+      }
+    };
+
+    fetchRecordsData();
+
+  }, [])
+  useEffect(() => setPaid(0), []);
+
+  useEffect(() => setDebt(billTotal - paid - Number(props.paid)), [paid]);
+
+
   const handlePaid = (e) => {
     setPaid(e.target.value);
-
-
   };
-  //useEffect(()=>console.log(newBill.paid),[paid,newBill])
 
   const handleSaveClick = (e) => {
     e.preventDefault();
     console.log('payments updates sent from pop ');
-    //console.log(`paid: ${paid}, debt: ${debt}`);
-    //updatePayments(paid,debt);
-    confirmSaveBill(props.bid, billTotal, paid, debt, props.items);
+    confirmSaveBill(props.bid, billTotal, paid, debt);
   }
+
   const styleParagraph = { display: "flex", flexDirection: "row-reverse", alignItems: "center" };
+
+
+  //const restored_items = ;
+  //.substring(0, restored.lastIndexOf('"}]') + 2)
+
+
   return (
 
     <div className="save-bill-pop">
@@ -77,7 +100,7 @@ const SaveBillPop = (props) => {
                 <h4>الاجمالي</h4>
               </td>
             </tr>
-            {props.items.map((x) => (
+            {props.items.map((x) => (x.req_qty > 0 &&
               <tr>
                 <td>{x.name}</td>
                 <td>{x.req_qty}</td>
@@ -97,26 +120,31 @@ const SaveBillPop = (props) => {
         </div>
         <div className="records-space">
           <h4>تاريخ المعاملات</h4>
-
-
-          {props.records && props.records.length ?
-            props.records.map((y) =>
+          {records && records.length ?
+            records.map((y) =>
             (y && y.date &&
+
+
               <div className="records">
                 <table style={{ overflowY: "auto", alignItems: "center" }}>
-                  <tr><h5>بضاعة مضافة</h5></tr>
-                  {y && y.added_items && y.added_items.length ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
-                  {y && y.added_items && y.added_items.length ? y.added_items.map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : `----------`}
-                  <tr><h5>Restored items</h5></tr>
-                  {y && y.restored_items && y.restored_items.length ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي
-                  </th></tr> : <tr></tr>}
-                  {y && y.restored_items && y.restored_items.length ? y.restored_items.map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : `----------`}
+                  <tr>بضاعة مضافة</tr>
+                  {y && y.added_items && y.added_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
+                  {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : `----------`}
+                  <tr>مرتجع</tr>
+                  {y && y.restored_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
+                  {//Fix this ===============================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    // y && y.restored_items ? JSON.parse(y.restored_items).map(
+                    //  (z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>
+                    // ) : <tr></tr> .replace(/\\/g, '')
+                  }
+                  {//y && y.restored_items && y.restored_items !== "" ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : `----------`
+                  }
+
                 </table>
 
-                <table>
-                  <tr>
 
-                  </tr>
+                <table>
+
                   <tr >
                     <th>تاريخ المعاملة</th><td>{y.date}</td>
                   </tr>
@@ -126,6 +154,8 @@ const SaveBillPop = (props) => {
                 </table>
 
               </div>
+
+
             )) : <div>لا توجد معاملات سابقة</div>}
         </div>
       </div>
@@ -181,6 +211,7 @@ const SaveBillPop = (props) => {
           </button>
         </div>
       </div>
+
     </div>
 
   );

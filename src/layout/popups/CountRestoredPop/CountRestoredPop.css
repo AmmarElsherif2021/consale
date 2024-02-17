@@ -1,0 +1,53 @@
+.count-restored-pop {
+    width: 250px;
+    height: auto;
+    position: fixed;
+    left: 40vw;
+    top: 40vh;
+    background: aliceblue;
+    border: solid black 5px;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    z-index: 100000
+}
+
+.card-body {
+    display: grid;
+    grid-template-rows: 3fr 1fr;
+    min-width: 130px;
+    background: none;
+}
+
+.cancel-count-restored-pop {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    border: solid black 5px;
+    background-color: rgb(216, 44, 44);
+    border-radius: 50%;
+
+}
+
+.cancel-icon {
+    width: 40px;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.count-restored-btn {
+    border: solid black 2px;
+    border-radius: 10px;
+    background: none;
+    margin: 3px;
+    width: 75px;
+
+}
+
+.btns-section {
+    display: flex;
+    flex-direction: row;
+}

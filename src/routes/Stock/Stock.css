@@ -9,9 +9,14 @@
     justify-content: start;
 }
 
-.stock-table {
+.data-table {
     background: none;
-    justify-content: stretch;
+    justify-content: space-around;
+    margin: 5px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .input {
@@ -50,7 +55,7 @@
 
 .add-stock {
 
-    background: none;
+
     justify-content: center;
     display: flex;
     flex-direction: row;
@@ -85,10 +90,17 @@
 .data-table {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: stretch;
+    justify-content: stretch;
+    align-items: center;
     margin-top: 5px;
     width: 74vw;
+
+}
+
+.grid {
+    background: none;
+    width: 70vw;
+
 
 }
 
@@ -125,19 +137,11 @@
 
 }
 
-.filter {
+.filter-component {
+
     background: rgb(0, 0, 0);
-    width: 75vw;
+    width: 100%;
 
-
-    left: 0;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-right: 30px;
-    position: relative;
 
 
 }

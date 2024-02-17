@@ -9,7 +9,7 @@ import addPlus from '../../assets/add-plus.svg'
 import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
 import { useDb } from '../../stockContext';
-import Database from 'tauri-plugin-sql-api';
+
 //searchbar and teble import
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -403,26 +403,32 @@ function Stock() {
             <div className='add-stock'>
                 <h3>اضف صنف جديد</h3>
 
-                <div><button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}><img className='add-img' src={addPlus} /></button></div>
+                <div>
+                    <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}><img className='add-img' src={addPlus} /></button></div>
             </div>
             <div className='data-table'>
-                <div className='ag-theme-quartz' style={{ height: '500px', width: '100%' }}>
+                <div className="filter-component">
                     <FilterComponent
                         onFilter={e => setFilterText(e.target.value)}
                         onClear={handleClear}
                         filterText={filterText}
                         placeHolder={'ابحث باسم الصنف'}
                     />
+                </div>
+                <div className='grid'>
                     <AgGridReact
-
+                        className='grid-table'
 
                         rowData={filteredItems}
                         columnDefs={columnDefs}
                         pagination={true}
-                        paginationPageSize={10}
+                        paginationPageSize={7}
                         paginationAutoPageSize={resetPaginationToggle}
                         subHeaderComponent={subHeaderComponentMemo}
                         rowSelection="multiple"
+                        rowHeight={55}
+                        headerHeight={40}
+
                         domLayout='autoHeight'
                         onGridReady={actionsMemo}
                     />

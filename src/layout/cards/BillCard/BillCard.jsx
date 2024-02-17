@@ -9,9 +9,24 @@
           - time
 */
 import './BillCard.css';
+import { useDb } from '../../../stockContext';
 
 import AnonPic from "../../../assets/bill-icon.svg"
 const BillCard = (props) => {
+    /* const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
+     function handleBillDel() {
+         // Use db.execute to delete the bill from the database
+         db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid])
+             .then(() => {
+                 // Update the bills state
+                 setBillsRecords((prev) => prev.filter((bill) => bill.bid !== props.bid));
+             })
+             .catch((error) => {
+                 console.error('Error deleting item:', error);
+ 
+             });
+     }*/
+    const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
     return (
         <div className='bill-card'>
 
@@ -38,7 +53,9 @@ const BillCard = (props) => {
                 <h3>
                     <span>المدفوع {props.paid}  </span>
                 </h3>
+                <button onClick={() => db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid])}>Del</button>
             </div>
+
 
 
 

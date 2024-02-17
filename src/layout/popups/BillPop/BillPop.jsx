@@ -46,7 +46,7 @@ const BillPop = (props) => {
                     موبايل: <span>{props.phone}</span><br />
                     تاريخ: <span>{props.date}</span><br />
 
-                    <small>اجمالي:{props.total}</small> --
+                    <small>اجمالي:{props.bTotal}</small> --
                     <small> المدفوع:{props.paid}</small> --
                     <small > الدين: <span style={{ color: "#DD3522" }}>{props.debt}</span></small>
                 </h4>
@@ -68,7 +68,7 @@ const BillPop = (props) => {
                     </thead>
                     <tbody>
                         {props.items && props.items.length && props.items.map(
-                            (x) => (<tr>
+                            (x) => (x.req_qty > 0 && <tr>
                                 <td><small>{x.name}</small></td>
                                 <td><small>{x.req_qty}</small></td>
                                 <td><small>{x.unit}</small></td>

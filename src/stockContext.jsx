@@ -12,12 +12,10 @@ const migrations = {
       name TEXT,
       description TEXT,
       unit TEXT,
-      price_unit INTEGER,
+      price_unit REAL,
       quantity_stock REAL
     );
-    INSERT INTO items_table (id, name, description, unit, price_unit, quantity_stock) VALUES (
-        "ITEM_ID", "Item Name", "Item Description", "Unit", 10, 5.0
-      );
+  
     `,
         `CREATE TABLE IF NOT EXISTS bills_table (
       bid TEXT PRIMARY KEY,
@@ -29,51 +27,58 @@ const migrations = {
       paid INTEGER,
       discount INTEGER
     );
-    INSERT INTO items_table (bid, c_name, c_phone, date, b_total, debt,paid,discount) VALUES (
-        "bill_ID", "c Name", "010009292888", "........", 110, 50,60,0
-      );
+
     `,
         `CREATE TABLE IF NOT EXISTS bill_items_table (
       ibid TEXT PRIMARY KEY,
       id TEXT,
       name TEXT,
       bid TEXT,
-      req_qty INTEGER,
+      unit TEXT,
+      price_unit REAL,
+      req_qty REAL,
       total INTEGER,
       FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE, 
       FOREIGN KEY(id) REFERENCES items_table(id) ON DELETE CASCADE 
     );
-    INSERT INTO items_table (ibid,id, name,bid, req_qty, total) VALUES (
-        "ITEM_IBID","ITEM_ID", "Item Name", "bid", 10, 40
-      );
+    
     `,
+
+
         `CREATE TABLE IF NOT EXISTS records_table (
+      
+
       date TEXT PRIMARY KEY,
-      bid TEXT,
-      added_items TEXT,
-      restored_items TEXT,
-      FOREIGN KEY(bid) REFERENCES billsRecords_table(bid) ON DELETE CASCADE 
-    );`
+        bid TEXT,
+        added_items TEXT,
+        restored_items TEXT,
+        b_total INTEGER,
+        paid INTEGER,
+        debt INTEGER,
+        FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
+    );`,
+
     ],
+    versions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 };
 
-async function migrateDb(db, currentVersion) {
-    for (const version in migrations) {
-        if (version > currentVersion) {
-            for (const migration of migrations.queries) {
-                try {
-                    await db.execute(migration);
-                } catch (error) {
-                    console.error('Error executing migration:', error);
-                    throw error; // Re-throw to halt migration process
-                }
+async function migrateDb(db) {
+    const currentVersion = await getDbVersion(db) || 0; // Get current version or default to 0
+
+    for (let i = currentVersion + 1; i <= migrations.versions.length; i++) {
+        const version = migrations.versions[i - 1];
+        for (const migration of migrations.queries) {
+            try {
+                await db.execute(migration);
+            } catch (error) {
+                console.error('Error executing migration:', error);
+                throw error; // Re-throw for proper handling
             }
-            // Update version in database after successful migrations
-            await setDbVersion(db, version);
         }
+        // Update version in database after each successful migration
+        await setDbVersion(db, version);
     }
 }
-
 async function getDbVersion(db) {
     try {
         const result = await db.select('PRAGMA user_version');
@@ -161,5 +166,5 @@ export function useDb() {
     console.log('types of db and items')
     console.log(typeof db);
     console.log(typeof items);
-    return { db, items, billsRecords, isLoading, setItems, setIsLoading, billsItems, setBillsItems };
+    return { db, items, billsRecords, setBillsRecords, isLoading, setItems, setIsLoading, billsItems, setBillsItems };
 }
