@@ -35,6 +35,7 @@ const SaveBillPop = (props) => {
         const result = await db.select("SELECT * FROM records_table WHERE bid=?", [props.bid]);
         setRecords(result)
         console.log(`records   ${result}======================================= &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& --> ${JSON.stringify(result)}`)
+        console.log(records)
       } catch (error) {
         console.error('Error fetching stock data:', error);
       }
@@ -128,16 +129,12 @@ const SaveBillPop = (props) => {
               <div className="records">
                 <table style={{ overflowY: "auto", alignItems: "center" }}>
                   <tr>بضاعة مضافة</tr>
-                  {y && y.added_items && y.added_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
+                  {y && y.added_items && y.added_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
                   {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : `----------`}
                   <tr>مرتجع</tr>
-                  {y && y.restored_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
-                  {//Fix this ===============================================>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                    // y && y.restored_items ? JSON.parse(y.restored_items).map(
-                    //  (z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>
-                    // ) : <tr></tr> .replace(/\\/g, '')
-                  }
-                  {//y && y.restored_items && y.restored_items !== "" ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : `----------`
+                  {y && y.restored_items && y.restored_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
+
+                  {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : `----------`
                   }
 
                 </table>

@@ -159,15 +159,21 @@ const AddBill = () => {
     const restoredText = JSON.stringify(restored)
     setRestored((prev) => [...prev,
     {
+      ibid: ibid,
+      id: id,
       name: items[0].name,
       qty: restQty,
       price_unit: items[0].price_unit,
-      //total: newDebt
+      total: newTotal
     }
     ]);
     setNewBill((prev) => ({
       ...prev,
-      items: newReq == 0 ? newBill.items.filter((x) => x.ibid != ibid) : [...newBill.items.filter((x) => x.ibid != ibid), { id: id, ibid: ibid, name: itemFromTable[0].name, price_unit: itemFromTable[0].price_unit, req_qty: itemFromTable[0].req_qty, total: newTotal, unit: itemFromTable[0].unit }]
+      items: newReq == 0 ? [...newBill.items.filter((x) => x.ibid != ibid)]
+        :
+        [...newBill.items.map((x) => x.ibid != ibid ? x : { id: id, ibid: ibid, name: itemFromTable[0].name, price_unit: itemFromTable[0].price_unit, req_qty: newReq, total: newTotal, unit: itemFromTable[0].unit }
+        ),
+        ]
     }))
     console.log(`RESTORED: ${JSON.stringify(restored)}`);
     setCountRestoredPop({})
@@ -489,7 +495,6 @@ const AddBill = () => {
   //add new bill to db:
   async function addBillHistoryRecord(bid, date, b_total, debt, paid, added, restored) {
     // Check if the item already exists in the table
-    //const billExists = await db.select('SELECT * FROM bills_table WHERE bid = ? AND c_name = ?', [bid, c_name]);
 
     try { await db.execute("INSERT INTO records_table VALUES (?, ?, ?, ?, ?, ?,?)", [date, bid, added, restored, b_total, paid, debt]); }
     catch (error) {
@@ -510,6 +515,7 @@ const AddBill = () => {
       addItemBillRecord(ibid, id, name, bid, unit, price_unit, req_qty, total)
     });
     const lastRecord = records.length > 0 ? records[records.length - 1] : null;
+
     const restoredText = JSON.stringify(restored)
     // lastRecord && lastRecord.restored_items ? JSON.stringify(lastRecord.restored_items) : '';
     const addedText = JSON.stringify(addedItems)
@@ -517,7 +523,8 @@ const AddBill = () => {
 
     if (lastRecord) {
       addBillHistoryRecord(bid, lastRecord.date, lastRecord.b_total, lastRecord.debt, lastRecord.paid, addedText, restoredText);
-      console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`, restoredText)
+      console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
+        , restoredText, typeof restored)
     }
 
     setRestored([]);
@@ -551,9 +558,7 @@ const AddBill = () => {
   useEffect(() => {
     fetchBillsData();
   }, [newBill, printPop]);
-  /* useEffect(() => {
-     fetchBillData(newBill.bid);
-   }, [countRestoredPop]);*/
+
 
   useEffect(() => console.log(`stock retrieved ${[...stockData]}`), [stockData])
   useEffect(() => {
