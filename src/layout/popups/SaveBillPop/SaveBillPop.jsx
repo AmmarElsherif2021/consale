@@ -1,6 +1,7 @@
 import './SaveBillPop.css';
 import cancelIcon from '../../../assets/cancel.svg';
-import printIcon from '../../../assets/print.svg'
+import printIcon from '../../../assets/print.svg';
+import historyIcon from '../../../assets/history.svg'
 import { useState, useEffect, useRef } from 'react';
 import { BillProvider, useBill } from '../../../billContext';
 import { ProgressBar } from 'react-bootstrap';
@@ -70,12 +71,24 @@ const SaveBillPop = (props) => {
 
 
 
-  const contentRef = useRef();
-  const contentRef1 = useRef();
-  const createPDF = async () => {
-    const content = contentRef.current;
+  const historyRef = useRef();
+  const currentRef = useRef();
+  const createHistoryRef = async () => {
+    const content = historyRef.current;
     const opt = {
       margin: 10,
+      filename: "my-component.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "mm", format: "a5", orientation: "portrait" },
+    };
+    await html2pdf().from(content).set(opt).outputPdf();
+  };
+
+  const createCurrentRef = async () => {
+    const content = currentRef.current;
+    const opt = {
+      margin: 20,
       filename: "my-component.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 1 },
@@ -100,7 +113,7 @@ const SaveBillPop = (props) => {
       </div>
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}  >
-        <div className="current-space" >
+        <div className="current-space" ref={currentRef}>
 
           <table>
             <tr>
@@ -141,7 +154,7 @@ const SaveBillPop = (props) => {
         <div className="records-space" >
 
 
-          <div ref={contentRef}>
+          <div ref={historyRef}>
             <h4>تاريخ المعاملات</h4>
             {records && records.length ?
               records.map((y) =>
@@ -192,10 +205,14 @@ const SaveBillPop = (props) => {
 
           <ReactToPrint
             trigger={() => <button style={{ width: "70px", height: "70px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
-              onClick={() => createPDF()}><img src={printIcon} style={{ width: "60px" }} /></button>}
-            content={() => contentRef.current}
+              onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "60px" }} /></button>}
+            content={() => historyRef.current}
           />
-
+          <ReactToPrint
+            trigger={() => <button style={{ width: "70px", height: "70px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+              onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "60px" }} /></button>}
+            content={() => currentRef.current}
+          />
 
           <span style={{ minWidth: "200px", display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", alignItems: "center" }}>
             <h4>مدفوع</h4>
