@@ -348,7 +348,7 @@ function Stock() {
                         className='table-btn edit'
                         onClick={(e) => handleOpenEdit(e, params.data.id)} // Replace with your edit logic
                     >
-                        Edit
+                        <img src={editIcon} style={{ width: "20px" }} />
                     </button>
 
                 </div>
@@ -365,7 +365,7 @@ function Stock() {
                         className='table-btn delete'
                         onClick={(e) => handleItemDel(e, params.data.id)}
                     >
-                        Delete
+                        <img src={delIcon} style={{ width: "20px" }} />
                     </button>
                 </div>
             ),

@@ -31,7 +31,7 @@
 
     height: 83vh;
     margin-top: 20px;
-    border-right: dotted 5px black;
+    border-right: dashed 5px rgb(218, 58, 58);
     display: flex;
     flex-direction: column;
     background: none;
@@ -260,7 +260,7 @@
 .bills-roll {
     overflow-y: scroll;
     background: none;
-    height: 400px;
+    height: 450px;
     width: 306px;
     margin-left: 8px;
 }

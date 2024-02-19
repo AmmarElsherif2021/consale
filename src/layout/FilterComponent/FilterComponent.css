@@ -1,46 +1,50 @@
-.filter-component{
-    width:50%;
+.filter-component {
+    width: 50%;
 
 
-    position:relative;
-    left:0;
-    top:0;
+    position: relative;
+    left: 0;
+    top: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-.cancel{
-    width:30px;
-    height:50px;
+
+.cancel {
+    width: 30px;
+    height: 50px;
     position: relative;
 
-    border:solid black 5px;
+    border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 5px;
-    margin:3px;
+    margin: 3px;
 
 }
-.cancel:hover{
-    width:50px;
-    height:50px;
+
+.cancel:hover {
+    width: 50px;
+    height: 50px;
     background-color: rgb(255, 72, 72);
-    border:solid rgb(26, 24, 24) 4px;
-  
-}
-.cancel-icon{
-    width:40px;
-    position:absolute;
-    left:0;
+    border: solid rgb(26, 24, 24) 4px;
 
 }
-.search-table{
-    height:30px;
-    min-height:30px;
-    border:solid black 2px; 
+
+.cancel-icon {
+    width: 40px;
+    position: absolute;
+    left: 0;
+
+}
+
+.search-table {
+    height: 30px;
+    min-height: 30px;
+    border: solid black 2px;
     display: flex;
     flex-direction: row;
-    width:100px;
-    
-    
-   }
+    width: auto;
+
+
+}

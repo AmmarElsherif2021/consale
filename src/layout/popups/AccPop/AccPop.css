@@ -1,49 +1,68 @@
-.acc-pop{
-    width:30vw;
-    height:50vh;
-    position:fixed;
-    left:45vw;
-    top:20vh;
-    background:rgb(90, 192, 144);
-    border:solid black 5px;
+.acc-pop {
+    width: 30vw;
+    height: 50vh;
+    position: fixed;
+    left: 45vw;
+    top: 20vh;
+    background: rgb(90, 192, 144);
+    border: solid black 5px;
     border-radius: 35px;
     z-index: 100000;
 }
-.acc-pop-header{
-    display:flex;
-    flex-direction:row;
+
+.acc-pop-header {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
 }
-.acc-pop-img{
+
+.acc-pop-img {
     position: inherit;
-    top:0;
-    left:0;
-    width:10vw;
-    background-color:none;
-    margin:30px;
-    
+    top: 0;
+    left: 0;
+    width: 10vw;
+    background-color: none;
+    margin: 30px;
+
 }
-.cancel-acc-pop{
-    width:50px;
-    height:50px;
-    position:absolute;
-    top:0;
-    left:0;
-    border:solid black 5px;
+
+.cancel-acc-pop {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 50%;
 
 }
-.cancel-icon{
-    width:40px;
-    position:absolute;
-    left:0;
-    top:0
-}
-.acc-pop-p{
 
-    display:flex;
+.cancel-icon {
+    width: 40px;
+    position: absolute;
+    left: 0;
+    top: 0
+}
+
+.acc-pop-p {
+
+    display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+}
+
+.acc-pop-btn {
+    background-color: #26654e;
+    border: solid black 2px;
+    font-weight: 600;
+    width: 100px;
+
+    margin-top: 20px;
+}
+
+.acc-pop-btn:hover {
+    background-color: #21805d;
+    border: solid #1E1E20 3px;
 }

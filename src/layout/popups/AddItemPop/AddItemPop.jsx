@@ -33,7 +33,7 @@ const AddItemPop = (props) => {
     <div className='add-item-pop'>
       <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
       <div className='pop-body'></div>
-      <h1> Add new to stock </h1>
+      <h1>اضف الى المخزن </h1>
       <div className='add-account-form'>
         <div>
           <div><label className='form-label'>
@@ -43,9 +43,9 @@ const AddItemPop = (props) => {
             <input className='input' type="text" name="description" placeholder='Set description' onChange={handleInputChange} />
           </label></div>
           <div className='form-label labels'>
-            <h4>Set parameter used</h4>
+            <h4>الوحدة المستخدمة</h4>
             <label>
-              Weight:
+              وزن
               <input className='input' type="radio"
                 value="weight" name="parameter"
                 onChange={
@@ -66,7 +66,7 @@ const AddItemPop = (props) => {
               )}
             </label>
             <label>
-              Length:
+              طول
               <input className='input' type="radio" value="length" name="parameter"
                 onChange={(e) => {
                   handleInputChange(e);
@@ -87,7 +87,7 @@ const AddItemPop = (props) => {
               )}
             </label>
             <label>
-              Units:
+              وحدات
               <input className='input' type="radio"
                 value="units" name="unit"
                 onChange={(e) => {
@@ -96,13 +96,13 @@ const AddItemPop = (props) => {
                 }} />
             </label>
           </div>
-          <div className='form-label'><label>
-            <input className='input' type="number" name="price_unit" placeholder='set price/unit' onChange={handleInputChange} />
-          </label></div>
-          <div className='form-label'><label>
-            <input className='input' type="number" name="quantity_stock" placeholder='set stock quantity' onChange={handleInputChange} />
-          </label></div>
-          <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)}>Submit</button></div>
+          <div className='form-label'>
+            جنيه<input className='input' type="number" name="price_unit" placeholder='سعر الوحدة' style={{ height: "30px" }} onChange={handleInputChange} />
+          </div>
+          <div className='form-label'>
+            وحدة<input className='input' type="number" name="quantity_stock" placeholder='حدد الكمية' onChange={handleInputChange} />
+          </div>
+          <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)}>أضف</button></div>
         </div>
       </div>
     </div>

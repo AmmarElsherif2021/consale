@@ -9,10 +9,10 @@ const DelItemPop = (props) => {
             <button className='cancel-del-item-pop' onClick={cancelDelItemPop}><img className='cancel-icon' src={cancelIcon} /></button>
             <div className='card-body' style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                 <h3> هل تريد حذف هذا الصنف </h3>
-                <h3>{props.name}  id: {props.id} ? </h3>
+                <h3>{props.name} ? </h3>
                 <div className='btns-section'>
                     <button className='del-item-btn confirm'
-                        style={{ backgroundColor: "#00994d" }}
+                        style={{ backgroundColor: "#307c5b" }}
                         onClick={(e) => confirmDelItem(e, props.id)}>تأكيد</button>
                     <button className='del-item-btn '
                         style={{ backgroundColor: "#ff5c33" }}

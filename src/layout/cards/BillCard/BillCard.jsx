@@ -39,22 +39,14 @@ const BillCard = (props) => {
 
 
 
-            <div className='bill-card-p'>
-                <h3>
-                    <span>{props.date}  </span>
-                </h3>
+            <tr className='bill-card-p'>
+                <td>{props.date}</td>
+                <td>اجمالي  {props.bTotal} </td>
+                <td> المطلوب {props.debt}  </td>
+                <td> المدفوع  {props.paid} </td>
+                <td><button onClick={() => db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid])}>Del</button></td>
 
-                <h3>
-                    <span>اجمالي {props.bTotal}  </span>
-                </h3>
-                <h3>
-                    <span>المطلوب {props.debt}  </span>
-                </h3>
-                <h3>
-                    <span>المدفوع {props.paid}  </span>
-                </h3>
-                <button onClick={() => db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid])}>Del</button>
-            </div>
+            </tr>
 
 
 

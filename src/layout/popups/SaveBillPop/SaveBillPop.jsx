@@ -1,10 +1,15 @@
 import './SaveBillPop.css';
 import cancelIcon from '../../../assets/cancel.svg';
-import { useState, useEffect } from 'react';
+import printIcon from '../../../assets/print.svg'
+import { useState, useEffect, useRef } from 'react';
 import { BillProvider, useBill } from '../../../billContext';
 import { ProgressBar } from 'react-bootstrap';
 import { Table } from '@material-ui/core';
 import { useDb } from '../../../stockContext';
+
+import ReactToPrint from 'react-to-print';
+
+
 
 const getDate = () => {
   const today = new Date();
@@ -18,6 +23,7 @@ const getDate = () => {
 
 const SaveBillPop = (props) => {
   const { db, items, billsRecords, isLoading, setItems } = useDb();
+
 
   //const {newBill,setNewBill}=useBill();
   const billTotal = props.items.reduce((acc, obj) => acc + obj.total, 0);
@@ -62,13 +68,26 @@ const SaveBillPop = (props) => {
   const styleParagraph = { display: "flex", flexDirection: "row-reverse", alignItems: "center" };
 
 
-  //const restored_items = ;
-  //.substring(0, restored.lastIndexOf('"}]') + 2)
 
+
+  const contentRef = useRef();
+  const contentRef1 = useRef();
+  const createPDF = async () => {
+    const content = contentRef.current;
+    const opt = {
+      margin: 10,
+      filename: "my-component.pdf",
+      image: { type: "jpeg", quality: 0.98 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "mm", format: "a5", orientation: "portrait" },
+    };
+    await html2pdf().from(content).set(opt).outputPdf();
+  };
 
   return (
 
     <div className="save-bill-pop">
+
       <button className="cancel-save-bill-pop" onClick={cancelSaveBillPop}>
         <img className='cancel-icon' src={cancelIcon} />
       </button>
@@ -80,8 +99,8 @@ const SaveBillPop = (props) => {
 
       </div>
 
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-        <div className="current-space">
+      <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}  >
+        <div className="current-space" >
 
           <table>
             <tr>
@@ -119,50 +138,63 @@ const SaveBillPop = (props) => {
           </table>
 
         </div>
-        <div className="records-space">
-          <h4>تاريخ المعاملات</h4>
-          {records && records.length ?
-            records.map((y) =>
-            (y && y.date &&
+        <div className="records-space" >
 
 
-              <div className="records">
-                <table style={{ overflowY: "auto", alignItems: "center" }}>
-                  <tr>بضاعة مضافة</tr>
-                  {y && y.added_items && y.added_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
-                  {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : `----------`}
-                  <tr>مرتجع</tr>
-                  {y && y.restored_items && y.restored_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
-
-                  {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : `----------`
-                  }
-
-                </table>
+          <div ref={contentRef}>
+            <h4>تاريخ المعاملات</h4>
+            {records && records.length ?
+              records.map((y) =>
+              (y && y.date &&
 
 
-                <table>
+                <div key={y.date} className="records">
+                  <table style={{ overflowY: "auto", alignItems: "center" }}>
+                    <tr>بضاعة مضافة</tr>
+                    {y && y.added_items && y.added_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
+                    {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)}
+                    <tr>مرتجع</tr>
+                    {y && y.restored_items && y.restored_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
 
-                  <tr >
-                    <th>تاريخ المعاملة</th><td>{y.date}</td>
-                  </tr>
-                  <tr><th>المطلوب</th><td>{y.debt}</td></tr>
-                  <tr><th>تم دفع </th><td>{y.paid}</td></tr>
-                  <tr><th>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
-                </table>
+                    {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)
+                    }
 
-              </div>
+                  </table>
 
 
-            )) : <div>لا توجد معاملات سابقة</div>}
+                  <table>
+
+                    <tr >
+                      <th>تاريخ المعاملة</th><td>{y.date}</td>
+                    </tr>
+                    <tr><th>المطلوب</th><td>{y.debt}</td></tr>
+                    <tr><th>تم دفع </th><td>{y.paid}</td></tr>
+                    <tr><th>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
+                  </table>
+
+                </div>
+
+
+              )) : <div>لا توجد معاملات سابقة</div>}
+          </div>
+
+
         </div>
+
+
       </div>
+
       <div>
 
 
 
         <div className="btns-section">
 
-
+          <ReactToPrint
+            trigger={() => <button style={{ width: "70px", height: "70px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+              onClick={() => createPDF()}><img src={printIcon} style={{ width: "60px" }} /></button>}
+            content={() => contentRef.current}
+          />
 
 
           <span style={{ minWidth: "200px", display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", alignItems: "center" }}>

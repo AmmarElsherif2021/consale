@@ -8,7 +8,7 @@ import sortIcon from '../../assets/sort.svg';
 import refresh from '../../assets/refresh.svg';
 import delIcon from '../../assets/del.svg';
 //import { useBill, BillContext, BillProvider } from '../../billContext';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import ItemToBill from '../../layout/popups/ItemToBill/ItemToBill';
 import BillCard from '../../layout/cards/BillCard/BillCard';
 import BillPop from '../../layout/popups/BillPop/BillPop';
@@ -545,6 +545,16 @@ const AddBill = () => {
 
   // 01033619196 .. .. .. 
 
+  //Print file:
+  const [printFile, setPrintFile] = useState(false);
+  const componentRef = useRef();
+  const printBillData = () => {
+
+  }
+
+
+
+
 
 
   //useEffect
@@ -615,6 +625,7 @@ const AddBill = () => {
   useEffect(() => console.log(JSON.stringify(newBill)), [confirmSave]);
   useEffect(() => console.log(`bills ${bills.map((x) => x.bid)}`), [bills]);
   useEffect(() => console.log('printpop triggered'), [printPop]);
+  useEffect(() => console.log('printFile triggered'), [printFile]);
 
 
 
@@ -840,10 +851,6 @@ const AddBill = () => {
 
             </div>
 
-
-
-
-
           </div>
           <div className='total-div' >
             <table>
@@ -884,8 +891,8 @@ const AddBill = () => {
             <div style={{ fontSize: 8 }} className="bills-roll">
 
               {
-                bills && bills.length > 0 ?
-                  bills.map(
+                filteredItems && filteredItems.length > 0 ?
+                  filteredItems.map(
                     (x) => x.bid &&
                       <div onClick={(e) => handleCardClick(e, x.bid)}>
                         <BillCard

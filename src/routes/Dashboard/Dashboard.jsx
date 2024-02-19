@@ -23,79 +23,80 @@ import AddPop from '../../layout/popups/AddPop/AddPop';
 import AccPop from "../../layout/popups/AccPop/AccPop";
 const Dashboard = () => {
 
- //Receiver dir. 
+    //Receiver dir. 
     const appDataDir = BaseDirectory.AppData;
-//accounts state carries accounts.json records
+    //accounts state carries accounts.json records
     const [accounts, setAccounts] = useState([]);
     useEffect(() => {
         setAccounts([...data])
     }, []);
-    useEffect(() => {console.log(`-------- >  ${accounts} <-----------`)
+    useEffect(() => {
+        console.log(`-------- >  ${accounts} <-----------`)
     }, [accounts]);
 
-// Request add account popup:---------------------------------------
-    const [addPop,setAddPop]=useState(false);
-    useEffect(()=>console.log('add account request started/terminated'),[addPop])
+    // Request add account popup:---------------------------------------
+    const [addPop, setAddPop] = useState(false);
+    useEffect(() => console.log('add account request started/terminated'), [addPop])
     //terminate add acc. request
-    const cancelAddPop=()=>{
+    const cancelAddPop = () => {
         setAddPop(false);
     }
-//add account --------------------------------------------------------
+    //add account --------------------------------------------------------
 
     //generate Id
     function generateRandomId() {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-      }
-
-//Acc card popup ------------------------------------------------------
-    const [accPop,setAccPop]=useState({});
+    }
+    // write on json file so or look for authentication plugin
+    //Acc card popup ------------------------------------------------------
+    const [accPop, setAccPop] = useState({});
     const handleCardClick = (e, id) => {
         e.preventDefault();
-        const selected=accounts.filter((x)=>x.wid==id)
+        const selected = accounts.filter((x) => x.wid == id)
         setAccPop(selected[0]);
         console.log(`accPop ----->${accPop}`)
-      }
-    useEffect(() => {console.log({...accPop})},[accPop])
-    useEffect(() => {console.log({...accPop})},[accounts]);
-      //cancel Acc card popup-------------------------------------------
-      const cancelAccPop=()=>{
+    }
+    useEffect(() => { console.log({ ...accPop }) }, [accPop])
+    useEffect(() => { console.log({ ...accPop }) }, [accounts]);
+    //cancel Acc card popup-------------------------------------------
+    const cancelAccPop = () => {
         setAccPop({})
         console.log(`accPop ----->${accPop}`)
-      }
-  return (
-      <div  className="route-content dashboard">
-      <h1>Accounts</h1>
+    }
+    return (
+        <div className="route-content dashboard">
+            <h1>الحسابات</h1>
 
-          {addPop? <AddPop  cancelAddPop={cancelAddPop}/>:<div></div>}
-          {accPop.wid?  <AccPop w_name={accPop.w_name} short={accPop.short} lastClosed={accPop.last_closed} cancelAccPop={cancelAccPop}/>:<div></div>}
-          
+            {addPop ? <AddPop cancelAddPop={cancelAddPop} /> : <div></div>}
+            {accPop.wid ? <AccPop w_name={accPop.w_name} short={accPop.short} lastClosed={accPop.last_closed} cancelAccPop={cancelAccPop} /> : <div></div>}
 
-          <div className="accounts" style={accPop&&accPop.wid?{ filter: "blur(2px)" }:{filter:"none"}}>
-              
-              {Array.isArray(accounts)  ? accounts.map((account) => (
-                <div key={account.wid} 
-                onClick={
-                (e)=>{ handleCardClick(e, account.wid);}}>
-                <AccCard 
-                key={account.wid}
-                wid={account.wid}
-                w_name={account.w_name} 
-                short={account.short} 
-                lastClosed={account.last_closed} 
-                style={{backgroundColor: account.theme}} 
-                 />  
-                
-                </div>
-                
-            
-              
-              )) : <div>No accounts found</div>}
-              <div><button className='add-acc-btn' onClick={()=>setAddPop(true)}><img className='add-img-1' src={addPlus}/></button></div>
-             
-          </div>
 
-          <div></div>
-      </div>
-  )
+            <div className="accounts" style={accPop && accPop.wid ? { filter: "blur(2px)" } : { filter: "none" }}>
+
+                {Array.isArray(accounts) ? accounts.map((account) => (
+                    <div key={account.wid}
+                        onClick={
+                            (e) => { handleCardClick(e, account.wid); }}>
+                        <AccCard
+                            key={account.wid}
+                            wid={account.wid}
+                            w_name={account.w_name}
+                            short={account.short}
+                            lastClosed={account.last_closed}
+                            style={account.theme}
+                        />
+
+                    </div>
+
+
+
+                )) : <div>No accounts found</div>}
+                <div><button className='add-acc-btn' onClick={() => setAddPop(true)}><img className='add-img-1' src={addPlus} /></button></div>
+
+            </div>
+
+            <div></div>
+        </div>
+    )
 }
 export default Dashboard;

@@ -28,12 +28,12 @@ const ItemPop = (props) => {
             </div>
 
             <div className='item-pop-p'>
-                <h4>ID: <span>{props.id}</span>
-                    <br /><span> اخر تسجيل <span>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} />سعر الوحدة</span>
-                    <br /> <span></span>اخر تسجيل<span>{props.qtyStock} :</span><span><input type="number" value={qty} onChange={handleQty} /> الكمية المتاحة  </span>
-                </h4>
+                <div>ID: <span>{props.id}</span>
+                    <br /><span style={{ height: "30px" }}> اخر تسجيل <span style={{ height: "30px" }}>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} style={{ height: "20px" }} /><small>سعر الوحدة</small></span>
+                    <br /> <span style={{ height: "30px" }}>اخر تسجيل<span style={{ height: "25px" }}>{props.qtyStock} :</span><span><input type="number" value={qty} onChange={handleQty} style={{ height: "20px" }} /> <small>الكمية المتاحة </small></span> </span>
+                </div>
                 <div>
-                    <button onClick={() => handleItemEdit(props.id, qty, price)} style={{ backgroundColor: "#00994d" }} className='item-pop-btn'>save</button>
+                    <button onClick={() => handleItemEdit(props.id, qty, price)} className='item-pop-btn'>حفظ</button>
                 </div>
             </div>
         </div>

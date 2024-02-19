@@ -177,6 +177,15 @@
 
    }
 
+   @media print {
+       .records-space table {
+           overflow-y: auto;
+           /* Enable overflowing content to be printed */
+           height: fit-content;
+           /* Ensure content fits page height */
+       }
+   }
+
    .confirm-save {
        background-color: #26654e;
        border: solid black 2px;
