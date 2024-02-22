@@ -20,9 +20,9 @@ Features:
     8-deleting a particular bill record.
     9-printing bill items table and/or operations history.
 Screens:
-[! screen1]
+!screen1
 (https://github.com/AmmarElsherif2021/consale-arabic/blob/master/screenshots/tauri1.jpeg)
-[!screen2]
+!screen2
 (https://github.com/AmmarElsherif2021/consale-arabic/blob/master/screenshots/Web%20capture_21-2-2024_212435_tauri.localhost.jpeg)
 [!screen3]
 (https://github.com/AmmarElsherif2021/consale-arabic/blob/master/screenshots/Web%20capture_21-2-2024_212342_tauri.localhost.jpeg)
