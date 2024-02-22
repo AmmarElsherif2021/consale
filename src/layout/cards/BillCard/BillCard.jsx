@@ -11,7 +11,9 @@
 import './BillCard.css';
 import { useDb } from '../../../stockContext';
 
+
 import AnonPic from "../../../assets/bill-icon.svg"
+import { useUser } from '../../../userContext';
 const BillCard = (props) => {
     /* const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
      function handleBillDel() {
@@ -27,6 +29,7 @@ const BillCard = (props) => {
              });
      }*/
     const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
+    const { user, setUser } = useUser();
     return (
         <div className='bill-card'>
 
@@ -44,7 +47,6 @@ const BillCard = (props) => {
                 <td>اجمالي  {props.bTotal} </td>
                 <td> المطلوب {props.debt}  </td>
                 <td> المدفوع  {props.paid} </td>
-                <td><button onClick={() => db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid])}>Del</button></td>
 
             </tr>
 

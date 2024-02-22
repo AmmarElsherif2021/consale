@@ -1,7 +1,21 @@
-# Tauri + React
+# Tauri + React + SqLite
 
-This template should help get you started developing with Tauri and React in Vite.
+This is a desktop software app for handling billing system.
 
-## Recommended IDE Setup
+Features:
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+-setting accounts data for workers.
+-Managing store by:
+    1- adding custumized items 
+    2- editing store items data (stock quantity and unit price) 
+    3- deleting items.
+-Adding a new bill: 
+    1-setting its name and phone number 
+    2-adding new items to the bill 
+    3-removing old added items to bill with regarding to its pre-setted price. 
+    4-adding payment charge and maintining debt remained after each payment order 
+    5-reviewing the history of bill operations.
+    6-searching for a particular bill by its name.
+    7-arranging bills due to debt.
+    8-deleting a particular bill record.
+    9-printing bill items table and/or operations history.

@@ -529,7 +529,21 @@ const AddBill = () => {
 
     setRestored([]);
     setAddedItems([]);
+    setNewBill({
+      bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
+      c_name: "",
+      c_phone: "",
+      b_total: 0,
+      discount: 0,
+      items: [],
+      paid: 0,
+      debt: 0,
+      date: getDate(),
+      records: [
 
+      ],
+    });
+    fetchBillsData();
     setPrintPop(false);
   }
 
@@ -711,6 +725,8 @@ const AddBill = () => {
             key={newBill.bid}
             bid={newBill.bid}
             cName={newBill.c_name}
+            date={newBill.date}
+            cPhone={newBill.c_phone}
             items={addedItems ? [...newBill.items, ...addedItems] : [...newBill.items]}
             confirmSaveBill={confirmSaveBill}
             cancelSaveBillPop={cancelSaveBillPop}
@@ -846,7 +862,17 @@ const AddBill = () => {
                 </tr>))
                   : (<tr></tr>)}
 
-
+                <tr>
+                  <th>اجمالي الفاتورة</th>
+                  <td className='total-cell'>
+                    {
+                      addedItems.length && newBill.items && newBill.items.length ? [...addedItems, ...newBill.items].reduce((acc, obj) => acc + obj.total, 0)
+                        :
+                        newBill.items && newBill.items.length ? newBill.items.reduce((acc, obj) => acc + obj.total, 0)
+                          :
+                          addedItems.length && addedItems.reduce((acc, obj) => acc + obj.total, 0)
+                    }</td>
+                </tr>
               </table>
 
             </div>
@@ -854,17 +880,7 @@ const AddBill = () => {
           </div>
           <div className='total-div' >
             <table>
-              <tr>
-                <th>اجمالي الفاتورة</th>
-                <td className='total-cell'>
-                  {
-                    addedItems.length && newBill.items && newBill.items.length ? [...addedItems, ...newBill.items].reduce((acc, obj) => acc + obj.total, 0)
-                      :
-                      newBill.items && newBill.items.length ? newBill.items.reduce((acc, obj) => acc + obj.total, 0)
-                        :
-                        addedItems.length && addedItems.reduce((acc, obj) => acc + obj.total, 0)
-                  }</td>
-              </tr>
+
             </table>
           </div>
 
@@ -879,9 +895,9 @@ const AddBill = () => {
         <div className="right-pane old-bills-section">
           <div className='right-section-header'>
             <div className='filter-bills'>
-              <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear()} filterText={filterText} />
+              <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder='ابحث باسم العميل' />
             </div>
-            <button className='arrange' onClick={(e) => handleArrange(e)} ><img className='cancel-icon' src={sortIcon} /></button>
+            <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "30px", margin: "0px" }} src={sortIcon} /></button>
           </div>
 
 

@@ -3,10 +3,13 @@
 
     position: fixed;
     top: 0;
-    width: 75vw;
+    width: 800px;
+    min-width: 800px;
+    margin: 5px;
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
+    align-items: center;
 }
 
 .data-table {
@@ -93,13 +96,13 @@
     justify-content: stretch;
     align-items: center;
     margin-top: 5px;
-    width: 74vw;
+
 
 }
 
 .grid {
     background: none;
-    width: 70vw;
+    width: 800px;
 
 
 }

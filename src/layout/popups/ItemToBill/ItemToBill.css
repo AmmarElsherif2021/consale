@@ -1,9 +1,13 @@
 .item-bill-pop {
-    width: 35vw;
-    height: 57vh;
+    width: 478px;
+    /* 35vw */
+    height: 438px;
+    /* 57vh */
     position: fixed;
-    left: 35vw;
-    top: 15vh;
+    left: 358px;
+    /* 35vw */
+    top: 115px;
+    /* 15vh */
     background: #5e9b88;
     border: 5px solid black;
     border-radius: 35px;
@@ -12,7 +16,6 @@
     flex-direction: column;
     padding: 10px;
     justify-content: space-around;
-
 }
 
 .cancel-item-bill-pop {
@@ -24,14 +27,13 @@
     border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 50%;
-
 }
 
 .cancel-icon {
     width: 40px;
     position: absolute;
     left: 0;
-    top: 0
+    top: 0;
 }
 
 .item-bill-pop-img {
@@ -39,9 +41,9 @@
     max-height: 200px;
     background-color: aliceblue;
     margin-left: 40px;
-    margin-top: 4vh;
+    margin-top: 31px;
+    /* 4vh */
     border: solid black px;
-
 }
 
 .item-bill-pop-header {
@@ -50,7 +52,6 @@
     background: none;
     justify-content: space-around;
     margin-top: 25px;
-
 }
 
 .item-bill-pop-p {
@@ -76,5 +77,4 @@
     top: 11px;
     left: 11px;
     width: 70px;
-
 }

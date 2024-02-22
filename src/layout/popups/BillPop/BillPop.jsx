@@ -28,19 +28,27 @@ import AnonPic from "../../../assets/bill-icon.svg";
 import cancelIcon from '../../../assets/cancel.svg';
 import { useDb } from '../../../stockContext';
 import { useEffect } from 'react';
+import { useUser } from '../../../userContext';
+
+import delIcon from '../../../assets/del.svg';
 
 const BillPop = (props) => {
     const { cancelBillPop, openBill } = props;
     const { db, items, billsRecords, isLoading, setItems, setIsLoading } = useDb();
 
+    const { user, setUser } = useUser();
+    const handleDel = () => {
+        db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid]);
+        cancelBillPop();
 
+    }
 
     return (
         <div className='oldbill-pop'>
             <button className='cancel-bill-pop' onClick={cancelBillPop}><img className='cancel-icon' src={cancelIcon} /></button>
 
             <div className='pop-header'>
-                <img className='bill-pop-img' src={AnonPic} />
+                <img className='bill-pop-img' style={{ width: "50px" }} src={AnonPic} />
                 <h4>B-id: <span>{props.bid}</span> <br />
                     اسم العميل: <span>{props.cName}</span><br />
                     موبايل: <span>{props.phone}</span><br />
@@ -78,11 +86,18 @@ const BillPop = (props) => {
                             </tr>))}
 
 
+
                     </tbody>
                 </table>
 
             </div>
-            <div><button className='open-bill-btn' onClick={openBill}>تعديل الفاتورة</button></div>
+            <div>
+                <button className='open-bill-btn' onClick={openBill}>تعديل الفاتورة</button>
+                <button style={{ width: "60px", position: 'absolute', right: "15px", marginTop: "10px" }} onClick={() => handleDel()}>  <img src={delIcon} style={{ width: "20px" }} /></button>
+
+
+
+            </div>
         </div>
     )
 }

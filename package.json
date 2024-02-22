@@ -16,7 +16,8 @@
     "jspdf-autotable": "^3.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-to-print": "^2.15.1"
+    "react-to-print": "^2.15.1",
+    "tauri-plugin-authenticator-api": "github:tauri-apps/tauri-plugin-authenticator"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^1.5.8",

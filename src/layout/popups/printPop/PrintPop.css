@@ -1,9 +1,13 @@
 .print-pop {
-    width: 46vw;
-    height: 50vh;
+    width: 629px;
+    /* 46vw */
+    height: 384px;
+    /* 50vh */
     position: fixed;
-    left: 30vw;
-    top: 15vh;
+    left: 210px;
+    /* 30vw */
+    top: 115px;
+    /* 15vh */
     background: rgb(151, 199, 177);
     border: solid black 5px;
     border-radius: 35px;
@@ -14,8 +18,6 @@
     overflow: hidden;
 }
 
-
-
 .cancel-print-pop {
     width: 50px;
     height: 50px;
@@ -25,20 +27,16 @@
     border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 50%;
-
 }
 
 .cancel-icon {
     width: 40px;
     position: absolute;
     left: 0;
-    top: 0
+    top: 0;
 }
 
-
-
 .print-card-header {
-
     display: flex;
     flex-direction: row;
     background: none;
@@ -48,7 +46,6 @@
     .print-pop-img {
         width: 150px;
     }
-
 }
 
 .print-info {
@@ -64,16 +61,12 @@
 }
 
 .print-pop-btn {
-
     border: solid black 2px;
     background: none;
     margin: 3px;
     width: 100%;
     max-width: 100%;
 }
-
-
-
 
 .print-table {
     text-align: center;
@@ -90,7 +83,6 @@
         border: black dotted 2px;
         min-width: 150px;
 
-
         th {
             background-color: #658278;
             max-width: 100px;
@@ -100,9 +92,6 @@
             max-width: 100px;
         }
     }
-
-
-
 }
 
 .confirm-print-btn {
@@ -110,8 +99,6 @@
     border: solid black 2px;
     font-weight: 600;
     margin-top: 20px;
-
-
 }
 
 .confirm-print-btn:hover {

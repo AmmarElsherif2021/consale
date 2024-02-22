@@ -30,8 +30,12 @@
         "fullscreen": false,
         "resizable": true,
         "title": "arabic-consale",
-        "width": 800,
-        "height": 600
+        "width": 1920,
+        "height": 1080,
+        "maxHeight": 1920,
+        "maxWidth": 1080,
+        "minHeight": 1920,
+        "minWidth": 1080
       }
     ],
     "security": {

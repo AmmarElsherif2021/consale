@@ -28,7 +28,7 @@ export default function ControllableStates(props) {
         id="controllable-states-demo"
         options={optionsWithId} // Pass filtered options
         getOptionLabel={(option) => option.name} // Display only name
-        sx={{ width: 500, zIndex: 10000 }}
+        sx={{ width: 300, zIndex: 10000 }}
         renderInput={(params) => <TextField {...params} />}
       />
     </div>

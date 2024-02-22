@@ -1,8 +1,10 @@
 @import url('global.css');
 
 .oldbill-pop {
-    max-width: 35vw;
-    max-height: 60vh;
+    max-width: 478px;
+    /* 35vw */
+    max-height: 461px;
+    /* 60vh */
     overflow: hidden;
     border: 5px solid black;
     display: grid;
@@ -13,13 +15,17 @@
     background: #DACCA0;
     z-index: 10000;
     position: fixed;
-    top: 12vh;
-    left: 30vw;
+    top: 92px;
+    /* 12vh */
+    left: 310px;
+    /* 30vw */
 }
 
 .open-bill-btn {
-    width: 7vw;
-    height: 7vh;
+    width: 96px;
+    /* 7vw */
+    height: 54px;
+    /* 7vh */
     padding: 0;
     background-color: black;
     color: white;
@@ -42,23 +48,17 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     background: none;
-    max-height: 25vh;
+    max-height: 192px;
+    /* 25vh */
 }
 
 .bill-pop-img {
-
     background: none;
-
     margin: 5px;
     padding: 0;
     width: 70%;
-
-
     object-fit: cover;
-
 }
-
-
 
 .bill-pop-table {
     background: white;
@@ -78,5 +78,4 @@
             text-overflow: ellipsis;
         }
     }
-
 }

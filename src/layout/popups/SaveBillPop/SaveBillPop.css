@@ -17,11 +17,15 @@
    }
 
    .save-bill-pop {
-       width: 75vw;
-       height: 90vh;
+       width: 780px;
+       /* 75vw */
+       height: 640px;
+       /* 90vh */
        position: fixed;
-       left: 12vw;
-       top: 1vh;
+       left: 164px;
+       /* 12vw */
+       top: 8px;
+       /* 1vh */
        background: #DACCA0;
        border: solid black 5px;
        border-radius: 35px;
@@ -29,8 +33,6 @@
        justify-content: center;
        align-items: center;
        z-index: 100000;
-
-
    }
 
    .pop-header {
@@ -78,7 +80,7 @@
        overflow-y: auto;
        overflow-x: hidden;
        height: 500px;
-       width: 550px;
+       width: 400px;
        border: solid black 3px;
        border-right: none;
        background: white;
@@ -87,7 +89,7 @@
 
 
        table {
-           width: 540px;
+           width: 370px;
            max-height: 500px;
            background-color: white;
            border: none;
@@ -101,7 +103,7 @@
 
    .records-space {
        background: white;
-       width: 470px;
+       width: 400px;
        height: 500px;
        border: solid black 3px;
        border-right: none;
@@ -113,7 +115,7 @@
 
        .records {
 
-           width: 460px;
+           width: 360px;
            display: flex;
            flex-direction: row;
 

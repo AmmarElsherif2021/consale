@@ -1,45 +1,48 @@
 .add-bill {
 
-    background: none;
     display: flex;
     flex-direction: column;
-    position: fixed;
-    right: 0;
+    position: absolute;
+    left: 260px;
     top: 0;
-    width: 74vw;
-    height: 99vh;
+    min-width: 800;
+    width: 800;
+    /* 74vw */
+    height: 753px;
+    background: none;
+    /* 99vh */
     overflow: hidden;
     overflow-y: hidden;
     box-sizing: border-box;
-
-
+    margin: 0;
 }
 
 .add-bill-sections {
     background: none;
-    display: grid;
-    width: 74vw;
+    display: flex;
+    flex-direction: row;
+    width: 850px;
+
+    /* 74vw */
     box-sizing: border-box;
     overflow-y: hidden;
     overflow-x: hidden;
-    grid-template-columns: 2fr 1fr;
     position: relative;
 }
 
 .new-bill-section {
-
-
-    height: 83vh;
+    height: 635px;
+    /* 83vh */
+    width: 500px;
+    background-color: #9ad6c3;
     margin-top: 20px;
     border-right: dashed 5px rgb(218, 58, 58);
     display: flex;
     flex-direction: column;
-    background: none;
     align-items: center;
     justify-content: space-evenly;
     box-sizing: border-box;
     position: relative;
-
 }
 
 .old-bills-section {
@@ -48,43 +51,39 @@
     display: flex;
     flex-direction: column;
     padding-top: 20px;
-    height: 98vh;
-
-    overflow-y: hidden;
+    height: 748px;
+    min-width: 300px;
+    width: 300px;
+    /* 98vh */
+    overflow-y: none;
     align-items: center;
     box-sizing: border-box;
     justify-content: center;
-
 
 }
 
 .right-section-header {
     background: black;
-
-
     position: relative;
     border: black solid 3px;
-
-    height: 20vh;
-
-    width: 22vw;
+    height: 154px;
+    /* 20vh */
+    width: 290px;
+    /* 22vw */
     display: flex;
     flex-direction: row;
     align-items: center;
+
+
+
 }
 
 .section-header {
-
-
     background: white;
-
-
-
     border: #235945 solid 4px;
-
     height: auto;
-    width: 43.9vw;
-
+    width: 400px;
+    /* 43.9vw */
     margin: 15px;
     display: flex;
     flex-direction: row;
@@ -96,83 +95,33 @@
         height: auto;
         position: absolute;
         background: #9ad6c3;
-        width: 600px;
+        width: 400px;
 
     }
-}
-
-.filter-bills {
-
-    width: 225px;
-    padding-right: 5px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.arrange {
-    width: 30px;
-    height: 50px;
-    position: relative;
-
-    border: solid black 5px;
-    background-color: #235945;
-    border-radius: 5px;
-    margin: 3px;
-
-}
-
-.arrange:hover {
-    width: 50px;
-    height: 50px;
-    background-color: #3f886d;
-    border: solid rgb(26, 24, 24) 4px;
-
-}
-
-.cancel {
-    width: 30px;
-    height: 30px;
-    position: relative;
-
-    border: solid black 5px;
-    background-color: #DD3522;
-    border-radius: 20%;
-    margin: 2px;
-
-    :hover {
-        background-color: #f6311c;
-    }
-
 }
 
 .new-bill-space {
-
     position: relative;
-    top: 0;
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
-    width: 50vw;
-    min-width: 50vw;
-    height: 75vh;
+
+    /* 50vw */
+    width: 300px;
+    /* 50vw */
+    height: 810px;
+    /* 75vh */
     background: none;
-
     box-sizing: border-box;
-
-
-
 }
-
 
 .bill-data-box {
     background: black;
-
-    width: 48vw;
-
+    width: 500px;
+    position: relative;
+    left: 0;
+    /* 48vw */
     justify-content: center;
     align-items: center;
     margin: 0;
@@ -180,10 +129,8 @@
     h4 {
         color: white;
     }
-
-
-
 }
+
 
 .open-save-bill-btn {
 
@@ -219,7 +166,7 @@
 
 .old-bills-space {
     background: none;
-    width: 100%;
+    width: 300px;
 
     height: 88%;
     max-height: 90%;
@@ -231,16 +178,17 @@
     background: white;
     position: absolute;
     top: 0;
+
+
     margin-top: 10px;
-    width: 48vw;
-    height: 350px;
+    width: 500px;
+    /* 48vw */
+    height: 400px;
     overflow-y: scroll;
 
     table {
-        width: 95%;
-
+        width: 490px;
         overflow-y: auto;
-
         background: none;
 
         th {
@@ -261,30 +209,34 @@
     overflow-y: scroll;
     background: none;
     height: 450px;
-    width: 306px;
+    width: 255px;
     margin-left: 8px;
 }
 
 .total-div {
     border-top: dotted black;
     background: white;
-    z-index: 100;
-    width: 48vw;
-
+    z-index: 10000;
+    width: 721.6px;
+    /* 48vw */
     height: 60px;
 
     th {
         background-color: #b1b1b1;
     }
-
-
-
-
-
 }
-
 
 .total-cell {
     border: dotted #DD3522 2px;
     font-weight: 500;
+}
+
+.filter-bills {
+    width: 190px
+}
+
+.arrange-btn {
+    width: 40px;
+    height: 40px;
+    background-color: #235945;
 }

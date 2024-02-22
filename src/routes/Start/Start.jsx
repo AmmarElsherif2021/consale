@@ -22,38 +22,56 @@ const Start = () => {
 
 
 
+
   //intro
-  const [intro, setIntro] = useState(true)
+  const [intro, setIntro] = useState(false)
   // userContext
   const { user, setUser } = useUser();
   const { t, i18n } = useTranslation();
   // layout classname
   const [startClass, setStartClass] = useState(user.isLogged ? 'layout' : 'start');
 
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const users = [
+    {
+      username: "admin1",
+      password: "606026"
+    },
+    {
+      username: "admin2",
+      password: "43310"
+    }
+  ]
+  const matchUsers = (name, pass) => {
+    const result = users.filter((x) => x.username === name && x.password === pass);
+    return (Boolean(result.length))
+  }
   // handle log in / log out
   const handleClick = (e) => {
     e.preventDefault();
-    setUser((prev) => {
-      const isLogged = !prev.isLogged;
-      setIntro(true);
+    if (matchUsers(userName, password) && user.isLogged == false) {
+      setUser((prev) => ({
+        userName: userName,
+        password: password,
+        isLogged: true
+      }));
+    } else if (user.isLogged == true) {
+      setUser((prev) => ({
+        userName: "",
+        password: "",
+        isLogged: false
+      }));
+    }
 
-      isLogged ? invoke('set_shift_start', { invokeMessage: `shift started ${getDate()}` }) : invoke('set_shift_start', { invokeMessage: `ended ${getDate()}` });
-      return {
-        ...prev,
-        isLogged
-      };
-    });
+    user.isLogged ? setIntro(true) : setIntro(false)
+
   };
 
   // Side bar routes
   const routesArr = [['Dashboard', 'لوحة التحكم'], ['Stock', 'إدارة المخزن'], ['Addbill', 'اضف فاتورة']];
 
-  // langs context:
-  //const { language, setLanguage, languages } = useContext(LanguageContext);
-  //<div>
-  //<button onClick={() => setLanguage(language === 'ar' ? 'eng' : 'ar')}>
-  //{languages[language].toggleButton}
-  //</button>
+
 
   return (
     <UserProvider>
@@ -69,6 +87,7 @@ const Start = () => {
 
             {user.isLogged ? (
               <div>
+                <h1>{user.userName}</h1>
                 <div>
 
                   <ul className='sidebar-list'>
@@ -84,7 +103,11 @@ const Start = () => {
                 {intro && <img src={startGif} style={{ position: "absolute", top: "60px", left: "650px", width: "400px" }} />}
               </div>
             ) : (
-              <button className='login-btn' onClick={handleClick}>تسجيل دخول</button>
+              <div style={{ display: "flex", flexDirection: "column", width: "220px", position: "absolute", left: "42vw", top: "20vh" }}>
+                <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} />
+                <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} />
+                <button className='login-btn' onClick={handleClick}>تسجيل دخول</button>
+              </div>
             )}
 
             <Outlet />

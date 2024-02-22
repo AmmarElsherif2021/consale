@@ -1,10 +1,13 @@
 .item-pop {
     width: 450px;
-    height: 50vh;
+    height: 384px;
+    /* 50vh */
     padding-bottom: 50px;
     position: fixed;
-    left: 40vw;
-    top: 15vh;
+    left: 320px;
+    /* 40vw */
+    top: 115px;
+    /* 15vh */
     background: rgb(156, 170, 174);
     border: solid black 5px;
     z-index: 1000;
@@ -19,29 +22,28 @@
     border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 50%;
-
 }
 
 .cancel-icon {
     width: 40px;
     position: absolute;
     left: 0;
-    top: 0
+    top: 0;
 }
 
 .item-pop {
     padding: 50px;
-    width: 30vw;
-    height: 40vh;
+    width: 410px;
+    /* 30vw */
+    height: 307px;
+    /* 40vh */
     display: grid;
     grid-template-rows: 1fr 2fr;
 }
 
 .item-pop-header {
-
     display: grid;
     grid-template-columns: 1fr 1fr;
-
 }
 
 .item-info {
@@ -63,7 +65,6 @@
 }
 
 .item-pop-btn {
-
     border: solid black 2px;
     background-color: #307c5b;
     margin: 3px;

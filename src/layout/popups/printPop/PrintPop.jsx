@@ -8,9 +8,9 @@ const PrintPop = (props) => {
         <div className='print-pop'>
             <button className='cancel-print-pop' onClick={handleCancelPrint}><img className='cancel-icon' src={cancelIcon} /></button>
             <div className='print-card-header'>
-                <img className='print-pop-img' src={AnonPic} />
+                <img className='print-pop-img' src={AnonPic} style={{ width: "60px" }} />
                 <div className='print-info'>
-                    <h2>هل تريد طباعة الفاتورة؟</h2>
+                    <h2>هل تريد حفظ الفاتورة؟</h2>
 
                     <div className="print-table">
                         <table>
@@ -27,7 +27,7 @@ const PrintPop = (props) => {
 
             <div className='print-table'>
 
-                <div><button className='confirm-print-btn' onClick={handlePrint}>طباعة</button></div>
+                <div><button className='confirm-print-btn' onClick={handlePrint}>حفظ</button></div>
             </div>
 
         </div>

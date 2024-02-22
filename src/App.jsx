@@ -37,7 +37,7 @@ const Routes = () => {
         },
         {
           path: "Stock",
-          element: user && user.isLogged ? <StockProvider><Stock /></StockProvider> : <Navigate to="/" />
+          element: user && user.userName === "admin1" && user.isLogged ? <StockProvider><Stock /></StockProvider> : <Navigate to="/" />
         }]
     }])
   return (

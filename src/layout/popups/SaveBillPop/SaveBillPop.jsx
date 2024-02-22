@@ -99,6 +99,7 @@ const SaveBillPop = (props) => {
 
   return (
 
+
     <div className="save-bill-pop">
 
       <button className="cancel-save-bill-pop" onClick={cancelSaveBillPop}>
@@ -114,7 +115,11 @@ const SaveBillPop = (props) => {
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}  >
         <div className="current-space" ref={currentRef}>
+          <table>
+            <tr><th>تاريخ</th><th>تليفون</th><th>الاسم</th></tr>
+            <tr><td>{props.date}</td><td>{props.cPhone}</td><td>{props.cName}</td></tr>
 
+          </table>
           <table>
             <tr>
               <td>
@@ -183,6 +188,7 @@ const SaveBillPop = (props) => {
                     <tr><th>المطلوب</th><td>{y.debt}</td></tr>
                     <tr><th>تم دفع </th><td>{y.paid}</td></tr>
                     <tr><th>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
+                    <tr><td colSpan={4}>-------------------------</td></tr>
                   </table>
 
                 </div>
@@ -204,13 +210,13 @@ const SaveBillPop = (props) => {
         <div className="btns-section">
 
           <ReactToPrint
-            trigger={() => <button style={{ width: "70px", height: "70px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
-              onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "60px" }} /></button>}
+            trigger={() => <button style={{ width: "60px", height: "60px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+              onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "40px" }} /></button>}
             content={() => historyRef.current}
           />
           <ReactToPrint
-            trigger={() => <button style={{ width: "70px", height: "70px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
-              onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "60px" }} /></button>}
+            trigger={() => <button style={{ width: "60px", height: "60px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+              onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "40px" }} /></button>}
             content={() => currentRef.current}
           />
 

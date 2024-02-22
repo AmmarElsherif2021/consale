@@ -2,13 +2,15 @@
     width: 200px;
     height: auto;
     position: fixed;
-    left: 48vw;
-    top: 20vh;
+    left: 456px;
+    /* 48vw */
+    top: 154px;
+    /* 20vh */
     background: rgb(255, 255, 255);
     border: solid black 5px;
     padding: 70px;
     justify-content: center;
-    z-index: 100000
+    z-index: 100000;
 }
 
 .card-header {
@@ -26,14 +28,13 @@
     border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 50%;
-
 }
 
 .cancel-icon {
     width: 40px;
     position: absolute;
     left: 0;
-    top: 0
+    top: 0;
 }
 
 .del-item-btn {
@@ -42,7 +43,6 @@
     background: none;
     margin: 3px;
     width: 75px;
-
 }
 
 .btns-section {
