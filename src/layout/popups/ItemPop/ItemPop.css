@@ -4,9 +4,9 @@
     /* 50vh */
     padding-bottom: 50px;
     position: fixed;
-    left: 320px;
+    left: 40vw;
     /* 40vw */
-    top: 115px;
+    top: 15vh;
     /* 15vh */
     background: rgb(156, 170, 174);
     border: solid black 5px;
@@ -32,8 +32,8 @@
 }
 
 .item-pop {
-    padding: 50px;
-    width: 410px;
+    padding: 4vw;
+    width: 30vw;
     /* 30vw */
     height: 307px;
     /* 40vh */

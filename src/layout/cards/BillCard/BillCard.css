@@ -1,7 +1,6 @@
 .bill-card {
-    width: 220px;
-
-    height: 150px;
+    width: 16.5vw;
+    height: 19vh;
     overflow: hidden;
     border: 5px solid black;
     display: flex;
@@ -9,13 +8,13 @@
     align-items: center;
     border-radius: 15px;
     background: #DACCA0;
-    margin: 5px;
+    margin: 1vh;
 }
 
 .card-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    max-height: 60px;
+    max-height: 10vh;
     /* 10% of 600px */
 }
 
@@ -23,17 +22,17 @@
     background: none;
     margin: 0;
     padding: 0;
-    width: 80px;
+    width: 5vw;
     /* 5% of 800px */
     object-fit: cover;
 }
 
 .bill-card-p {
     background: none;
-    max-height: 20px;
+    max-height: 7vh;
     /* 5% of 600px */
-    margin: 7px;
-    width: 720px;
+    margin: 2vh;
+    width: 13vw;
     /* 90% of 800px */
     object-fit: cover;
     font: black;

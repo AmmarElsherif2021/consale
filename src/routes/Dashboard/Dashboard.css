@@ -1,20 +1,24 @@
-.dashboard{
-    background:none;
+.dashboard {
+    background: none;
 }
-.accounts{
-    display:grid;
- 
+
+.accounts {
+    display: grid;
+
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    
+
 }
-.add-acc-btn{
-    width:100px;
-    height:100px;
+
+.add-acc-btn {
+
+    min-height: 6vh;
+    margin: 2vw;
     background-color: rgb(75, 128, 75);
-    border:solid black 5px;
-    margin:20px;
+    border: solid black 5px;
+
 }
-.add-img-1{
-    width:50px;
+
+.add-img-1 {
+    width: 3vw;
 }

@@ -1,12 +1,12 @@
 .print-pop {
-    width: 629px;
+    width: 35vw;
     /* 46vw */
-    height: 384px;
+    height: 45vh;
     /* 50vh */
     position: fixed;
-    left: 210px;
+    left: 32vw;
     /* 30vw */
-    top: 115px;
+    top: 25vh;
     /* 15vh */
     background: rgb(151, 199, 177);
     border: solid black 5px;
@@ -29,12 +29,7 @@
     border-radius: 50%;
 }
 
-.cancel-icon {
-    width: 40px;
-    position: absolute;
-    left: 0;
-    top: 0;
-}
+
 
 .print-card-header {
     display: flex;
@@ -44,7 +39,7 @@
     align-items: center;
 
     .print-pop-img {
-        width: 150px;
+        width: 10vw;
     }
 }
 
@@ -60,13 +55,7 @@
     justify-content: space-around;
 }
 
-.print-pop-btn {
-    border: solid black 2px;
-    background: none;
-    margin: 3px;
-    width: 100%;
-    max-width: 100%;
-}
+
 
 .print-table {
     text-align: center;

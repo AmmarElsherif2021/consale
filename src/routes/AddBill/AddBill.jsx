@@ -897,7 +897,7 @@ const AddBill = () => {
             <div className='filter-bills'>
               <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder='ابحث باسم العميل' />
             </div>
-            <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "30px", margin: "0px" }} src={sortIcon} /></button>
+            <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "2vw", margin: "0px" }} src={sortIcon} /></button>
           </div>
 
 

@@ -2,9 +2,9 @@
     width: 200px;
     height: auto;
     position: fixed;
-    left: 456px;
+    left: 48vw;
     /* 48vw */
-    top: 154px;
+    top: 26vh;
     /* 20vh */
     background: rgb(255, 255, 255);
     border: solid black 5px;

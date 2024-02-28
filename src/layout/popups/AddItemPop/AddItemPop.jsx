@@ -30,7 +30,7 @@ const AddItemPop = (props) => {
   useEffect(() => console.log(`new adding -->${{ ...newAddedItem }}`), [newAddedItem])
 
   return (
-    <div className='add-item-pop'>
+    <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
       <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
       <div className='pop-body'></div>
       <h1>اضف الى المخزن </h1>
@@ -102,10 +102,10 @@ const AddItemPop = (props) => {
           <div className='form-label'>
             وحدة<input className='input' type="number" name="quantity_stock" placeholder='حدد الكمية' onChange={handleInputChange} />
           </div>
-          <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)}>أضف</button></div>
+          <div className='form-label'><button type="submit">أضف</button></div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 export default AddItemPop

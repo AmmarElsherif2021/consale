@@ -1,36 +1,36 @@
 @import url('global.css');
 
 .oldbill-pop {
-    max-width: 478px;
+    width: 35vw;
     /* 35vw */
-    max-height: 461px;
+    height: 65vh;
     /* 60vh */
     overflow: hidden;
     border: 5px solid black;
     display: grid;
     grid-template-rows: 1fr 2fr;
     padding: 5px;
-    margin: 35px;
+
     border-radius: 35px;
     background: #DACCA0;
     z-index: 10000;
     position: fixed;
-    top: 92px;
+    top: 20vh;
     /* 12vh */
-    left: 310px;
+    left: 35vw;
     /* 30vw */
 }
 
 .open-bill-btn {
-    width: 96px;
+    width: 6vw;
     /* 7vw */
-    height: 54px;
+    height: 8vh;
     /* 7vh */
     padding: 0;
     background-color: black;
     color: white;
-    margin-left: 30px;
-    margin-top: 10px;
+    margin-left: 1vw;
+    margin-top: 2vh;
 }
 
 .cancel-bill-pop {
@@ -48,15 +48,16 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     background: none;
-    max-height: 192px;
+    height: 27vh;
+
     /* 25vh */
 }
 
 .bill-pop-img {
     background: none;
-    margin: 5px;
+    margin: 1vh;
     padding: 0;
-    width: 70%;
+    min-width: 15vw;
     object-fit: cover;
 }
 
@@ -64,7 +65,8 @@
     background: white;
     overflow: hidden;
     border: dotted;
-    width: 460px;
+    width: 34vw;
+
 
     tr {
         background: none;
@@ -72,10 +74,12 @@
         td {
             background: none;
             padding: 0;
-            max-width: 100px;
+            max-width: 0.5vw;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            align-items: center;
+
         }
     }
 }

@@ -210,12 +210,12 @@ const SaveBillPop = (props) => {
         <div className="btns-section">
 
           <ReactToPrint
-            trigger={() => <button style={{ width: "60px", height: "60px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+            trigger={() => <button style={{ width: "3.5vw", height: "3.5vw", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
               onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "40px" }} /></button>}
             content={() => historyRef.current}
           />
           <ReactToPrint
-            trigger={() => <button style={{ width: "60px", height: "60px", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+            trigger={() => <button style={{ width: "3.5vw", height: "3.5vw", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
               onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "40px" }} /></button>}
             content={() => currentRef.current}
           />
@@ -228,7 +228,7 @@ const SaveBillPop = (props) => {
               max={debt > 0 ? debt : props.debt}
               value={paid}
               onChange={(e) => handlePaid(e)}
-              style={{ height: "15px", width: "70px", border: "solid", marginLeft: "5px" }}
+              style={{ height: "2vh", width: "3.7vw", border: "solid", marginLeft: "5px" }}
             />
 
             <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>المطلوب</h4>
@@ -246,7 +246,6 @@ const SaveBillPop = (props) => {
 
           <button
             className="confirm-save"
-
             onClick={(e) => handleSaveClick(e)
             }
           >
@@ -255,8 +254,6 @@ const SaveBillPop = (props) => {
 
           <button
             className="cancel-save"
-
-
             onClick={() => cancelSaveBillPop()}
           >
             الغاء

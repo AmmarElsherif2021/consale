@@ -2,14 +2,10 @@
 
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 260px;
-    top: 0;
-    min-width: 800;
-    width: 800;
+    width: 75vw;
     /* 74vw */
-    height: 753px;
-    background: none;
+    height: 99vh;
+
     /* 99vh */
     overflow: hidden;
     overflow-y: hidden;
@@ -21,7 +17,8 @@
     background: none;
     display: flex;
     flex-direction: row;
-    width: 850px;
+    width: 77vw;
+    background: none;
 
     /* 74vw */
     box-sizing: border-box;
@@ -31,11 +28,11 @@
 }
 
 .new-bill-section {
-    height: 635px;
+    height: 88vh;
     /* 83vh */
-    width: 500px;
-    background-color: #9ad6c3;
-    margin-top: 20px;
+    width: 54vw;
+
+
     border-right: dashed 5px rgb(218, 58, 58);
     display: flex;
     flex-direction: column;
@@ -50,10 +47,10 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
-    height: 748px;
-    min-width: 300px;
-    width: 300px;
+
+    height: 88vh;
+
+    width: 22vw;
     /* 98vh */
     overflow-y: none;
     align-items: center;
@@ -66,9 +63,9 @@
     background: black;
     position: relative;
     border: black solid 3px;
-    height: 154px;
+    height: 15vh;
     /* 20vh */
-    width: 290px;
+    width: 19vw;
     /* 22vw */
     display: flex;
     flex-direction: row;
@@ -82,9 +79,9 @@
     background: white;
     border: #235945 solid 4px;
     height: auto;
-    width: 400px;
+    width: 44vw;
     /* 43.9vw */
-    margin: 15px;
+    margin: 2vw;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -95,7 +92,7 @@
         height: auto;
         position: absolute;
         background: #9ad6c3;
-        width: 400px;
+        width: 40vw;
 
     }
 }
@@ -108,9 +105,9 @@
     justify-content: center;
 
     /* 50vw */
-    width: 300px;
+    width: 55vw;
     /* 50vw */
-    height: 810px;
+    height: 100vh;
     /* 75vh */
     background: none;
     box-sizing: border-box;
@@ -118,7 +115,7 @@
 
 .bill-data-box {
     background: black;
-    width: 500px;
+    width: 50vw;
     position: relative;
     left: 0;
     /* 48vw */
@@ -166,7 +163,7 @@
 
 .old-bills-space {
     background: none;
-    width: 300px;
+    width: 20vw;
 
     height: 88%;
     max-height: 90%;
@@ -181,13 +178,13 @@
 
 
     margin-top: 10px;
-    width: 500px;
+    width: 50vw;
     /* 48vw */
     height: 400px;
     overflow-y: scroll;
 
     table {
-        width: 490px;
+        width: 49vw;
         overflow-y: auto;
         background: none;
 
@@ -208,35 +205,21 @@
 .bills-roll {
     overflow-y: scroll;
     background: none;
-    height: 450px;
-    width: 255px;
+    height: 81vh;
+    width: 19.1vw;
     margin-left: 8px;
 }
 
-.total-div {
-    border-top: dotted black;
-    background: white;
-    z-index: 10000;
-    width: 721.6px;
-    /* 48vw */
-    height: 60px;
 
-    th {
-        background-color: #b1b1b1;
-    }
-}
 
 .total-cell {
     border: dotted #DD3522 2px;
     font-weight: 500;
 }
 
-.filter-bills {
-    width: 190px
-}
 
 .arrange-btn {
-    width: 40px;
-    height: 40px;
+    width: 3.5vw;
+    height: 3.5vw;
     background-color: #235945;
 }

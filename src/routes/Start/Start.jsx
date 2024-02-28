@@ -67,7 +67,13 @@ const Start = () => {
     user.isLogged ? setIntro(true) : setIntro(false)
 
   };
+  //handle enter press:
 
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !user.isLogged) {
+      handleClick();
+    }
+  };
   // Side bar routes
   const routesArr = [['Dashboard', 'لوحة التحكم'], ['Stock', 'إدارة المخزن'], ['Addbill', 'اضف فاتورة']];
 
@@ -103,11 +109,11 @@ const Start = () => {
                 {intro && <img src={startGif} style={{ position: "absolute", top: "60px", left: "650px", width: "400px" }} />}
               </div>
             ) : (
-              <div style={{ display: "flex", flexDirection: "column", width: "220px", position: "absolute", left: "42vw", top: "20vh" }}>
+              <form onSubmit={handleClick} style={{ display: "flex", flexDirection: "column", width: "220px", position: "absolute", left: "42vw", top: "20vh" }}>
                 <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} />
                 <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} />
-                <button className='login-btn' onClick={handleClick}>تسجيل دخول</button>
-              </div>
+                <button className='login-btn' type="submit">تسجيل دخول</button>
+              </form>
             )}
 
             <Outlet />
