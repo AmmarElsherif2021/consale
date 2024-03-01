@@ -89,6 +89,7 @@ function Stock() {
 
     //modify rcord
     async function updateItem(itemId, newPrice, stockQty) {
+
         try {
             await db.execute(`
       UPDATE items_table
@@ -160,7 +161,7 @@ function Stock() {
 
         try {
             // Validate quantity and price data (adapt validation checks if needed)
-            if (qty < 0 || p < 0) {
+            if (p < 0) {
                 throw new Error('Invalid quantity or price (non-negative expected)');
             }
 
@@ -244,14 +245,16 @@ function Stock() {
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
-        setAddedItemPop((prev) => ({
-            id: prev.id,
-            ...restOfNewAdded
-        }));
-        addItem({ ...newAdded });
-        setStockData(items);
-        // Reset addedItemPop state
-        setAddedItemPop({});
+        if (id && restOfNewAdded.name && restOfNewAdded.quantity_stock && restOfNewAdded.price_unit && restOfNewAdded.unit) {
+            setAddedItemPop((prev) => ({
+                id: prev.id,
+                ...restOfNewAdded
+            }));
+            addItem({ ...newAdded });
+            setStockData(items);
+            // Reset addedItemPop state
+            setAddedItemPop({});
+        }
 
 
 

@@ -15,6 +15,7 @@ const AddItemPop = (props) => {
 
   const handleAddPopSubmit = (e) => {
     e.preventDefault();
+
     handleAddSubmit(e, newAddedItem);
     //addRecord(newAddedItem);
 
@@ -102,7 +103,7 @@ const AddItemPop = (props) => {
           <div className='form-label'>
             وحدة<input className='input' type="number" name="quantity_stock" placeholder='حدد الكمية' onChange={handleInputChange} />
           </div>
-          <div className='form-label'><button type="submit">أضف</button></div>
+          <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">أضف</button></div>
         </div>
       </div>
     </form>

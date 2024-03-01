@@ -39,7 +39,7 @@
     border: solid black 2px;
     display: flex;
     flex-direction: row;
-    width: 90px;
+    max-width: 6vw;
 
 
 
