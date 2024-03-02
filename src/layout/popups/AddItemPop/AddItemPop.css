@@ -36,16 +36,17 @@
 }
 
 .add-account-form {
-    display: grid;
-    grid-template-rows: repeat(5, 1fr);
+    display: flex;
+    flex-direction: column;
     justify-content: center;
 
 
 }
 
 .form-label {
-    max-width: 100%;
-    width: 100%;
+
+    width: 37vw;
+    height: 10vh;
     justify-content: center;
     background-color: none;
     box-sizing: border-box;
@@ -54,8 +55,9 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    left: 0;
-    padding-left: 5px;
+    left: 1.5vw;
+
+
 
 }
 
@@ -101,6 +103,6 @@
     justify-content: space-between;
     background: none;
     width: 35vw;
-    min-width: 90%;
+
 
 }

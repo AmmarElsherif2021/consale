@@ -1,12 +1,12 @@
 .item-bill-pop {
-    width: 478px;
+    width: 35vw;
     /* 35vw */
-    height: 438px;
+    height: 55vh;
     /* 57vh */
     position: fixed;
-    left: 358px;
+    left: 32vw;
     /* 35vw */
-    top: 115px;
+    top: 23vh;
     /* 15vh */
     background: #5e9b88;
     border: 5px solid black;
@@ -37,7 +37,7 @@
 }
 
 .item-bill-pop-img {
-    width: 200px;
+    width: 14vw;
     max-height: 200px;
     background-color: aliceblue;
     margin-left: 40px;

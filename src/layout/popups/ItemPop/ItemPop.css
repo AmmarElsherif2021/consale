@@ -1,6 +1,9 @@
 .item-pop {
-    width: 450px;
-    height: 384px;
+    max-width: 30vw;
+    width: 30vw;
+
+    height: 45vh;
+    max-height: 45vh;
     /* 50vh */
     padding-bottom: 50px;
     position: fixed;
@@ -73,5 +76,5 @@
 }
 
 .item-pop-img {
-    width: 100px;
+    width: 8vw;
 }

@@ -7,6 +7,7 @@
     align-items: center;
 
     overflow-x: hidden;
+    font-size: 1em;
 
 
 
@@ -20,7 +21,7 @@
 
 .logout-btn {
     position: absolute;
-    left: 7vw;
+    left: 5vw;
     top: 90vh;
     width: 10vw;
 }
@@ -57,7 +58,7 @@
     min-height: 100vh;
     justify-content: center;
     align-items: center;
-    width: 25vw;
+    width: 20vw;
     margin-right: 1vw;
     position: fixed;
     top: 0;
@@ -95,9 +96,9 @@
 .route-content {
     position: absolute;
 
-    left: 25vw;
+    left: 20vw;
     top: 0;
-    width: 75vw;
+    width: 80vw;
 
     height: 90vh;
 

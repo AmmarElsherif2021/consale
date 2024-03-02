@@ -1,7 +1,7 @@
 .stock {
 
 
-    width: 73vw;
+    width: 80vw;
     height: 100vh;
     margin: 1vw;
     display: flex;
@@ -87,14 +87,14 @@
     justify-content: stretch;
     align-items: center;
     margin-top: 1vh;
-    width: 72vw;
+    width: 77vw;
 
 
 }
 
 .grid {
     background: none;
-    width: 71vw;
+    width: 77vw;
 
 
 }

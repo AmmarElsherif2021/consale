@@ -2,7 +2,7 @@
 
     display: flex;
     flex-direction: column;
-    width: 75vw;
+    width: 80vw;
     /* 74vw */
     height: 99vh;
 
@@ -17,7 +17,7 @@
     background: none;
     display: flex;
     flex-direction: row;
-    width: 77vw;
+    width: 80vw;
     background: none;
 
     /* 74vw */
@@ -50,7 +50,7 @@
 
     height: 88vh;
 
-    width: 22vw;
+    width: 25vw;
     /* 98vh */
     overflow-y: none;
     align-items: center;
@@ -65,7 +65,7 @@
     border: black solid 3px;
     height: 15vh;
     /* 20vh */
-    width: 19vw;
+    width: 24.5vw;
     /* 22vw */
     display: flex;
     flex-direction: row;
@@ -81,7 +81,7 @@
     height: auto;
     width: 44vw;
     /* 43.9vw */
-    margin: 2vw;
+    margin: 1vw;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -92,7 +92,7 @@
         height: auto;
         position: absolute;
         background: #9ad6c3;
-        width: 40vw;
+        width: 42vw;
 
     }
 }
@@ -163,7 +163,7 @@
 
 .old-bills-space {
     background: none;
-    width: 20vw;
+    width: 24vw;
 
     height: 88%;
     max-height: 90%;
@@ -206,7 +206,7 @@
     overflow-y: scroll;
     background: none;
     height: 81vh;
-    width: 19.1vw;
+    width: 24vw;
     margin-left: 8px;
 }
 
@@ -217,9 +217,19 @@
     font-weight: 500;
 }
 
-
 .arrange-btn {
-    width: 3.5vw;
-    height: 3.5vw;
+    width: 3.7vw;
+    height: 3.7vw;
+    position: relative;
+    border: solid black 5px;
     background-color: #235945;
+    border-radius: 5px;
+    margin: 1px;
+}
+
+.arrange-btn:hover {
+    width: 3.7vw;
+    height: 3.7vw;
+    background-color: #2e755b;
+    border: solid rgb(26, 24, 24) 4px;
 }
