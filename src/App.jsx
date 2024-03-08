@@ -33,11 +33,11 @@ const Routes = () => {
         ,
         {
           path: "AddBill",
-          element: user && user.isLogged ? <BillProvider><AddBill /></BillProvider> : <Navigate to="/" />
+          element: user && user.isLogged ? <AddBill /> : <Navigate to="/" />
         },
         {
           path: "Stock",
-          element: user && user.userName === "admin1" && user.isLogged ? <StockProvider><Stock /></StockProvider> : <Navigate to="/" />
+          element: user && user.userName === "smsm" && user.isLogged ? <StockProvider><Stock /></StockProvider> : <Navigate to="/" />
         }]
     }])
   return (
@@ -50,7 +50,6 @@ const App = () => {
   return (
     <StockProvider>
       <UserProvider>
-
         <Routes />
       </UserProvider>
     </StockProvider>

@@ -123,19 +123,19 @@ const SaveBillPop = (props) => {
           <table>
             <tr>
               <td>
-                <h4>الاسم</h4>
+                الاسم
               </td>
               <td>
-                <h4>الكمية المطلوبة</h4>
+                الكمية المطلوبة
               </td>
               <td>
-                <h4>الوحدة</h4>
+                الوحدة
               </td>
               <td>
-                <h4>سعر الوحدة</h4>
+                سعر الوحدة
               </td>
               <td>
-                <h4>الاجمالي</h4>
+                الاجمالي
               </td>
             </tr>
             {props.items.map((x) => (x.req_qty > 0 &&
@@ -150,9 +150,9 @@ const SaveBillPop = (props) => {
 
             <tr>
               <td>اجمالي الفاتورة</td>
-              <td style={{ backgroundColor: "#b5584d" }}>{billTotal}</td>
+              <td style={{ backgroundColor: "#a5a08e" }}>{billTotal}</td>
             </tr>
-
+            <tr><td colSpan={4}>-------------------------</td></tr>
           </table>
 
         </div>
@@ -166,59 +166,50 @@ const SaveBillPop = (props) => {
               (y && y.date &&
 
 
-                <div key={y.date} className="records">
+                <div key={y.date} className="records" style={{ border: 'solid' }}>
                   <table style={{ overflowY: "auto", alignItems: "center" }}>
-                    <tr>بضاعة مضافة</tr>
-                    {y && y.added_items && y.added_items ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
+                    <tr style={{ boreder: 'dashed' }}>بضاعة مضافة</tr>
+                    {y && y.added_items && y.added_items ? <tr style={{ backgroundColor: "#a5a08e" }}><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
                     {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)}
-                    <tr>مرتجع</tr>
-                    {y && y.restored_items && y.restored_items !== "" ? <tr><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
+                    <tr style={{ boreder: 'dashed' }}>مرتجع</tr>
+                    {y && y.restored_items && y.restored_items !== "" ? <tr style={{ backgroundColor: "#a5a08e" }}><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
 
                     {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)
                     }
-
+                    <tr><td colSpan={3}>-------------------------</td></tr>
                   </table>
 
 
                   <table>
 
-                    <tr >
-                      <th>تاريخ المعاملة</th><td>{y.date}</td>
+                    <tr style={{ boreder: 'dashed' }} >
+                      <th style={{ backgroundColor: "#a5a08e" }}>تاريخ المعاملة</th><td>{y.date}</td>
                     </tr>
-                    <tr><th>المطلوب</th><td>{y.debt}</td></tr>
-                    <tr><th>تم دفع </th><td>{y.paid}</td></tr>
-                    <tr><th>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}>المطلوب</th><td>{y.debt}</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}>تم دفع </th><td>{y.paid}</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
                     <tr><td colSpan={4}>-------------------------</td></tr>
                   </table>
 
                 </div>
-
-
               )) : <div>لا توجد معاملات سابقة</div>}
           </div>
-
-
         </div>
-
-
       </div>
 
       <div>
-
-
-
         <div className="btns-section">
-
           <ReactToPrint
             trigger={() => <button style={{ width: "3.5vw", height: "3.5vw", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
-              onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "40px" }} /></button>}
-            content={() => historyRef.current}
-          />
-          <ReactToPrint
-            trigger={() => <button style={{ width: "3.5vw", height: "3.5vw", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
-              onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "40px" }} /></button>}
+              onClick={() => createCurrentRef()}><img src={printIcon} style={{ width: "2vw" }} /></button>}
             content={() => currentRef.current}
           />
+          <ReactToPrint
+            trigger={() => <button style={{ width: "3.5vw", height: "3.5vw", padding: "1px", marginTop: "5px", backgroundColor: "#33987d" }}
+              onClick={() => createHistoryRef()}><img src={historyIcon} style={{ width: "2vw" }} /></button>}
+            content={() => historyRef.current}
+          />
+
 
           <span style={{ minWidth: "200px", display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", alignItems: "center" }}>
             <h4>مدفوع</h4>

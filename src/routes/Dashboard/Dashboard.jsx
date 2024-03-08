@@ -12,6 +12,8 @@
 -For further development:Sales cummulative chart.
    
 */
+import { Chart } from "react-google-charts";
+
 import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 import addPlus from '../../assets/add-plus.svg'
 import './Dashboard.css';
@@ -21,6 +23,16 @@ import { useEffect, useState } from "react";
 import data from './data/accounts.json';
 import AddPop from '../../layout/popups/AddPop/AddPop';
 import AccPop from "../../layout/popups/AccPop/AccPop";
+import { useDb } from "../../stockContext";
+
+
+
+
+
+
+
+
+//####################################################################
 const Dashboard = () => {
 
     //Receiver dir. 
@@ -62,7 +74,27 @@ const Dashboard = () => {
     const cancelAccPop = () => {
         setAccPop({})
         console.log(`accPop ----->${accPop}`)
+    };
+    const { db } = useDb();
+    const [billsData, setBillsData] = useState([]);
+    async function fetchBillsData() {
+
+        try {
+            let newBills = await db.select('SELECT * FROM bills_table')
+            // Update the bills state
+            setBillsData(newBills);
+        } catch (error) {
+            console.error('Error deleting item:', error);
+        }
     }
+    useEffect(() => {
+        fetchBillsData();
+        console.log(`billsData length= ${billsData.length}`)
+    }, []);
+    const chartData = [
+        ['تاريخ -', ' المدفوع- ', 'مستحق - ', 'اجمالي '],
+        ...billsData.map(item => [item.date, item.paid, item.debt, item.b_total])
+    ];
     return (
         <div className="route-content dashboard">
             <h1>الحسابات</h1>
@@ -94,8 +126,22 @@ const Dashboard = () => {
                 <div><button className='add-acc-btn' onClick={() => setAddPop(true)}><img className='add-img-1' src={addPlus} /></button></div>
 
             </div>
+            <h1>بيانات المدفوعات والمستحقات</h1>
+            <div className='charts'>
 
-            <div></div>
+                <Chart
+                    width={'100%'}
+                    height={'400px'}
+                    chartType="LineChart"
+                    loader={<div>Loading Chart</div>}
+                    data={chartData}
+                    options={{
+                        title: 'بيان المدفوعات والمستحقات',
+                        curveType: 'function',
+                        legend: { position: 'bottom' },
+                    }}
+                />
+            </div>
         </div>
     )
 }

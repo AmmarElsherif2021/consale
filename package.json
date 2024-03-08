@@ -10,12 +10,14 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@progress/kendo-react-charts": "^7.2.3",
     "@tauri-apps/api": "^1.5.2",
     "ag-grid-community": "^31.0.3",
     "ag-grid-react": "^31.0.3",
     "jspdf-autotable": "^3.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-google-charts": "^4.0.1",
     "react-to-print": "^2.15.1",
     "tauri-plugin-authenticator-api": "github:tauri-apps/tauri-plugin-authenticator"
   },

@@ -17,12 +17,6 @@ const getDate = () => {
 }
 
 const Start = () => {
-
-
-
-
-
-
   //intro
   const [intro, setIntro] = useState(false)
   // userContext
@@ -35,11 +29,11 @@ const Start = () => {
   const [password, setPassword] = useState('');
   const users = [
     {
-      username: "admin1",
+      username: "smsm",
       password: "606026"
     },
     {
-      username: "admin2",
+      username: "m2",
       password: "43310"
     }
   ]
@@ -56,7 +50,8 @@ const Start = () => {
         password: password,
         isLogged: true
       }));
-    } else if (user.isLogged == true) {
+    }
+    if (user.isLogged == true) {
       setUser((prev) => ({
         userName: "",
         password: "",
@@ -80,49 +75,51 @@ const Start = () => {
 
 
   return (
-    <UserProvider>
-      <div className={startClass}>
-        <div className={user.isLogged ? 'sidebar' : 'no-sidebar'}>
-          <div className={user.isLogged ? 'sidebar-header' : 'start-header'}>
-            <div>
 
-              <h1> CONSALE </h1>
+    <div className={startClass}>
+      <div className={user.isLogged ? 'sidebar' : 'no-sidebar'}>
+        <div className={user.isLogged ? 'sidebar-header' : 'start-header'}>
+          <div>
 
 
-            </div>
 
-            {user.isLogged ? (
-              <div>
-                <h1>{user.userName}</h1>
-                <div>
-
-                  <ul className='sidebar-list'>
-                    {routesArr.map((x) => (
-                      <li key={x}>
-                        <Link className="sidebar-link" to={`/${x[0]}`} onClick={() => setIntro(false)}>{x[1]}</Link>
-                      </li>
-                    ))}
-                  </ul>
-                  <button className='logout-btn' onClick={(e) => handleClick(e)}>تسجيل خروج</button>
-
-                </div>
-                {intro && <img src={startGif} style={{ position: "absolute", top: "60px", left: "650px", width: "400px" }} />}
-              </div>
-            ) : (
-              <form onSubmit={handleClick} style={{ display: "flex", flexDirection: "column", width: "220px", position: "absolute", left: "42vw", top: "20vh" }}>
-                <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} />
-                <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} />
-                <button className='login-btn' type="submit">تسجيل دخول</button>
-              </form>
-            )}
-
-            <Outlet />
 
           </div>
 
+          {user.isLogged ? (
+            <div>
+
+
+              <div >
+                <h1 style={{ color: "#C3DCCD" }}> CONSALE </h1>
+                <ul className='sidebar-list'>
+                  {routesArr.map((x) => (
+                    <li key={x}>
+                      <Link className="sidebar-link" to={`/${x[0]}`} onClick={() => setIntro(false)}>{x[1]}</Link>
+                    </li>
+                  ))}
+                </ul>
+                <button className='logout-btn' onClick={(e) => handleClick(e)}>تسجيل خروج</button>
+
+              </div>
+              {intro && <img src={startGif} style={{ position: "absolute", top: "60px", left: "650px", width: "400px" }} />}
+            </div>
+          ) : (
+            <form onSubmit={handleClick} className='start' >
+              <h1> CONSALE </h1>
+              <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} style={{ textAlign: 'center' }} />
+              <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} style={{ textAlign: 'center' }} />
+              <button className='login-btn' type="submit">تسجيل دخول</button>
+            </form>
+          )}
+
+          <Outlet />
+
         </div>
+
       </div>
-    </UserProvider>
+    </div>
+
   );
 };
 

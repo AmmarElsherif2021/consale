@@ -335,12 +335,12 @@ function Stock() {
 
     // Define columns
     const columnDefs = [
-        { headerName: 'ID', field: 'id', Width: 50 },
-        { headerName: 'اسم الصنف', field: 'name', width: 110 },
-        { headerName: 'وصف', field: 'description', width: 110 },
-        { headerName: 'وحدة القياس', field: 'unit', width: 110 },
-        { headerName: 'سعر الوحدة', field: 'price_unit', width: 110 },
-        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 110 },
+        { headerName: 'ID', field: 'id', Width: 90 },
+        { headerName: 'اسم الصنف', field: 'name', width: 90 },
+        { headerName: 'وصف', field: 'description', width: 90 },
+        { headerName: 'وحدة القياس', field: 'unit', width: 90 },
+        { headerName: 'سعر الوحدة', field: 'price_unit', width: 90 },
+        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 90 },
         {
             headerName: '',
             field: 'actions',

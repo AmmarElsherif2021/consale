@@ -1,22 +1,31 @@
 .start {
-    background: white;
+    background: #f6f8f7;
     width: 100vw;
 
     min-height: 95vh;
-    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
     align-items: center;
-
+    color: black;
     overflow-x: hidden;
     font-size: 1em;
+    padding-top: 5vh;
 
 
 
 
 }
 
+.login-btn {
+    background-color: #6e8d79;
+    width: 9rem;
+    border: solid black 2px;
+    margin-top: 2vh;
+}
 
 .login-btn:hover {
-    background-color: #1c7983;
+    background-color: #4c6956;
 }
 
 .logout-btn {
@@ -27,7 +36,7 @@
 }
 
 .logout-btn:hover {
-    background-color: #1c7983;
+    background-color: #6e8d79;
 }
 
 
@@ -64,6 +73,7 @@
     top: 0;
     left: 0;
     z-index: 10000;
+
 
 }
 

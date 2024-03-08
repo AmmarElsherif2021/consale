@@ -1,36 +1,23 @@
 import { v4 as uuidv4 } from 'uuid';
-import stock from './data/stock.json';
-import billsData from './data/oldBills.json'
 import './AddBill.css';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import cancelIcon from '../../assets/cancel.svg';
 import sortIcon from '../../assets/sort.svg';
+import cleanIcon from '../../assets/clean.svg';
 import refresh from '../../assets/refresh.svg';
 import delIcon from '../../assets/del.svg';
-//import { useBill, BillContext, BillProvider } from '../../billContext';
 import { useEffect, useState, useMemo, useRef } from 'react';
 import ItemToBill from '../../layout/popups/ItemToBill/ItemToBill';
 import BillCard from '../../layout/cards/BillCard/BillCard';
 import BillPop from '../../layout/popups/BillPop/BillPop';
 import saveBill from '../../assets/saveBill.svg';
 import PrintPop from '../../layout/popups/printPop/PrintPop';
-import Database from "tauri-plugin-sql-api";
-// using the Tauri API npm package:
-import { invoke } from '@tauri-apps/api/tauri'
-
-
-import Dialog from '@mui/material/Dialog';
-import TextField from '@mui/material/TextField';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ControllableStates from './ControllableStates'
-import DataTable from 'react-data-table-component';
+import ControllableStates from './ControllableStates';
 import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop';
 import { useDb } from '../../stockContext';
 import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
-import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop';
+import { useUser } from '../../userContext';
+import { writeFile } from '@tauri-apps/api/fs';
+
 
 const getDate = () => {
   const today = new Date();
@@ -38,11 +25,12 @@ const getDate = () => {
   const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
   const dateTime = date + ' ' + time;
   return dateTime;
-}
+};
+const cleanDate = (date) => { return date };
 
 const AddBill = () => {
   const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
-
+  const { user, setUser } = useUser();
 
   // Create new actual bill
 
@@ -156,7 +144,7 @@ const AddBill = () => {
 
     const newTotal = newReq * itemFromTable[0].price_unit;
 
-    const restoredText = JSON.stringify(restored)
+
     setRestored((prev) => [...prev,
     {
       ibid: ibid,
@@ -164,9 +152,10 @@ const AddBill = () => {
       name: items[0].name,
       qty: restQty,
       price_unit: items[0].price_unit,
-      total: newTotal
+      total: restQty * itemFromTable[0].price_unit
     }
     ]);
+    const restoredText = JSON.stringify(restored)
     setNewBill((prev) => ({
       ...prev,
       items: newReq == 0 ? [...newBill.items.filter((x) => x.ibid != ibid)]
@@ -260,7 +249,7 @@ const AddBill = () => {
   async function fetchBillsData() {
     // Use db.execute to delete the bill from the database
     try {
-      let newBills = await db.select('SELECT * FROM bills_table');
+      let newBills = await db.select('SELECT * FROM bills_table')
       // Update the bills state
       setBillsRecords(newBills);
       setBills(newBills);
@@ -523,10 +512,19 @@ const AddBill = () => {
 
     if (lastRecord) {
       addBillHistoryRecord(bid, lastRecord.date, lastRecord.b_total, lastRecord.debt, lastRecord.paid, addedText, restoredText);
-      console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
-        , restoredText, typeof restored)
+      //console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
+      //  , restoredText, typeof restored)
     }
-
+    const accumalatedData = {
+      key: getDate(),
+      paid: paid,
+      debt: debt,
+      b_total: b_total
+    };
+    writeFile({
+      path: './routes/accumulation.json',
+      contents: JSON.stringify(accumalatedData)
+    }).catch(console.error);
     setRestored([]);
     setAddedItems([]);
     setNewBill({
@@ -562,8 +560,23 @@ const AddBill = () => {
   //Print file:
   const [printFile, setPrintFile] = useState(false);
   const componentRef = useRef();
-  const printBillData = () => {
 
+
+
+  //delete non necessary bills:
+  const deleteAnonBills = () => {
+    //e.preventDefault()
+    if (user.userName == 'smsm') {
+      db.execute('DELETE FROM bills_table WHERE c_name=? AND debt=?', ['anon', 0]).then(() => {
+        // Update the bills state
+        fetchBillsData();
+        console.log('anons deleted')
+      })
+        .catch((error) => {
+          console.error('Error deleting anons:', error);
+
+        });
+    }
   }
 
 
@@ -641,14 +654,11 @@ const AddBill = () => {
   useEffect(() => console.log('printpop triggered'), [printPop]);
   useEffect(() => console.log('printFile triggered'), [printFile]);
 
-
-
-
-
-
   return (
 
+
     <div className="route-content add-bill" >
+
       {
         printPop ? (<div><PrintPop
           cName={printableBill.c_name}
@@ -741,10 +751,6 @@ const AddBill = () => {
       )}
 
       <h1>فاتورة جديدة</h1>
-
-
-
-
       <div className='add-bill-sections'>
 
         <div className="new-bill-section left-pane" >
@@ -898,6 +904,7 @@ const AddBill = () => {
               <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder='ابحث باسم العميل' />
             </div>
             <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "1.5em", margin: "0px" }} src={sortIcon} /></button>
+            <button onClick={deleteAnonBills} className='del-anon-btn'><img src={cleanIcon} style={{ width: "1.5vw", margin: "0px" }} /></button>
           </div>
 
 
@@ -908,7 +915,10 @@ const AddBill = () => {
 
               {
                 filteredItems && filteredItems.length > 0 ?
-                  filteredItems.map(
+                  filteredItems.sort((a, b) => {
+                    let dateA = new Date(a.date), dateB = new Date(b.date);
+                    if (!arranged) { return dateB - dateA };
+                  }).map(
                     (x) => x.bid &&
                       <div onClick={(e) => handleCardClick(e, x.bid)}>
                         <BillCard
@@ -931,9 +941,6 @@ const AddBill = () => {
         </div>
       </div>
     </div>
-
-
-
 
   )
 

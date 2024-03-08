@@ -70,6 +70,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
 
 
 
@@ -131,8 +132,9 @@
 
 .open-save-bill-btn {
 
-    width: 55px;
-    height: 55px;
+    width: 3.9vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
     background-color: #235945;
     border: solid #1E1E20 2px;
     border-radius: 5px;
@@ -219,7 +221,8 @@
 
 .arrange-btn {
     width: 3.7vw;
-    height: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
     position: relative;
     border: solid black 5px;
     background-color: #235945;
@@ -229,7 +232,27 @@
 
 .arrange-btn:hover {
     width: 3.7vw;
-    height: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
     background-color: #2e755b;
+    border: solid rgb(26, 24, 24) 4px;
+}
+
+.del-anon-btn {
+    width: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
+    position: relative;
+    border: solid black 5px;
+    background-color: #82b0b0;
+    border-radius: 5px;
+    margin: 1px;
+}
+
+.del-anon-btn:hover {
+    width: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
+    background-color: #2e7475;
     border: solid rgb(26, 24, 24) 4px;
 }

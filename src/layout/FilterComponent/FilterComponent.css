@@ -1,5 +1,5 @@
 .filter-component {
-    width: 15vw;
+    width: 80%;
     position: relative;
     left: 0;
     top: 0;
@@ -12,35 +12,30 @@
 
 .cancel {
     width: 3.7vw;
-    height: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
     position: relative;
     border: solid black 5px;
     background-color: rgb(216, 44, 44);
     border-radius: 5px;
-    margin: 1px;
+
 }
 
 .cancel:hover {
     width: 3.7vw;
-    height: 3.7vw;
+    min-height: 3.9vw;
+    max-height: 3.9vw;
     background-color: rgb(255, 72, 72);
     border: solid rgb(26, 24, 24) 4px;
 }
 
-.cancel-icon {
-    width: 3vw;
-    position: absolute;
-    left: 0;
-}
+
 
 .search-table {
-    height: 30px;
-    min-height: 30px;
+
     border: solid black 2px;
     display: flex;
     flex-direction: row;
-    max-width: 6vw;
-
-
-
+    width: 70%;
+    max-width: 20vw;
 }

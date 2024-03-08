@@ -17,7 +17,7 @@
    }
 
    .save-bill-pop {
-       width: 62vw;
+       width: 66vw;
        /* 75vw */
        height: 83vh;
        /* 90vh */
@@ -82,7 +82,7 @@
            }
 
            td {
-               border: gray dashed 1px;
+               border: rgb(248, 248, 248) dashed 1px;
 
            }
 
@@ -126,8 +126,8 @@
                    th {
                        align-items: center;
                        justify-content: center;
-                       background-color: #000000;
-                       color: white;
+                       background-color: #707070;
+                       color: rgb(0, 0, 0);
 
 
                    }
@@ -135,7 +135,7 @@
                    td {
                        align-items: center;
                        justify-content: center;
-                       background-color: #DACCA0;
+                       background-color: #ffffff;
                        height: 2vh;
 
 
@@ -153,7 +153,7 @@
        height: 10vh;
        display: flex;
        flex-direction: row;
-       justify-content: space-around;
+       justify-content: space-evenly;
        align-items: center;
 
        h5 {
@@ -179,9 +179,10 @@
    .confirm-save {
        background-color: #26654e;
        border: solid black 2px;
-       font-weight: 600;
-       width: 5.5vw;
-       height: 7vh;
+       padding: 2px;
+       margin: 2px;
+       width: 5vw;
+       height: 5vh;
    }
 
    .confirm-save:hover {
@@ -193,9 +194,10 @@
    .cancel-save {
        background-color: #DD3522;
        border: solid black 2px;
-       font-weight: 600;
-       width: 5.5vw;
-       height: 7vh;
+       padding: 2px;
+       margin: 2px;
+       width: 5vw;
+       height: 5vh;
 
 
    }
