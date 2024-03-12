@@ -14,6 +14,7 @@ import { useDb } from '../../../stockContext';
 
 import AnonPic from "../../../assets/bill-icon.svg"
 import { useUser } from '../../../userContext';
+import { useState, useEffect } from 'react';
 const BillCard = (props) => {
     /* const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
      function handleBillDel() {
@@ -30,10 +31,21 @@ const BillCard = (props) => {
      }*/
     const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
     const { user, setUser } = useUser();
+    const cardColors = ['#d0836c', '#d8af50', '#54b17b']
+    const [cardTheme, setCardTheme] = useState('')
+    useEffect(() => {
+        if (props.debt >= 1000) {
+            setCardTheme(cardColors[0])
+        } else if (props.debt < 1000 && props.debt > 0) {
+            setCardTheme(cardColors[1])
+        } else if (props.debt <= 0) {
+            setCardTheme(cardColors[2])
+        }
+    }, [])
     return (
-        <div className='bill-card'>
+        <div className='bill-card' style={{ background: cardTheme }}>
 
-            <div className='card-header'>
+            <div className='card-header' >
                 <img className='card-img' src={AnonPic} />
                 <h1>{props.cName}<br />BID: {props.bid}</h1>
 

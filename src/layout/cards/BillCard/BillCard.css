@@ -2,17 +2,17 @@
     width: 20vw;
     height: 20vh;
     overflow: hidden;
-    border: 5px solid black;
+    border: 3px solid black;
     display: flex;
     flex-direction: column;
     align-items: center;
     border-radius: 15px;
-    background: #b3b3b3;
+    background: none;
     margin: 1vh;
 }
 
 .bill-card:hover {
-    background: #959595;
+    background: none;
     width: 20.4vw;
 }
 

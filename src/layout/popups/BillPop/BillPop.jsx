@@ -27,7 +27,7 @@ import './BillPop.css';
 import AnonPic from "../../../assets/bill-icon.svg";
 import cancelIcon from '../../../assets/cancel.svg';
 import { useDb } from '../../../stockContext';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useUser } from '../../../userContext';
 
 import delIcon from '../../../assets/del.svg';
@@ -45,8 +45,21 @@ const BillPop = (props) => {
 
     }
 
+    //theme
+    const cardColors = ['#d0836c', '#d8af50', '#54b17b']
+    const [cardTheme, setCardTheme] = useState('')
+    useEffect(() => {
+        if (props.debt >= 1000) {
+            setCardTheme(cardColors[0])
+        } else if (props.debt < 1000 && props.debt > 0) {
+            setCardTheme(cardColors[1])
+        } else if (props.debt <= 0) {
+            setCardTheme(cardColors[2])
+        }
+    }, [])
+
     return (
-        <div className='oldbill-pop'>
+        <div className='oldbill-pop' style={{ background: cardTheme }}>
             <button className='cancel-bill-pop' onClick={cancelBillPop}><img className='cancel-icon' src={cancelIcon} /></button>
 
             <div className='pop-header'>

@@ -45,7 +45,7 @@
 
 .form-label {
 
-    width: 37vw;
+    max-width: 37vw;
     height: 10vh;
     justify-content: center;
     background-color: none;
@@ -71,6 +71,8 @@
 .input {
 
     border: black solid 3px;
+    max-width: 12vw;
+    min-width: 4vw;
 
 
 }
