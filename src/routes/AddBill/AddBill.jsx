@@ -454,14 +454,14 @@ const AddBill = () => {
   //add new bill to db:
   async function addBillRecord(bid, c_name, c_phone, date, b_total, debt, paid, discount = 0) {
     // Check if the item already exists in the table
-    const billExists = await db.select('SELECT * FROM bills_table WHERE bid = ? AND c_name = ?', [bid, c_name]);
+    const billExists = await db.select('SELECT * FROM bills_table WHERE bid = ? ', [bid]);
 
     // If the item doesn't exist, insert it
     if (billExists.length === 0) {
       await db.execute("INSERT INTO bills_table VALUES (?, ?, ?, ?, ?, ?,?,?)", [bid, c_name, c_phone, date, b_total, debt, paid, discount]);
     }
     else {
-      await db.execute("UPDATE bills_table SET b_total = ?, debt = ?, paid = ? WHERE bid = ?", [b_total, debt, paid, bid]);
+      await db.execute("UPDATE bills_table SET b_total = ?, debt = ?, paid = ?, c_phone=?, c_name=? WHERE bid = ?", [b_total, debt, paid, c_phone, c_name, bid]);
     }
   }
 

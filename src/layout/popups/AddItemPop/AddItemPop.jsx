@@ -10,7 +10,13 @@ const AddItemPop = (props) => {
     width: ''
   });
   const handleNameChange = () => {
-    let newName = (itemName.name + ':' + itemName.length + 'X' + itemName.width).toString();
+    let newName = '';
+    if (parameter === 'units') {
+      newName = `${itemName.width}x${itemName.length}  :${itemName.name} `
+    } else if (parameter === 'length') {
+      newName = `${itemName.width}:${itemName.name} `
+
+    }
     setNewAddedItem(() => ({
       ...newAddedItem,
       name: newName
@@ -31,27 +37,37 @@ const AddItemPop = (props) => {
     handleAddSubmit(e, newAddedItem);
   };
 
+  //handle input change
   const handleInputChange = (event) => {
     const { name, value } = event.target;
 
     // If the selected parameter is "length" or "units", update the "parameter" state
     if (name === 'parameter') {
       setParameter(value);
+      setNewAddedItem((p) => ({
+        ...p,
+        unit: value
+      }))
     }
 
-    setNewAddedItem({
-      ...newAddedItem,
-      [name]: event.target.type === 'number' ? Number(value) : value
-    });
+    else {
+      setNewAddedItem({
+        ...newAddedItem,
+        [name]: event.target.type === 'number' ? value : Number(value)
+      });
+    }
+
+
   };
+  useEffect(() => console.log('para changed'), [newAddedItem, parameter])
 
   return (
     <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
       <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
       <div className='pop-body'></div>
       <h1>اضف الى المخزن </h1>
-      {(itemName.name + ':' + itemName.length + 'X' + itemName.width).toString()}
-
+      <div>{newAddedItem.name}</div>
+      <div>-------/{newAddedItem.unit} ----</div>
       <div className='add-account-form'>
         <div>
 
@@ -59,24 +75,29 @@ const AddItemPop = (props) => {
             <h4>الوحدة المستخدمة</h4>
 
             <label>
-              طول
-              <input
-                className='radio-input'
-                type="radio"
-                value="length"
-                name="parameter"
-                checked={parameter === 'length'} // Check if parameter is "length"
-                onChange={handleInputChange}
-              />
-              وحدات
-              <input
-                className='radio-input'
-                type="radio"
-                value="units"
-                name="parameter"
-                checked={parameter === 'units'} // Check if parameter is "units"
-                onChange={handleInputChange}
-              />
+              <div>
+                طول
+                <input
+                  className='radio-input'
+                  type="radio"
+                  value="length"
+                  name="parameter"
+                  checked={parameter === 'length'} // Check if parameter is "length"
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              <div>
+                وحدات
+                <input
+                  className='radio-input'
+                  type="radio"
+                  value="units"
+                  name="parameter"
+                  checked={parameter === 'units'} // Check if parameter is "units"
+                  onChange={handleInputChange}
+                />
+              </div>
             </label>
           </div>
 
@@ -86,10 +107,14 @@ const AddItemPop = (props) => {
               ...itemName,
               name: e.target.value
             }))} />
-            {parameter != 'units' && <> <input className='input' type="number" name="name" step="0.1" placeholder={1.0} onChange={(e) => setItemName(() => ({
-              ...itemName,
-              length: e.target.value
-            }))} />طول</>}
+            {parameter === 'units' &&
+              <>
+                <input className='input' type="number" name="name" step="0.1" placeholder={1.0}
+                  onChange={(e) => setItemName(() => ({
+                    ...itemName,
+                    length: e.target.value
+                  }))} />طول
+              </>}
             <input className='input' type="number" name="name" step="0.1" placeholder={1.0} onChange={(e) => setItemName(() => ({
               ...itemName,
               width: e.target.value

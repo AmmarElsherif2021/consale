@@ -34,11 +34,11 @@ const BillCard = (props) => {
     const cardColors = ['#d0836c', '#d8af50', '#54b17b']
     const [cardTheme, setCardTheme] = useState('')
     useEffect(() => {
-        if (props.debt >= 1000) {
+        if (props.debt > 0) {
             setCardTheme(cardColors[0])
-        } else if (props.debt < 1000 && props.debt > 0) {
+        } else if (props.debt === 0) {
             setCardTheme(cardColors[1])
-        } else if (props.debt <= 0) {
+        } else if (props.debt < 0) {
             setCardTheme(cardColors[2])
         }
     }, [])

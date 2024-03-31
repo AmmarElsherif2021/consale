@@ -76,11 +76,11 @@ const SaveBillPop = (props) => {
   const createHistoryRef = async () => {
     const content = historyRef.current;
     const opt = {
-      margin: 10,
+      margin: 5,
       filename: "my-component.pdf",
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "pdf", quality: 0.98 },
       html2canvas: { scale: 1 },
-      jsPDF: { unit: "mm", format: "a5", orientation: "portrait" },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
     await html2pdf().from(content).set(opt).outputPdf();
   };
@@ -88,9 +88,9 @@ const SaveBillPop = (props) => {
   const createCurrentRef = async () => {
     const content = currentRef.current;
     const opt = {
-      margin: 20,
+      margin: 5,
       filename: "my-component.pdf",
-      image: { type: "jpeg", quality: 0.98 },
+      image: { type: "pdf", quality: 0.98 },
       html2canvas: { scale: 1 },
       jsPDF: { unit: "mm", format: "a5", orientation: "portrait" },
     };

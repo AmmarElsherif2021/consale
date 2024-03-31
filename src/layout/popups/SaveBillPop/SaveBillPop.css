@@ -63,16 +63,16 @@
        overflow-y: auto;
        overflow-x: hidden;
        height: 60vh;
-       width: 31vw;
+       width: 100%;
        border: solid black 3px;
-       border-right: none;
+
        background: white;
 
 
 
 
        table {
-
+           width: 100%;
            background-color: white;
            border: gray solid 1px;
 
@@ -92,33 +92,40 @@
    .records-space {
        background: white;
        height: 60vh;
-       width: 30vw;
-       border: solid black 3px;
-       border-right: none;
-       border-left: none;
+       min-width: 35%;
+       border: solid black 2px;
+
        margin-left: 5px;
        padding: 0;
        overflow-y: scroll;
        overflow-x: hidden;
 
+       table {
+           border: black dotted 1px;
+           margin: 3px;
+           display: table-caption;
+           justify-content: center;
+
+       }
+
        .records {
 
-           width: 29vw;
+           width: 100%;
            display: flex;
-           flex-direction: row;
+           flex-direction: column;
 
            table {
-               border: black dotted 2px;
+               border: black dotted 1px;
                margin: 3px;
                display: table-caption;
                justify-content: center;
-               width: 28vw;
 
                background: rgb(255, 255, 255);
 
                tr {
                    justify-content: center;
                    max-height: 2vh;
+
 
 
 
@@ -172,6 +179,8 @@
            overflow-y: auto;
            /* Enable overflowing content to be printed */
            height: fit-content;
+           width: fit-content;
+
            /* Ensure content fits page height */
        }
    }
