@@ -49,11 +49,11 @@ const BillPop = (props) => {
     const cardColors = ['#d0836c', '#d8af50', '#54b17b']
     const [cardTheme, setCardTheme] = useState('')
     useEffect(() => {
-        if (props.debt >= 1000) {
+        if (props.debt > 0) {
             setCardTheme(cardColors[0])
-        } else if (props.debt < 1000 && props.debt > 0) {
+        } else if (props.debt === 0) {
             setCardTheme(cardColors[1])
-        } else if (props.debt <= 0) {
+        } else if (props.debt < 0) {
             setCardTheme(cardColors[2])
         }
     }, [])
@@ -66,7 +66,7 @@ const BillPop = (props) => {
                 <img className='bill-pop-img' style={{ width: "50px" }} src={AnonPic} />
                 <h4>B-id: <span>{props.bid}</span> <br />
                     اسم العميل: <span>{props.cName}</span><br />
-                    موبايل: <span>{props.phone}</span><br />
+                    موبايل: <span>{props.cPhone}</span><br />
                     تاريخ: <span>{props.date}</span><br />
 
                     <small>اجمالي:{props.bTotal}</small> --

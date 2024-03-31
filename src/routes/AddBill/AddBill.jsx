@@ -929,6 +929,9 @@ const AddBill = () => {
                           paid={x.paid}
                           debt={x.debt}
                           records={x.records}
+                          cardTheme={
+                            x.debt > 0 ? '#e45444' : x.debt == 0 ? '#d8af50' : '#54b17b'
+                          }
                         />
                       </div>)
                   :

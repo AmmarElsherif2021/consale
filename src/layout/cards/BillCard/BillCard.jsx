@@ -31,19 +31,19 @@ const BillCard = (props) => {
      }*/
     const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
     const { user, setUser } = useUser();
-    const cardColors = ['#d0836c', '#d8af50', '#54b17b']
-    const [cardTheme, setCardTheme] = useState('')
-    useEffect(() => {
-        if (props.debt > 0) {
-            setCardTheme(cardColors[0])
-        } else if (props.debt === 0) {
-            setCardTheme(cardColors[1])
-        } else if (props.debt < 0) {
-            setCardTheme(cardColors[2])
-        }
-    }, [])
+    // const cardColors = ['#d0836c', '#d8af50', '#54b17b']
+    // const [cardTheme, setCardTheme] = useState('')
+    // useEffect(() => {
+    //     if (props.debt > 0) {
+    //         setCardTheme(cardColors[0])
+    //     } else if (props.debt === 0) {
+    //         setCardTheme(cardColors[1])
+    //     } else if (props.debt < 0) {
+    //         setCardTheme(cardColors[2])
+    //     }
+    // }, [])
     return (
-        <div className='bill-card' style={{ background: cardTheme }}>
+        <div className='bill-card' style={{ background: props.cardTheme }}>
 
             <div className='card-header' >
                 <img className='card-img' src={AnonPic} />
