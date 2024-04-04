@@ -10,7 +10,7 @@
 */
 import './BillCard.css';
 import { useDb } from '../../../stockContext';
-
+import { useLang } from '../../../langContext';
 
 import AnonPic from "../../../assets/bill-icon.svg"
 import { useUser } from '../../../userContext';
@@ -31,6 +31,7 @@ const BillCard = (props) => {
      }*/
     const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
     const { user, setUser } = useUser();
+    const { lang, setLang } = useLang()
     // const cardColors = ['#d0836c', '#d8af50', '#54b17b']
     // const [cardTheme, setCardTheme] = useState('')
     // useEffect(() => {
@@ -44,6 +45,8 @@ const BillCard = (props) => {
     // }, [])
     return (
         <div className='bill-card' style={{ background: props.cardTheme }}>
+            <h1>lang is {lang}</h1>
+
 
             <div className='card-header' >
                 <img className='card-img' src={AnonPic} />

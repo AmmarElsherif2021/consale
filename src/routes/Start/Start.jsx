@@ -7,6 +7,7 @@ import startGif from "../../assets/bill.gif"
 // using the Tauri API npm package:
 import { invoke } from '@tauri-apps/api/tauri'
 import './Start.css'
+import { useLang } from "../../langContext";
 //const invoke = window.__TAURI__.invoke;
 const getDate = () => {
   const today = new Date();
@@ -21,6 +22,7 @@ const Start = () => {
   const [intro, setIntro] = useState(false)
   // userContext
   const { user, setUser } = useUser();
+  const { lang, setLang } = useLang()
   const { t, i18n } = useTranslation();
   // layout classname
   const [startClass, setStartClass] = useState(user.isLogged ? 'layout' : 'start');
@@ -62,6 +64,16 @@ const Start = () => {
     user.isLogged ? setIntro(true) : setIntro(false)
 
   };
+
+
+  //handle langs
+  const handleToggle = () => {
+    setLang((prev) =>
+      prev === 'ar' ? 'eng' : 'ar'
+
+    )
+  }
+  useEffect(() => console.log('lang changed'), [lang])
   //handle enter press:
 
   const handleKeyDown = (event) => {
@@ -109,7 +121,9 @@ const Start = () => {
               <h1> CONSALE </h1>
               <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} style={{ textAlign: 'center' }} />
               <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} style={{ textAlign: 'center' }} />
-              <button className='login-btn' type="submit">تسجيل دخول</button>
+              <button className='login-btn' type="submit">{lang == 'ar' ? 'تسجيل دخول' : 'Login'}</button>
+              <button onClick={handleToggle}>{lang === 'eng' ? 'عربي' : 'English'}</button>
+
             </form>
           )}
 

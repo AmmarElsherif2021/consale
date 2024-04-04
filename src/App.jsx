@@ -10,10 +10,13 @@ import { RouterProvider } from 'react-router-dom';
 import AccCard from './layout/cards/AccCard/AccCard';
 import { BillProvider } from './billContext';
 import { StockProvider } from './stockContext.jsx';
+import { LangProvider, useLang } from './langContext.jsx';
+
 
 
 const Routes = () => {
   const { user, setUser } = useUser();
+  const { lang, setLang } = useLang
   useEffect(() => {
     user ? console.log(user.isLogged) : console.log('there is no user');
   }, [user]);
@@ -21,7 +24,7 @@ const Routes = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Start />,
+      element: <LangProvider><Start /></LangProvider>,
       children: [
 
 
