@@ -76,7 +76,7 @@ const BillPop = (props) => {
                     <small >  {lang == 'ar' ? 'مطلوب' : 'Debt'}: <span style={{ color: "#DD3522" }}>{props.debt}</span></small>
                 </h4>
             </div>
-            <div>
+            <div className='bill-pop-body'>
 
                 <table className="bill-pop-table" style={{ overflowY: "scroll" }}>
                     <thead >
@@ -109,7 +109,7 @@ const BillPop = (props) => {
 
             </div >
             <div>
-                <button className='open-bill-btn' onClick={openBill}>تعديل الفاتورة</button>
+                <button className='open-bill-btn' onClick={openBill}>{lang == 'ar' ? 'تعديل الفاتورة' : 'Edit'}</button>
                 <button style={{ width: "60px", position: 'absolute', right: "15px", marginTop: "10px" }} onClick={() => handleDel()}>  <img src={delIcon} style={{ width: "20px" }} /></button>
 
 

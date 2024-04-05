@@ -19,6 +19,7 @@
     /* 12vh */
     left: 35vw;
     /* 30vw */
+
 }
 
 .open-bill-btn {
@@ -61,12 +62,17 @@
     object-fit: cover;
 }
 
+.bill-pop-body {
+    overflow-y: auto;
+}
+
 .bill-pop-table {
     background: white;
-
+    overflow-y: auto;
     border: solid 2px;
-    width: 34vw;
-    height: 33vh;
+    width: 33vw;
+
+    max-height: 20vh;
 
 
 
