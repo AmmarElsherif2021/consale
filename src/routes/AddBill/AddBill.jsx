@@ -17,6 +17,7 @@ import { useDb } from '../../stockContext';
 import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
 import { useUser } from '../../userContext';
 import { writeFile } from '@tauri-apps/api/fs';
+import { useLang } from '../../langContext';
 
 
 const getDate = () => {
@@ -31,6 +32,7 @@ const cleanDate = (date) => { return date };
 const AddBill = () => {
   const { db, items, billsRecords, setBillsRecords, isLoading, setIsLoading, billsItems, setBillsItems } = useDb();
   const { user, setUser } = useUser();
+  const { lang, setLang } = useLang()
 
   // Create new actual bill
 
@@ -750,7 +752,7 @@ const AddBill = () => {
         <div></div>
       )}
 
-      <h1>فاتورة جديدة</h1>
+      <h1> {lang == 'ar' ? 'فاتورة جديدة' : 'New Bill'}</h1>
       <div className='add-bill-sections'>
 
         <div className="new-bill-section left-pane" >
@@ -795,7 +797,7 @@ const AddBill = () => {
                       type='text'
                       onChange={(e) => setNewBill((prev) => ({ ...prev, c_name: e.target.value }))}
                       value={oldBillPop && oldBillPop.bid ? oldBillPop.c_name : newBill.c_name}
-                      placeholder='أدخل اسم العميل'
+                      placeholder={lang == 'ar' ? 'اسم العميل' : 'Customer Name'}
                     />}
                 </div>
 
@@ -840,11 +842,11 @@ const AddBill = () => {
             <div className='bill-items-table' >
               <table >
                 <tr>
-                  <th>الاسم</th>
-                  <th>الكمبة المطلوبة</th>
-                  <th>الوحدة</th>
-                  <th>سعر الوحدة</th>
-                  <th>اجمالي</th>
+                  <th> {lang == 'ar' ? 'اسم الصنف' : 'product name'}</th>
+                  <th> {lang == 'ar' ? 'الكمية المطلوبة' : 'Qty. Req'}</th>
+                  <th> {lang == 'ar' ? 'الوحدة' : 'Unit'}</th>
+                  <th> {lang == 'ar' ? 'سعر الوحدة' : 'Price/Unit'}</th>
+                  <th> {lang == 'ar' ? 'اجمالي' : 'Total'}</th>
                 </tr>
                 {newBill.items && newBill.items.length ? newBill.items.map((x) => x.req_qty > 0 &&
                   <tr key={x.ibid}>
@@ -869,7 +871,7 @@ const AddBill = () => {
                   : (<tr></tr>)}
 
                 <tr>
-                  <th>اجمالي الفاتورة</th>
+                  <th>  {lang == 'ar' ? 'اجمالي الفاتورة' : 'Bill Total'}</th>
                   <td className='total-cell'>
                     {
                       addedItems.length && newBill.items && newBill.items.length ? [...addedItems, ...newBill.items].reduce((acc, obj) => acc + obj.total, 0)
@@ -901,7 +903,7 @@ const AddBill = () => {
         <div className="right-pane old-bills-section">
           <div className='right-section-header'>
             <div className='filter-bills'>
-              <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder='ابحث باسم العميل' />
+              <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={lang == 'ar' ? 'ابحث باسم العميل' : 'Search by name'} />
             </div>
             <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "1.5em", margin: "0px" }} src={sortIcon} /></button>
             <button onClick={deleteAnonBills} className='del-anon-btn'><img src={cleanIcon} style={{ width: "1.5vw", margin: "0px" }} /></button>

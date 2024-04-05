@@ -1,8 +1,10 @@
 .start {
     background: #f6f8f7;
     width: 100vw;
-
-    min-height: 95vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -111,5 +113,22 @@
     width: 80vw;
 
     height: 90vh;
+
+}
+
+.lang-btn {
+
+    border: black solid 2px;
+    position: fixed;
+    top: 5vh;
+    left: 4vw;
+    width: 5vw;
+    height: 5vh;
+    padding: 0;
+    text-justify: inter-word;
+}
+
+.lang-btn:hover {
+    background-color: #6e8d8b;
 
 }

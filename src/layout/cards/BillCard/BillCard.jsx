@@ -45,7 +45,7 @@ const BillCard = (props) => {
     // }, [])
     return (
         <div className='bill-card' style={{ background: props.cardTheme }}>
-            <h1>lang is {lang}</h1>
+
 
 
             <div className='card-header' >
@@ -59,9 +59,9 @@ const BillCard = (props) => {
 
             <tr className='bill-card-p'>
                 <td>{props.date}</td>
-                <td>اجمالي  {props.bTotal} </td>
-                <td> المطلوب {props.debt}  </td>
-                <td> المدفوع  {props.paid} </td>
+                <td> {lang == 'ar' ? 'اجمالي' : 'B.Total'}  {props.bTotal} </td>
+                <td>  {lang == 'ar' ? 'مطلوب' : 'Debt'} {props.debt}  </td>
+                <td>  {lang == 'ar' ? 'تم دفع' : 'Paid'}  {props.paid} </td>
 
             </tr>
 

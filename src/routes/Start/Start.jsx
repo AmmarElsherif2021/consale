@@ -119,10 +119,10 @@ const Start = () => {
           ) : (
             <form onSubmit={handleClick} className='start' >
               <h1> CONSALE </h1>
-              <input className="input" type='text' value={userName} placeholder="اسم المستخدم" onChange={(e) => setUserName(e.target.value)} style={{ textAlign: 'center' }} />
-              <input className="input" type='password' value={password} placeholder="كلمة المرور" onChange={(e) => setPassword(e.target.value)} style={{ textAlign: 'center' }} />
+              <input className="input" type='text' value={userName} placeholder={lang == 'ar' ? 'اسم المستخدم' : 'username'} onChange={(e) => setUserName(e.target.value)} style={{ textAlign: 'center' }} />
+              <input className="input" type='password' value={password} placeholder={lang == 'ar' ? 'كلمة مرور' : 'password'} onChange={(e) => setPassword(e.target.value)} style={{ textAlign: 'center' }} />
               <button className='login-btn' type="submit">{lang == 'ar' ? 'تسجيل دخول' : 'Login'}</button>
-              <button onClick={handleToggle}>{lang === 'eng' ? 'عربي' : 'English'}</button>
+              <button className='lang-btn' onClick={handleToggle}><small>{lang === 'eng' ? 'عربي' : 'English'}</small></button>
 
             </form>
           )}

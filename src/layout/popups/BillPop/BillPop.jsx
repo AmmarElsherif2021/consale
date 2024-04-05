@@ -31,6 +31,7 @@ import { useState, useEffect } from 'react';
 import { useUser } from '../../../userContext';
 
 import delIcon from '../../../assets/del.svg';
+import { useLang } from '../../../langContext';
 
 const BillPop = (props) => {
     const { cancelBillPop, openBill } = props;
@@ -48,6 +49,7 @@ const BillPop = (props) => {
     //theme
     const cardColors = ['#d0836c', '#d8af50', '#54b17b']
     const [cardTheme, setCardTheme] = useState('')
+    const { lang, setLang } = useLang()
     useEffect(() => {
         if (props.debt > 0) {
             setCardTheme(cardColors[0])
@@ -65,26 +67,26 @@ const BillPop = (props) => {
             <div className='pop-header'>
                 <img className='bill-pop-img' style={{ width: "50px" }} src={AnonPic} />
                 <h4>B-id: <span>{props.bid}</span> <br />
-                    اسم العميل: <span>{props.cName}</span><br />
-                    موبايل: <span>{props.cPhone}</span><br />
-                    تاريخ: <span>{props.date}</span><br />
+                    {lang == 'ar' ? 'اسم العميل' : 'Customer'}: <span>{props.cName}</span><br />
+                    {lang == 'ar' ? 'موبايل' : 'Phone'}: <span>{props.cPhone}</span><br />
+                    {lang == 'ar' ? 'تاريخ' : 'Date'}: <span>{props.date}</span><br />
 
-                    <small>اجمالي:{props.bTotal}</small> --
-                    <small> المدفوع:{props.paid}</small> --
-                    <small > الدين: <span style={{ color: "#DD3522" }}>{props.debt}</span></small>
+                    <small> {lang == 'ar' ? 'اجمالي الفاتورة' : 'B. Total'}:{props.bTotal}</small> --
+                    <small>  {lang == 'ar' ? 'المدفوع' : 'Paid'}:{props.paid}</small> --
+                    <small >  {lang == 'ar' ? 'مطلوب' : 'Debt'}: <span style={{ color: "#DD3522" }}>{props.debt}</span></small>
                 </h4>
             </div>
-            <div style={{ overflowY: "scroll" }}>
+            <div>
 
-                <table className="bill-pop-table">
+                <table className="bill-pop-table" style={{ overflowY: "scroll" }}>
                     <thead >
                         <tr >
-                            <th><small>الاسم</small></th>
-                            <th><small>الكمية المطلوبة</small></th>
-                            <th><small>الوحدة</small></th>
-                            <th><small>سعر الوحدة</small></th>
+                            <th> {lang == 'ar' ? 'الاسم' : 'Name'}</th>
+                            <th> {lang == 'ar' ? 'الكمية' : 'Qty'}</th>
+                            <th> {lang == 'ar' ? 'الوحدة' : 'Unit'}</th>
+                            <th> {lang == 'ar' ? 'سعر الوحدة' : 'Price/Unit'} </th>
 
-                            <th><small>اجمالي</small></th>
+                            <th>{lang == 'ar' ? 'اجمالي' : 'Total'}</th>
 
 
                         </tr>
@@ -103,9 +105,9 @@ const BillPop = (props) => {
 
 
                     </tbody>
-                </table>
+                </table >
 
-            </div>
+            </div >
             <div>
                 <button className='open-bill-btn' onClick={openBill}>تعديل الفاتورة</button>
                 <button style={{ width: "60px", position: 'absolute', right: "15px", marginTop: "10px" }} onClick={() => handleDel()}>  <img src={delIcon} style={{ width: "20px" }} /></button>
@@ -113,7 +115,7 @@ const BillPop = (props) => {
 
 
             </div>
-        </div>
+        </div >
     )
 }
 export default BillPop;

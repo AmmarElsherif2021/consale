@@ -63,17 +63,32 @@
 
 .bill-pop-table {
     background: white;
-    overflow: hidden;
-    border: dotted;
+
+    border: solid 2px;
     width: 34vw;
+    height: 33vh;
+
+
 
 
     tr {
         background: none;
 
+        th {
+            padding: 0;
+            max-width: 0.5vw;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            align-items: center;
+            background-color: cadetblue;
+            text-align: center;
+
+        }
+
         td {
             background: none;
-            padding: 0;
+
             max-width: 0.5vw;
             white-space: nowrap;
             overflow: hidden;
