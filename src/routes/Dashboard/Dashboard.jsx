@@ -84,16 +84,33 @@ const Dashboard = () => {
             // Update the bills state
             setBillsData(newBills);
         } catch (error) {
-            console.error('Error deleting item:', error);
+            console.error('Error deleting bill:', error);
+        }
+    }
+    async function fetchSoldItems() {
+        try {
+            let sold = await db.select('SELECT * FROM bill_items_table')
+
+        } catch (error) {
+            console.log(error)
         }
     }
     useEffect(() => {
         fetchBillsData();
         console.log(`billsData length= ${billsData.length}`)
     }, []);
+    let cumulativePaid = 0;
+    let cumulativeDebt = 0;
+    let cummulativeBtotal = 0;
     const chartData = [
         ['تاريخ -', ' المدفوع- ', 'مستحق - ', 'اجمالي '],
-        ...billsData.map(item => [item.date, item.paid, item.debt, item.b_total])
+
+        ...billsData.map(bill => {
+            cumulativePaid += bill.paid;
+            cumulativeDebt += bill.debt;
+            cummulativeBtotal += bill.b_total;
+            return [bill.date, cumulativePaid, cumulativeDebt, cummulativeBtotal];
+        })
     ];
     return (
         <div className="route-content dashboard">

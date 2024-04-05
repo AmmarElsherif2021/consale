@@ -18,6 +18,8 @@ import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestored
 import { useUser } from '../../userContext';
 import { writeFile } from '@tauri-apps/api/fs';
 import { useLang } from '../../langContext';
+import axios from 'axios';
+
 
 
 const getDate = () => {
@@ -517,16 +519,22 @@ const AddBill = () => {
       //console.log(`Restored @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`
       //  , restoredText, typeof restored)
     }
-    const accumalatedData = {
-      key: getDate(),
-      paid: paid,
-      debt: debt,
-      b_total: b_total
-    };
+    //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+    const salesData = addedItems.map((x) => ({
+      key: x.id,
+      name: x.name,
+      description: x.description,
+      qty: x.req_qty,
+      date: getDate()
+
+    }));
+    console.log(`Sold ${salesData}`)
     writeFile({
-      path: './routes/accumulation.json',
-      contents: JSON.stringify(accumalatedData)
+      path: '../../../src-tauri/acc.json',
+      contents: JSON.stringify(salesData)
     }).catch(console.error);
+    //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
     setRestored([]);
     setAddedItems([]);
     setNewBill({
