@@ -13,8 +13,8 @@
    
 */
 import { Chart } from "react-google-charts";
+import { invoke } from '@tauri-apps/api/tauri';
 
-import { writeTextFile, BaseDirectory } from "@tauri-apps/api/fs";
 import addPlus from '../../assets/add-plus.svg'
 import './Dashboard.css';
 import axios from 'axios'
@@ -36,7 +36,7 @@ import { useDb } from "../../stockContext";
 const Dashboard = () => {
 
     //Receiver dir. 
-    const appDataDir = BaseDirectory.AppData;
+    //const appDataDir = BaseDirectory.AppData;
     //accounts state carries accounts.json records
     const [accounts, setAccounts] = useState([]);
     useEffect(() => {
@@ -87,14 +87,7 @@ const Dashboard = () => {
             console.error('Error deleting bill:', error);
         }
     }
-    async function fetchSoldItems() {
-        try {
-            let sold = await db.select('SELECT * FROM bill_items_table')
-
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    //prepare cummulative chart for debt and paid
     useEffect(() => {
         fetchBillsData();
         console.log(`billsData length= ${billsData.length}`)
@@ -112,6 +105,22 @@ const Dashboard = () => {
             return [bill.date, cumulativePaid, cumulativeDebt, cummulativeBtotal];
         })
     ];
+    //prepare high sold graph
+    async function fetchSoldItems() {
+        invoke('read_file', {
+            path: 'salesData.json',
+        }).then((data) => {
+            const salesData = JSON.parse(data);
+            console.log(salesData);
+            return salesData
+        }).catch((error) => {
+            console.error(error);
+        });
+    }
+    const [salesArr, setSalesArr] = useState([])
+    useEffect(() => {
+        setSalesArr(() => { fetchSoldItems })
+    }, [])
     return (
         <div className="route-content dashboard">
             <h1>الحسابات</h1>
@@ -159,6 +168,7 @@ const Dashboard = () => {
                     }}
                 />
             </div>
+            {salesArr}
         </div>
     )
 }

@@ -16,9 +16,10 @@ import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop';
 import { useDb } from '../../stockContext';
 import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
 import { useUser } from '../../userContext';
-import { writeFile } from '@tauri-apps/api/fs';
+import { invoke } from '@tauri-apps/api/tauri';
+
 import { useLang } from '../../langContext';
-import axios from 'axios';
+
 
 
 
@@ -520,6 +521,7 @@ const AddBill = () => {
       //  , restoredText, typeof restored)
     }
     //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
     const salesData = addedItems.map((x) => ({
       key: x.id,
       name: x.name,
@@ -529,12 +531,23 @@ const AddBill = () => {
 
     }));
     console.log(`Sold ${salesData}`)
-    writeFile({
-      path: '../../../src-tauri/acc.json',
-      contents: JSON.stringify(salesData)
-    }).catch(console.error);
+
+    invoke('write_file', {
+      args: {
+        path: 'salesData.json',
+        contents: JSON.stringify(salesData),
+      }
+    }).then(() => {
+      console.log('Data written to file');
+    }).catch((error) => {
+      console.error(error);
+    });
     //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
+
+
+
+    //00000000000000000000000000000000000000000000000000000000000000
     setRestored([]);
     setAddedItems([]);
     setNewBill({
