@@ -42,6 +42,7 @@ const Dashboard = () => {
     useEffect(() => {
         setAccounts([...data])
     }, []);
+
     useEffect(() => {
         console.log(`-------- >  ${accounts} <-----------`)
     }, [accounts]);
@@ -59,7 +60,7 @@ const Dashboard = () => {
     function generateRandomId() {
         return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
-    // write on json file so or look for authentication plugin
+
     //Acc card popup ------------------------------------------------------
     const [accPop, setAccPop] = useState({});
     const handleCardClick = (e, id) => {
@@ -75,6 +76,8 @@ const Dashboard = () => {
         setAccPop({})
         console.log(`accPop ----->${accPop}`)
     };
+
+    //Db
     const { db } = useDb();
     const [billsData, setBillsData] = useState([]);
     async function fetchBillsData() {
@@ -90,8 +93,9 @@ const Dashboard = () => {
     //prepare cummulative chart for debt and paid
     useEffect(() => {
         fetchBillsData();
-        console.log(`billsData length= ${billsData.length}`)
+
     }, []);
+
     let cumulativePaid = 0;
     let cumulativeDebt = 0;
     let cummulativeBtotal = 0;
@@ -106,21 +110,50 @@ const Dashboard = () => {
         })
     ];
     //prepare high sold graph
+
+    const [salesArr, setSalesArr] = useState([]);
+
     async function fetchSoldItems() {
-        invoke('read_file', {
-            path: 'salesData.json',
-        }).then((data) => {
-            const salesData = JSON.parse(data);
-            console.log(salesData);
-            return salesData
-        }).catch((error) => {
-            console.error(error);
-        });
-    }
-    const [salesArr, setSalesArr] = useState([])
+        try {
+            let items_sales = await db.select(`
+        SELECT id,name, SUM(req_qty) AS total_exports, COUNT(*) AS item_sales
+FROM bill_items_table
+GROUP BY id`);
+            setSalesArr(items_sales)
+        }
+        catch (error) { console.error(error) }
+    };
     useEffect(() => {
-        setSalesArr(() => { fetchSoldItems })
+        fetchSoldItems()
     }, [])
+    //Delete databases
+
+    //auth to delete:
+    const [password, setPassword] = useState('')
+    const changePass = (e) => {
+        setPassword(e.target.value)
+    }
+    async function emptyTables() {
+        try {
+            // List of table names
+            const tableNames = [
+                'items_table',
+                'bills_table',
+                'bill_items_table',
+                'records_table',
+            ];
+
+            for (const table of tableNames) {
+                await db.execute(`DELETE FROM ${table};`);
+                console.log(`All records deleted from ${table}`);
+            }
+
+            console.log('All tables emptied successfully.');
+        } catch (error) {
+            console.error(`Error: ${error}`);
+        }
+    }
+
     return (
         <div className="route-content dashboard">
             <h1>الحسابات</h1>
@@ -168,7 +201,41 @@ const Dashboard = () => {
                     }}
                 />
             </div>
-            {salesArr}
+            <div className="charts">
+                <h1>بيان المبيعات</h1>
+                <Chart
+                    chartType="BarChart"
+                    data={[
+                        ['اسم المنتج', 'الصادر', 'مرات التصدير'],
+                        ...salesArr.map((x) => [x.name, x.total_exports, x.item_sales]),
+                    ]}
+                    loader={<div>Loading Chart</div>}
+                    options={{
+                        title: 'الصادر - مرات التصدير',
+                        hAxis: { title: 'صادر|مرات التصدير' },
+                        vAxis: { title: 'اسم المنتج' },
+                        legend: 'none',
+                    }}
+                    width="100%"
+                    height="400px"
+
+                />
+                );
+
+            </div>
+            <div className='delete-tables'>
+                <h1>حذف السجلات</h1>
+                {
+                    password != '43310' ?
+                        <div>
+                            <input type='password' placeholder="enter password" value={password} onChange={changePass} />
+
+                        </div>
+                        :
+                        <button onClick={() => emptyTables()}> مسح الجداول </button>
+                }
+
+            </div>
         </div>
     )
 }

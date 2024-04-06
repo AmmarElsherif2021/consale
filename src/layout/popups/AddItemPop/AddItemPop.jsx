@@ -67,7 +67,7 @@ const AddItemPop = (props) => {
       <div className='pop-body'></div>
       <h1>اضف الى المخزن </h1>
       <div>{newAddedItem.name}</div>
-      <div>-------/{newAddedItem.unit} ----</div>
+
       <div className='add-account-form'>
         <div>
 

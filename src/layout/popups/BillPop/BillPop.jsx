@@ -61,7 +61,7 @@ const BillPop = (props) => {
     }, [])
 
     return (
-        <div className='oldbill-pop' style={{ background: cardTheme }}>
+        <div className='oldbill-pop' >
             <button className='cancel-bill-pop' onClick={cancelBillPop}><img className='cancel-icon' src={cancelIcon} /></button>
 
             <div className='pop-header'>

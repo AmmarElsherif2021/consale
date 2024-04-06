@@ -17,6 +17,7 @@ import { useDb } from '../../stockContext';
 import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
 import { useUser } from '../../userContext';
 import { invoke } from '@tauri-apps/api/tauri';
+import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
 
 import { useLang } from '../../langContext';
 
@@ -498,6 +499,49 @@ const AddBill = () => {
   }
 
   //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> print
+
+  // src-tauri/src-tauri.js
+
+  // Read a file
+  async function readFile(filePath) {
+    try {
+      const content = await window.__TAURI__.tauri.invoke('read_file', filePath);
+      console.log('File content:', content);
+    } catch (error) {
+      console.error('Error reading file:', error);
+    }
+  }
+
+  // Write to a file
+  async function writeFile(filePath, content) {
+    try {
+      await window.__TAURI__.tauri.invoke('write_file', filePath, content);
+      console.log('File written successfully');
+    } catch (error) {
+      console.error('Error writing file:', error);
+    }
+  }
+
+  // Append a JSON object to a file
+  async function appendJsonObject(filePath, jsonObject) {
+    try {
+      await window.__TAURI__.tauri.invoke('append_json_object', filePath, jsonObject);
+      console.log('JSON object appended successfully');
+    } catch (error) {
+      console.error('Error appending JSON object:', error);
+    }
+  }
+
+
+
+
+
+
+  // Make sure to adjust the file paths according to your project structure.
+
+
+  // Make sure to adjust the file paths according to your project structure.
+
   const handlePrint = () => {
     printPop && printableBill.items && printableBill.items.length &&
       console.log(`Ready to print ${JSON.stringify(printableBill)}`);
@@ -527,21 +571,11 @@ const AddBill = () => {
       name: x.name,
       description: x.description,
       qty: x.req_qty,
-      date: getDate()
-
+      date: getDate(),
     }));
-    console.log(`Sold ${salesData}`)
 
-    invoke('write_file', {
-      args: {
-        path: 'salesData.json',
-        contents: JSON.stringify(salesData),
-      }
-    }).then(() => {
-      console.log('Data written to file');
-    }).catch((error) => {
-      console.error(error);
-    });
+
+
     //oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 

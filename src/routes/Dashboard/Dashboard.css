@@ -4,13 +4,14 @@
     flex-direction: column;
     overflow-y: scroll;
     overflow-x: hidden;
+    height: شعفخ;
 }
 
 .accounts {
     display: grid;
 
     grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+
 
 }
 
@@ -33,4 +34,14 @@
     overflow-x: scroll;
     overflow-y: hidden;
     min-height: 70vh;
+}
+
+.delete-tables {
+    background: #7eb3af;
+    padding: 2vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
 }
