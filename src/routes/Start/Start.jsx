@@ -31,8 +31,8 @@ const Start = () => {
   const [password, setPassword] = useState('');
   const users = [
     {
-      username: "smsm",
-      password: "606026"
+      username: "hozifa",
+      password: "8433"
     },
     {
       username: "m2",

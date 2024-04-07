@@ -12,26 +12,19 @@
 -For further development:Sales cummulative chart.
    
 */
-import { Chart } from "react-google-charts";
-import { invoke } from '@tauri-apps/api/tauri';
-
-import addPlus from '../../assets/add-plus.svg'
 import './Dashboard.css';
 import axios from 'axios'
 import AccCard from "../../layout/cards/AccCard/AccCard";
-import { useEffect, useState } from "react";
+import { invoke } from '@tauri-apps/api/tauri';
+import addPlus from '../../assets/add-plus.svg';
 import data from './data/accounts.json';
 import AddPop from '../../layout/popups/AddPop/AddPop';
 import AccPop from "../../layout/popups/AccPop/AccPop";
+
+import { LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, Legend } from 'recharts';
+
+import { useEffect, useState } from "react";
 import { useDb } from "../../stockContext";
-
-
-
-
-
-
-
-
 //####################################################################
 const Dashboard = () => {
 
@@ -56,10 +49,6 @@ const Dashboard = () => {
     }
     //add account --------------------------------------------------------
 
-    //generate Id
-    function generateRandomId() {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
 
     //Acc card popup ------------------------------------------------------
     const [accPop, setAccPop] = useState({});
@@ -96,19 +85,22 @@ const Dashboard = () => {
 
     }, []);
 
+    // Calculate cumulative values for line chart
     let cumulativePaid = 0;
     let cumulativeDebt = 0;
     let cummulativeBtotal = 0;
-    const chartData = [
-        ['تاريخ -', ' المدفوع- ', 'مستحق - ', 'اجمالي '],
 
-        ...billsData.map(bill => {
-            cumulativePaid += bill.paid;
-            cumulativeDebt += bill.debt;
-            cummulativeBtotal += bill.b_total;
-            return [bill.date, cumulativePaid, cumulativeDebt, cummulativeBtotal];
-        })
-    ];
+    const lineChartData = billsData.map(bill => {
+        cumulativePaid += bill.paid;
+        cumulativeDebt += bill.debt;
+        cummulativeBtotal += bill.b_total;
+        return {
+            date: bill.date,
+            paid: cumulativePaid,
+            debt: cumulativeDebt,
+            total: cummulativeBtotal,
+        };
+    });
     //prepare high sold graph
 
     const [salesArr, setSalesArr] = useState([]);
@@ -133,7 +125,7 @@ GROUP BY id`);
     const changePass = (e) => {
         setPassword(e.target.value)
     }
-    async function emptyTables() {
+    async function emptyTables(table) {
         try {
             // List of table names
             const tableNames = [
@@ -142,13 +134,11 @@ GROUP BY id`);
                 'bill_items_table',
                 'records_table',
             ];
-
-            for (const table of tableNames) {
-                await db.execute(`DELETE FROM ${table};`);
-                console.log(`All records deleted from ${table}`);
+            await db.execute(`DELETE FROM ${table};`);
+            console.log(`All records deleted from ${table}`);
+            if (table === 'bill_items_table') {
+                await db.execute(`DELETE FROM records_table;`);
             }
-
-            console.log('All tables emptied successfully.');
         } catch (error) {
             console.error(`Error: ${error}`);
         }
@@ -156,14 +146,14 @@ GROUP BY id`);
 
     return (
         <div className="route-content dashboard">
-            <h1>الحسابات</h1>
+
 
             {addPop ? <AddPop cancelAddPop={cancelAddPop} /> : <div></div>}
             {accPop.wid ? <AccPop w_name={accPop.w_name} short={accPop.short} lastClosed={accPop.last_closed} cancelAccPop={cancelAccPop} /> : <div></div>}
-
-
-            <div className="accounts" style={accPop && accPop.wid ? { filter: "blur(2px)" } : { filter: "none" }}>
-
+            {
+                /*
+                 <div className="accounts" style={accPop && accPop.wid ? { filter: "blur(2px)" } : { filter: "none" }}>
+                       <h1>الحسابات</h1>
                 {Array.isArray(accounts) ? accounts.map((account) => (
                     <div key={account.wid}
                         onClick={
@@ -185,43 +175,33 @@ GROUP BY id`);
                 <div><button className='add-acc-btn' onClick={() => setAddPop(true)}><img className='add-img-1' src={addPlus} /></button></div>
 
             </div>
+                */
+            }
+
+
             <h1>بيانات المدفوعات والمستحقات</h1>
-            <div className='charts'>
-
-                <Chart
-                    width={'100%'}
-                    height={'400px'}
-                    chartType="LineChart"
-                    loader={<div>Loading Chart</div>}
-                    data={chartData}
-                    options={{
-                        title: 'بيان المدفوعات والمستحقات',
-                        curveType: 'function',
-                        legend: { position: 'bottom' },
-                    }}
-                />
-            </div>
             <div className="charts">
-                <h1>بيان المبيعات</h1>
-                <Chart
-                    chartType="BarChart"
-                    data={[
-                        ['اسم المنتج', 'الصادر', 'مرات التصدير'],
-                        ...salesArr.map((x) => [x.name, x.total_exports, x.item_sales]),
-                    ]}
-                    loader={<div>Loading Chart</div>}
-                    options={{
-                        title: 'الصادر - مرات التصدير',
-                        hAxis: { title: 'صادر|مرات التصدير' },
-                        vAxis: { title: 'اسم المنتج' },
-                        legend: 'none',
-                    }}
-                    width="100%"
-                    height="400px"
+                <LineChart width={600} height={300} data={lineChartData}>
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="paid" stroke="#8884d8" name="المدفوع" />
+                    <Line type="monotone" dataKey="debt" stroke="#f56a00" name="مستحق" />
+                    <Line type="monotone" dataKey="total" stroke="#28a745" name="اجمالي" />
+                    <Legend />
+                </LineChart>
+            </div>
 
-                />
-                );
-
+            <h1>بيان المبيعات</h1>
+            <div className="charts">
+                <BarChart width={600} height={300} data={salesArr}>
+                    <XAxis dataKey="name" tickFormatter={name => (name.length > 15 ? `${name.slice(0, 15)}...` : name)} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="total_exports" fill="#ffc107" name="الصادر" />
+                    <Bar dataKey="item_sales" fill="#4caf50" name="مرات التصدير" />
+                    <Legend />
+                </BarChart>
             </div>
             <div className='delete-tables'>
                 <h1>حذف السجلات</h1>
@@ -232,7 +212,11 @@ GROUP BY id`);
 
                         </div>
                         :
-                        <button onClick={() => emptyTables()}> مسح الجداول </button>
+                        <div className="del-btns">
+                            <button onClick={() => emptyTables('bills_table')}> مسح سجلات الفواتير </button>
+                            <button onClick={() => emptyTables('items_table')}> مسح جدول الصادرات </button>
+                            <button onClick={() => emptyTables('bill_items_table')}> مسح سجلات المخزن </button>
+                        </div>
                 }
 
             </div>

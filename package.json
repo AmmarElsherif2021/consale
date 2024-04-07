@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0",
     "react-google-charts": "^4.0.1",
     "react-to-print": "^2.15.1",
+    "recharts": "^2.12.4",
     "tauri-plugin-authenticator-api": "github:tauri-apps/tauri-plugin-authenticator"
   },
   "devDependencies": {

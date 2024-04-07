@@ -4,7 +4,7 @@
     position: fixed;
     left: 40vw;
     top: 20vh;
-    background: rgb(189, 189, 189);
+    background: rgb(255, 202, 104);
     border: solid black 5px;
     z-index: 1000;
 }
@@ -45,9 +45,8 @@
 
 .form-label {
 
-    max-width: 37vw;
-    height: 10vh;
-    justify-content: center;
+    width: 40vw;
+
     background-color: none;
     box-sizing: border-box;
     display: flex;
@@ -55,7 +54,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    left: 1.5vw;
+
 
 
 
@@ -82,11 +81,9 @@
 }
 
 .radios-pack {
-    display: flex;
-    flex-direction: column;
+
     border: solid 2px black;
-    align-items: end;
-    justify-content: space-between;
+
 }
 
 .add-item-parameters {
@@ -96,15 +93,5 @@
 
 .second-radios {
     background: none;
-
-}
-
-.labels {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: none;
-    width: 35vw;
-
 
 }

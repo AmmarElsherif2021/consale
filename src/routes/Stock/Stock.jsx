@@ -4,7 +4,7 @@ import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import './Stock.css';
 import ItemPop from '../../layout/popups/ItemPop/ItemPop';
 import DelItemPop from '../../layout/popups/DelItemPop/DelItemPop';
-import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop';
+import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop1';
 import addPlus from '../../assets/add-plus.svg'
 import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
@@ -335,12 +335,12 @@ function Stock() {
 
     // Define columns
     const columnDefs = [
-        { headerName: 'ID', field: 'id', Width: 90 },
-        { headerName: 'اسم الصنف', field: 'name', width: 90 },
-        { headerName: 'وصف', field: 'description', width: 90 },
-        { headerName: 'وحدة القياس', field: 'unit', width: 90 },
-        { headerName: 'سعر الوحدة', field: 'price_unit', width: 90 },
-        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 90 },
+        { headerName: 'ID', field: 'id', Width: 120 },
+        { headerName: 'اسم الصنف', field: 'name', width: 120 },
+        { headerName: 'وصف', field: 'description', width: 120 },
+        { headerName: 'وحدة القياس', field: 'unit', width: 120 },
+        { headerName: 'سعر الوحدة', field: 'price_unit', width: 120 },
+        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 120 },
         {
             headerName: '',
             field: 'actions',

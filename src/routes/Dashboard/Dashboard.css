@@ -45,3 +45,10 @@
     align-items: center;
 
 }
+
+.del-btns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 60vw;
+}

@@ -6,7 +6,8 @@ export default defineConfig(async () => ({
   plugins: [react()],
   optimizeDeps: {
     esbuildOptions: {
-      target: 'esnext'
+      target: 'esnext',
+
     }
   },
   build: {
