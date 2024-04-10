@@ -14,7 +14,7 @@ import ControllableStates from './ControllableStates';
 import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop';
 import { useDb } from '../../stockContext';
-import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop';
+import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop11';
 import { useUser } from '../../userContext';
 import { invoke } from '@tauri-apps/api/tauri';
 import { readTextFile, writeTextFile } from '@tauri-apps/api/fs';
@@ -148,7 +148,7 @@ const AddBill = () => {
     const itemFromTable = await db.select(`SELECT * FROM bill_items_table WHERE ibid=?;`, [ibid]);
     const newReq = Number(itemFromTable[0].req_qty) - Number(restQty);
 
-    const newTotal = newReq * itemFromTable[0].price_unit;
+    const newTotal = itemFromTable[0].unit === 'length' ? newReq * itemFromTable[0].price_unit * Number(items[0].name.split(':')[0]) : newReq * itemFromTable[0].price_unit;
 
 
     setRestored((prev) => [...prev,
@@ -158,7 +158,8 @@ const AddBill = () => {
       name: items[0].name,
       qty: restQty,
       price_unit: items[0].price_unit,
-      total: restQty * itemFromTable[0].price_unit
+      unit: itemFromTable[0].unit,
+      total: itemFromTable[0].unit === 'length' ? restQty * itemFromTable[0].price_unit * Number(items[0].name.split(':')[0]) : restQty * itemFromTable[0].price_unit
     }
     ]);
     const restoredText = JSON.stringify(restored)
@@ -207,7 +208,6 @@ const AddBill = () => {
       ...newItem,
       ibid: uuidv4(),
       req_qty: 0,
-      total: newItem.req_qty * newItem.price_unit,
 
     });
 
@@ -215,7 +215,14 @@ const AddBill = () => {
     console.log(`new added =============================>${JSON.stringify(newItem)}`);
   };
   const handleReqQty = (reqQty) => {
-    setNewAdded((prev) => ({ ...prev, req_qty: reqQty, total: reqQty * Number(newAdded.price_unit) }))
+    setNewAdded((prev) => (
+      {
+        ...prev,
+        req_qty: reqQty,
+        total: prev.unit === 'units' ? Math.round(Number(reqQty) * Number(newAdded.price_unit))
+          :
+          Math.round(Number(reqQty) * Number(newAdded.price_unit) * Number(newAdded.name.split(':')[0]))
+      }))
   };
 
 
@@ -623,7 +630,7 @@ const AddBill = () => {
   //delete non necessary bills:
   const deleteAnonBills = () => {
     //e.preventDefault()
-    if (user.userName == 'smsm') {
+    if (user.userName == 'hozifa') {
       db.execute('DELETE FROM bills_table WHERE c_name=? AND debt=?', ['anon', 0]).then(() => {
         // Update the bills state
         fetchBillsData();
@@ -646,7 +653,7 @@ const AddBill = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [printableBill, newBill]);
   useEffect(() => console.log('newBill changed'), [newBill]);
 
   useEffect(() => {
@@ -736,6 +743,7 @@ const AddBill = () => {
               name={newAdded.name}
               unit={newAdded.unit}
               priceUnit={newAdded.price_unit}
+
               stockQty={newAdded.quantity_stock}
               id={newAdded.id}
               total={newAdded.total}
@@ -907,7 +915,7 @@ const AddBill = () => {
                   <tr key={x.ibid}>
                     <td style={{ backgroundColor: "#5e9b88" }}>{x.name}</td>
                     <td>{x.req_qty}</td>
-                    <td>{x.unit}</td>
+                    <td>{x.unit === 'length' ? 'متر' : 'وحدة'}</td>
                     <td>${x.price_unit}</td>
                     <td>${x.total}</td>
                     <td><button className='del-row' key={x.ibid} onClick={() => handleOldItem(x, newBill.bid, 7)}><img src={delIcon} style={{ width: "20px" }} /></button></td>

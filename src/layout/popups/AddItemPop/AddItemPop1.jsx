@@ -3,35 +3,22 @@ import cancelIcon from '../../../assets/cancel.svg'
 import { useEffect, useState } from 'react';
 const AddItemPop = (props) => {
   const { cancelAddItemPop, handleAddSubmit, generateRandomId, addRecord } = props;
-  const [parameter, setParameter] = useState('');
-  const [itemName, setItemName] = useState({
-    name: '',
-    length: '',
-    width: ''
-  });
-  const handleNameChange = () => {
-    let newName = '';
-    if (parameter === 'units') {
-      newName = `${itemName.width}x${itemName.length}  :${itemName.name} `
-    } else if (parameter === 'length') {
-      newName = `${itemName.width}:${itemName.name} `
-
-    }
-    setNewAddedItem(() => ({
-      ...newAddedItem,
-      name: newName
-    }))
-  };
-  useEffect(() => handleNameChange(), [itemName]);
   const [newAddedItem, setNewAddedItem] = useState({
     id: generateRandomId().toString(),
     name: '',
     description: '',
-    unit: '',
+    unit: 'length',
     price_unit: 0,
     quantity_stock: 0
   });
 
+  const [parameter, setParameter] = useState('');
+  const [itemName, setItemName] = useState({
+    name: '',
+    length: 1,
+    width: 1
+  });
+  const [mPrice, setMPrice] = useState(0);
   const handleAddPopSubmit = (e) => {
     e.preventDefault();
     handleAddSubmit(e, newAddedItem);
@@ -49,26 +36,85 @@ const AddItemPop = (props) => {
         unit: value
       }))
     }
-
-    else {
+    else if (name === 'quantity_stock') {
+      setNewAddedItem((p) => ({
+        ...p,
+        quantity_stock: event.target.value
+      }))
+    } else {
       setNewAddedItem({
         ...newAddedItem,
-        [name]: event.target.type === 'number' ? value : Number(value)
+        [name]: event.target.type === 'number' ? Number(value) : value
       });
     }
 
+    if (parameter === 'units') {
+      setNewAddedItem((p) => ({
+        ...p,
+        price_unit: Math.round(itemName.width * itemName.length * p.price_unit)
+      }))
+    }
+  }
 
+
+
+  useEffect(() => console.log('para changed'), [newAddedItem, parameter]);
+
+
+
+  // item name
+
+  const handleNameChange = () => {
+    let newName = '';
+    if (parameter === 'units') {
+      newName = `${itemName.width}x${itemName.length}  :${itemName.name} `
+
+    } else if (parameter === 'length') {
+      newName = `${itemName.width}:${itemName.name} `
+
+    }
+    setNewAddedItem(() => ({
+      ...newAddedItem,
+      name: newName
+    }))
   };
-  useEffect(() => console.log('para changed'), [newAddedItem, parameter])
+  useEffect(() => handleNameChange(), [itemName]);
+
+  useEffect(
+    () => {
+
+      newAddedItem.unit === 'units' ? setNewAddedItem((p) =>
+      (
+        {
+          ...p,
+          price_unit: Math.round(mPrice * itemName.width * itemName.length).toFixed(2)
+        }
+      ))
+        :
+        setNewAddedItem((p) =>
+        (
+          {
+            ...p,
+            price_unit: mPrice
+          }
+        ))
+
+
+    }
+
+    , [itemName, mPrice]
+  );
+
 
   return (
     <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
       <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
-      <div className='pop-body'></div>
+
       <h1>اضف الى المخزن </h1>
-      <div>{newAddedItem.name}</div>
+      <h2>{newAddedItem.name}</h2>
 
       <div className='add-account-form'>
+
         <div>
 
           <div className='form-label labels'>
@@ -103,35 +149,66 @@ const AddItemPop = (props) => {
 
 
           <div><label className='form-label'>
-            <input className='input' type="text" name="name" placeholder='سجل اسم' onChange={(e) => setItemName(() => ({
-              ...itemName,
-              name: e.target.value
-            }))} />
+
             {parameter === 'units' &&
-              <>
-                <input className='input' type="number" name="length" step="0.1" placeholder={0}
+              <div>
+                <input className='input' type="number" name="length" step="0.1" placeholder={1}
                   onChange={(e) => setItemName(() => ({
                     ...itemName,
                     length: e.target.value
                   }))} />طول
-              </>}
-            <input className='input' type="number" name="width" step="0.1" placeholder={0} onChange={(e) => setItemName(() => ({
+              </div>}
+            {parameter === 'units' ?
+              <div>
+                <input className='input' type="number" name="width" step="0.1" placeholder={1} onChange={(e) => setItemName(() => ({
+                  ...itemName,
+                  width: e.target.value
+                }))} /> عرض
+              </div>
+              :
+              <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <label><input name='width' type='radio' value={0.6} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.6</label>
+                <label><input name='width' type='radio' value={0.8} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.8</label>
+                <label><input name='width' type='radio' value={1.0} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.0</label>
+                <label><input name='width' type='radio' value={1.2} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.2</label>
+                <label><input name='width' type='radio' value={1.5} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.5</label>
+              </div>
+            }
+          </label>
+            <label className='form-label'><input className='input' type="text" name="name" placeholder='سجل اسم' onChange={(e) => setItemName(() => ({
               ...itemName,
-              width: e.target.value
-            }))} /> عرض
-          </label></div>
-          <div><label className='form-label'>
-            <input className='input' type="text" name="description" placeholder='اكتب وصف' onChange={(e) => handleInputChange(e)} />
-          </label></div>
+              name: e.target.value
+            }))} /></label>
+            <label className='form-label'>
+              <input className='input' type="text" name="description" placeholder='اكتب وصف' onChange={(e) => handleInputChange(e)} />
+            </label>
+          </div>
+
+
 
 
           <div className='form-label'>
-            جنيه<input className='input' type="number" name="price_unit" placeholder='سعر الوحدة' style={{ height: "30px" }} onChange={handleInputChange} />
+            جنيه<input className='input' type="number" name="price_unit" placeholder='سعر المتر'
+              style={{ height: "30px" }} step={1} min={0} value={mPrice}
+              onChange={(e) => {
+                setMPrice(e.target.value)
+              }} />سعر المتر
           </div>
           <div className='form-label'>
-            وحدة<input className='input' type="number" name="quantity_stock" placeholder='حدد الكمية' onChange={(e) => handleInputChange(e)} />
+            {
+              parameter === 'length' ?
+                <div>
+                  الطول<input className='input' type="number" step={0.1} name="quantity_stock" placeholder='حدد الطول' value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} /> متر
+                </div>
+                :
+                <div>
+                  وحدة<input className='input' step={1} type="number" min={0} name="quantity_stock" placeholder='حدد الكمية' value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} />
+                </div>
+            }
           </div>
-          <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">أضف</button></div>
+          <div>{newAddedItem.unit === 'units' && `${newAddedItem.price_unit} سعر السجادة`}</div>
+
+          <div className='form-label'><button onClick={(e) => parameter != '' && handleAddPopSubmit(e)} type="submit">أضف</button></div>
         </div>
       </div>
     </form>

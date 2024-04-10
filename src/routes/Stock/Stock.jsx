@@ -261,18 +261,17 @@ function Stock() {
 
     };
 
-
+    const fetchData = async () => {
+        try {
+            const result = await db.select("SELECT * FROM items_table");
+            setItems(result)
+            setStockData(result);
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const result = await db.select("SELECT * FROM items_table");
-                setItems(result)
-                setStockData(result);
-            } catch (error) {
-                console.error('Error fetching stock data:', error);
-            }
-        };
 
         fetchData();
     }, [itemPop, delItemPop, addedItemPop]);

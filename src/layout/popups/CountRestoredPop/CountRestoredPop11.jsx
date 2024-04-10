@@ -16,12 +16,12 @@ const CountRestoredPop = (props) => {
                 <div>
                     <input type='number' min={0} max={props.reqQty} step={0.01} value={restored}
                         onChange={((e) => setRestored(e.target.value))} style={{ width: "65px" }} />
-                    <small>{props.unit == 'length' ? 'متر' : 'وحدة'}</small>
+                    <small>{props.unit == 'length' ? 'طول بالمتر' : 'وحدة'}</small>
                 </div>
                 <div>
                     <small>بقيمة</small>
                     <small> : </small>
-                    <small>{restored * props.priceUnit}</small>
+                    <small>{props.unit === 'length' ? restored * props.priceUnit * Number(props.name.split(':')[0]) : restored * props.priceUnit}</small>
                 </div>
                 <div className='btns-section'>
                     <button className='count-restored-btn confirm'

@@ -59,11 +59,14 @@ const ItemToBill = (props) => {
 
                 <h4 style={{ marginLeft: "5px", paddingLeft: "5px", display: "flex", flexDirection: "row-reverse", alignItems: "center", justifyContent: "space-between" }}>
                     <p style={styleParagraph
-                    }>الكمية المطلوبة <span><input style={{ width: "70px", margin: "5px" }} min="0" max={props.stockQty} type="number" id="reqQty" value={reqQty} onChange={(e) => handleChange(e)} /></span></p> <br />
+                    }>الكمية المطلوبة <span><input style={{ width: "70px", margin: "5px" }} min="0" step={props.unit === 'length' ? 0.01 : 1} max={props.stockQty} type="number" id="reqQty" value={reqQty} onChange={(e) => handleChange(e)} /></span></p> <br />
                     <p style={styleParagraph
-                    }><p> اجمالي السعر </p> <span style={{ marginRight: '5px' }}>{Number(reqQty) * Number(props.priceUnit)}</span><br /></p>
+                    }><p> اجمالي السعر </p> <span style={{ marginRight: '5px' }}>{props.unit === 'length' ? Math.round(Number(reqQty) * Number(props.priceUnit) * Number(props.name.split(':')[0])) : Math.round(Number(reqQty) * Number(props.priceUnit))}</span><br /></p>
+
                 </h4>
+
                 <div ><button className='add-item-bill-btn' type='submit'><img src={addPlus} className='add-plus' /></button></div>
+
             </div>
         </form >
     )

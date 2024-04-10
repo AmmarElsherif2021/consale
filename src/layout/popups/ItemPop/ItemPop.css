@@ -78,3 +78,7 @@
 .item-pop-img {
     width: 8vw;
 }
+
+.edit-input {
+    min-width: 5vw;
+}

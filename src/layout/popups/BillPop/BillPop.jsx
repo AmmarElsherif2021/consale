@@ -39,7 +39,7 @@ const BillPop = (props) => {
 
     const { user, setUser } = useUser();
     const handleDel = () => {
-        if (user.userName === 'smsm' && props.debt == 0) {
+        if (user.userName === 'hozifa' && props.debt == 0) {
             db.execute('DELETE FROM bills_table WHERE bid = ?', [props.bid]);
             cancelBillPop();
         }

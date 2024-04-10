@@ -29,8 +29,8 @@ const ItemPop = (props) => {
 
             <div className='item-pop-p'>
                 <div>ID: <span>{props.id}</span>
-                    <br /><span style={{ height: "30px" }}> اخر تسجيل <span style={{ width: "25px" }}>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} style={{ width: "25px" }} /><small>سعر الوحدة</small></span>
-                    <br /> <small style={{ height: "30px" }}>اخر تسجيل<span style={{ width: "25px" }}>{props.qtyStock} :</span><span> <small style={{ color: 'red' }}>الكمية بعد التعديل :{Number(qty) + Number(props.qtyStock)}</small><input type="number" value={qty} onChange={handleQty} style={{ width: "40px" }} /> <small>الكمية المضافة </small></span> </small>
+                    <br /><span style={{ height: "30px" }}> اخر تسجيل <span style={{ width: "25px" }}>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} className='edit-input' style={{ width: "25px" }} /><small>سعر الوحدة</small></span>
+                    <br /> <small style={{ height: "30px" }}>اخر تسجيل<span style={{ width: "25px" }}>{props.qtyStock} :</span><span> <small style={{ color: 'red' }}>الكمية بعد التعديل :{Number(qty) + Number(props.qtyStock)}</small><input className='edit-input' type="number" value={qty} onChange={handleQty} style={{ width: "40px" }} /> <small>الكمية المضافة </small></span> </small>
                 </div>
 
             </div>
