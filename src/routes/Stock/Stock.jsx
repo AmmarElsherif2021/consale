@@ -8,6 +8,7 @@ import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop1';
 import addPlus from '../../assets/add-plus.svg'
 import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
+import refresh from '../../assets/refresh.svg';
 import { useDb } from '../../stockContext';
 
 //searchbar and teble import
@@ -57,9 +58,24 @@ function Stock() {
     const [delItemPop, setDelItemPop] = useState({}); // Item delete popup state
     const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+
+
+
     // Optimized useEffect to trigger updates only when necessary
 
 
+    //fetch stock
+    const fetchData = async () => {
+        try {
+            const result = await db.select("SELECT * FROM items_table");
+            //setItems(result)
+            setStockData([...result]);
+        } catch (error) {
+            console.error('Error fetching stock data:', error);
+        }
+    };
+
+    // add item
     async function addItem(item) {
         try {
             // Check if an item with the same ID already exists
@@ -241,7 +257,7 @@ function Stock() {
 
     //confirm add submit............................................................................................
     const handleAddSubmit = (e, newAdded) => {
-        e.preventDefault();
+        // e.preventDefault();
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
@@ -251,35 +267,25 @@ function Stock() {
                 ...restOfNewAdded
             }));
             addItem({ ...newAdded });
-            setStockData(items);
+
+            //setStockData(items);
             // Reset addedItemPop state
-            setAddedItemPop({});
-        }
+            setAddedItemPop({})
+            fetchData()
 
-
-
-
-    };
-
-    const fetchData = async () => {
-        try {
-            const result = await db.select("SELECT * FROM items_table");
-            setItems(result)
-            setStockData(result);
-        } catch (error) {
-            console.error('Error fetching stock data:', error);
         }
     };
+
+
 
     useEffect(() => {
-
         fetchData();
-    }, [itemPop, delItemPop, addedItemPop]);
+    }, [addedItemPop, itemPop, delItemPop]);
 
 
 
     //trigger changes
-    useEffect(() => console.log(stockData), [items, stockData]);
+    useEffect(() => { console.log('refresh') }, [items, stockData, addedItemPop]);
 
     //Search ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -405,8 +411,16 @@ function Stock() {
             <div className='add-stock'>
                 <h3>اضف صنف جديد</h3>
 
-                <div>
-                    <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}><img className='add-img' src={addPlus} /></button></div>
+                <div className='btns-header'>
+                    <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}>
+                        <img className='add-img' src={addPlus} />
+                    </button>
+
+                    <button className='refresh-btn' onClick={() => { fetchData() }}>
+                        <img className='refresh' src={refresh} />
+                    </button>
+                </div>
+
             </div>
             <div className='data-table'>
                 <div className="filter-component">

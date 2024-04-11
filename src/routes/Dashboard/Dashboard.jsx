@@ -214,8 +214,8 @@ GROUP BY id`);
                         :
                         <div className="del-btns">
                             <button onClick={() => emptyTables('bills_table')}> مسح سجلات الفواتير </button>
-                            <button onClick={() => emptyTables('items_table')}> مسح جدول الصادرات </button>
-                            <button onClick={() => emptyTables('bill_items_table')}> مسح سجلات المخزن </button>
+                            <button onClick={() => emptyTables('items_table')}> مسح جدول الصادرات</button>
+                            <button onClick={() => emptyTables('bill_items_table')}>  مسح سجلات المخزن </button>
                         </div>
                 }
 

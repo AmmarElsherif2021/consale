@@ -192,7 +192,7 @@ const AddItemPop = (props) => {
               style={{ height: "30px" }} step={1} min={0} value={mPrice}
               onChange={(e) => {
                 setMPrice(e.target.value)
-              }} />سعر المتر
+              }} />{parameter === 'units' ? (itemName.width != 1 && itemName != 1 ? 'سعر المتر' : 'سعر القطعة') : 'سعر المتر'}
           </div>
           <div className='form-label'>
             {

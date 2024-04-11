@@ -159,3 +159,25 @@
 .delete:hover {
     background-color: rgb(255, 75, 75);
 }
+
+.btns-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.refresh-btn {
+    width: 3.5vw;
+    height: 3.5vw;
+    background-color: #268864;
+    border: solid black 5px;
+    justify-content: center;
+    padding: 0;
+
+
+}
+
+.refresh {
+    background-color: #268864;
+    width: 2vw;
+}
