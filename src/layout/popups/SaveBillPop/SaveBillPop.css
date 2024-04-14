@@ -60,9 +60,11 @@
    }
 
    .current-space {
-       overflow-y: auto;
+
        overflow-x: hidden;
-       height: 60vh;
+       overflow-y: hidden;
+       height: auto;
+       min-height: 60vh;
        width: 100%;
        border: solid black 3px;
 

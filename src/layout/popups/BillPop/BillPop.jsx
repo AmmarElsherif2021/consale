@@ -96,7 +96,7 @@ const BillPop = (props) => {
                             (x) => (x.req_qty > 0 && <tr>
                                 <td><small>{x.name}</small></td>
                                 <td><small>{x.req_qty}</small></td>
-                                <td><small>{x.unit}</small></td>
+                                <td><small>{x.unit === 'length' ? 'متر' : 'وحدة'}</small></td>
                                 <td><small>{x.price_unit}</small></td>
                                 <td><small>{x.total}</small></td>
 

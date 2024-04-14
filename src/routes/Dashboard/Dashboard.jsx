@@ -199,7 +199,7 @@ GROUP BY id`);
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="total_exports" fill="#ffc107" name="الصادر" />
-                    <Bar dataKey="item_sales" fill="#4caf50" name="مرات التصدير" />
+                    <Bar dataKey="item_sales" fill="#4caf50" name="عدد مرات التصدير" />
                     <Legend />
                 </BarChart>
             </div>

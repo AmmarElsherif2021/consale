@@ -926,7 +926,7 @@ const AddBill = () => {
                 (<tr key={x.ibid}>
                   <td>{x.name}</td>
                   <td>{x.req_qty}</td>
-                  <td>{x.unit}</td>
+                  <td>{x.unit === 'length' ? 'متر' : 'وحدة'}</td>
                   <td>${x.price_unit}</td>
                   <td>${x.total}</td>
                   <td><button className='del-row' onClick={() => deleteNewItem(x)}><img src={delIcon} style={{ width: "20px" }} /></button></td>

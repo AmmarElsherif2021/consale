@@ -44,13 +44,13 @@ const ItemToBill = (props) => {
                         <p>الاسم </p> <p style={{ minWidth: "140px", marginRight: '5px' }}>{props.name}</p></span>
                     <span style={styleParagraph
                     }>
-                        <p>الوحدة</p><p style={{ minWidth: "135px", marginRight: '5px' }}>{props.unit}</p></span>
+                    </span>
                     <span style={styleParagraph
                     }>
-                        <p>سعر الوحدة </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
+                        <p>سعر {props.unit === 'length' ? 'المتر' : 'الوحدة'} </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
                     <span style={styleParagraph
                     }>
-                        <p>المتاح</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.stockQty}</p></span>
+                        <p>المتاح</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.stockQty.toFixed(2)}</p></span>
 
                 </h4>
             </div>

@@ -87,13 +87,15 @@ const SaveBillPop = (props) => {
 
   const createCurrentRef = async () => {
     const content = currentRef.current;
+    content.style.overflow = 'visible';
     const opt = {
       margin: 5,
       filename: "my-component.pdf",
       image: { type: "pdf", quality: 0.98 },
       html2canvas: { scale: 1 },
-      jsPDF: { unit: "mm", format: "a5", orientation: "portrait" },
+      jsPDF: { unit: "mm", format: "a5", orientation: "portrait", pagesplit: true },
     };
+    content.style.overflow = 'auto';
     await html2pdf().from(content).set(opt).outputPdf();
   };
 
@@ -114,47 +116,47 @@ const SaveBillPop = (props) => {
       </div>
 
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}  >
-        <div className="current-space" ref={currentRef}>
-          <table>
-            <tr><th>تاريخ</th><th>تليفون</th><th>الاسم</th></tr>
-            <tr><td>{props.date}</td><td>{props.cPhone}</td><td>{props.cName}</td></tr>
+        <div style={{ overflowY: 'auto', height: '60vh', overflowX: 'hidden' }}>
+          <div className="current-space" ref={currentRef}>
+            <table>
+              <tr><th>تاريخ</th><th>تليفون</th><th>الاسم</th></tr>
+              <tr><td>{props.date}</td><td>{props.cPhone}</td><td>{props.cName}</td></tr>
 
-          </table>
-          <table>
-            <tr>
-              <td>
-                الاسم
-              </td>
-              <td>
-                الكمية المطلوبة
-              </td>
-              <td>
-                الوحدة
-              </td>
-              <td>
-                سعر الوحدة
-              </td>
-              <td>
-                الاجمالي
-              </td>
-            </tr>
-            {props.items.map((x) => (x.req_qty > 0 &&
+            </table>
+            <table>
               <tr>
-                <td>{x.name}</td>
-                <td>{x.req_qty}</td>
-                <td>{x.unit}</td>
-                <td>${x.price_unit}</td>
-                <td>${x.total}</td>
+                <td>
+                  الاسم
+                </td>
+                <td>
+                  الكمية المطلوبة
+                </td>
+
+                <td>
+                  سعر الوحدة
+                </td>
+                <td>
+                  الاجمالي
+                </td>
               </tr>
-            ))}
+              {props.items.map((x) => (x.req_qty > 0 &&
+                <tr>
+                  <td>{x.name}</td>
+                  <td>{x.req_qty}</td>
 
-            <tr>
-              <td>اجمالي الفاتورة</td>
-              <td style={{ backgroundColor: "#a5a08e" }}>{billTotal}</td>
-            </tr>
-            <tr><td colSpan={4}>-------------------------</td></tr>
-          </table>
+                  <td>${x.price_unit}</td>
+                  <td>${x.total}</td>
+                </tr>
+              ))}
 
+              <tr>
+                <td>اجمالي الفاتورة</td>
+                <td style={{ backgroundColor: "#a5a08e" }}>{billTotal}</td>
+              </tr>
+              <tr><td colSpan={4}>-------------------------</td></tr>
+            </table>
+
+          </div>
         </div>
         <div className="records-space" >
 

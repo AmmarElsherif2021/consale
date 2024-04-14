@@ -1,17 +1,17 @@
 .item-pop {
-    max-width: 30vw;
-    width: 30vw;
+    min-width: 35vw;
 
-    height: 45vh;
-    max-height: 45vh;
+
+    min-height: 55vh;
+
     /* 50vh */
     padding-bottom: 50px;
     position: fixed;
-    left: 40vw;
+    left: 35vw;
     /* 40vw */
     top: 15vh;
     /* 15vh */
-    background: rgb(156, 170, 174);
+    background: rgb(126, 167, 179);
     border: solid black 5px;
     z-index: 1000;
 }
