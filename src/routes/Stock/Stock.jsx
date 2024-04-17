@@ -90,9 +90,9 @@ function Stock() {
 
             // Insert the new item into items_table
             await db.execute(`
-        INSERT INTO items_table (id, name, description, unit, price_unit, quantity_stock)
-        VALUES (?, ?, ?, ?, ?, ?);
-      `, [item.id, item.name, item.description, item.unit, item.price_unit, item.quantity_stock]);
+        INSERT INTO items_table (id, name, description, unit, price_unit, price_store, quantity_stock)
+        VALUES (?,?,?,?,?,?,?);
+      `, [item.id, item.name, item.description, item.unit, item.price_unit, item.price_store, item.quantity_stock]);
 
             console.log('Item added successfully!');
 
@@ -104,15 +104,16 @@ function Stock() {
 
 
     //modify rcord
-    async function updateItem(itemId, newPrice, stockQty) {
+    async function updateItem(itemId, newPrice, stockQty, priceStore) {
 
         try {
             await db.execute(`
       UPDATE items_table
       SET price_unit = ?
       ,quantity_stock=?
+      ,price_store=?
       WHERE id = ?;
-    `, [newPrice, stockQty, itemId]);
+    `, [newPrice, stockQty, priceStore, itemId]);
             console.log('Item price updated successfully!');
         } catch (error) {
             console.error('Error updating item price:', error);
@@ -169,7 +170,7 @@ function Stock() {
         console.log(`ItemPop ----->${{ ...itemPop }}`)
     };
     // Edit item (handle data validation, error handling)
-    const handleItemEdit = async (iid, qty, p) => {
+    const handleItemEdit = async (iid, qty, p, pStore) => {
         if (!itemPop.id || itemPop.id !== iid) {
             console.warn('Invalid item ID or popup mismatch:', iid);
             return; // Prevent unintended updates
@@ -182,7 +183,7 @@ function Stock() {
             }
 
             //modify db
-            updateItem(iid, p, qty);
+            updateItem(iid, p, qty, pStore);
 
             setItemPop({}); // Close popup
 
@@ -250,6 +251,7 @@ function Stock() {
             description: '',
             quantity_stock: 0,
             price_unit: 0,
+            price_store: 0,
             unit: '',
 
         })
@@ -261,7 +263,7 @@ function Stock() {
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
-        if (id && restOfNewAdded.name && restOfNewAdded.quantity_stock && restOfNewAdded.price_unit && restOfNewAdded.unit) {
+        if (id && restOfNewAdded.name && restOfNewAdded.quantity_stock && restOfNewAdded.price_unit && restOfNewAdded.price_store && restOfNewAdded.unit) {
             setAddedItemPop((prev) => ({
                 id: prev.id,
                 ...restOfNewAdded
@@ -340,12 +342,13 @@ function Stock() {
 
     // Define columns
     const columnDefs = [
-        { headerName: 'ID', field: 'id', Width: 120 },
-        { headerName: 'اسم الصنف', field: 'name', width: 120 },
-        { headerName: 'وصف', field: 'description', width: 120 },
-        { headerName: 'وحدة القياس', field: 'unit', width: 120 },
-        { headerName: 'سعر الوحدة', field: 'price_unit', width: 120 },
-        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 120 },
+        { headerName: 'ID', field: 'id', Width: 95 },
+        { headerName: 'اسم الصنف', field: 'name', width: 95 },
+        { headerName: 'وصف', field: 'description', width: 95 },
+        { headerName: 'وحدة القياس', field: 'unit', width: 95 },
+        { headerName: 'سعر المخزن', field: 'price_store', width: 95 },
+        { headerName: 'سعر الوحدة', field: 'price_unit', width: 95 },
+        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 95 },
         {
             headerName: '',
             field: 'actions',
@@ -386,7 +389,7 @@ function Stock() {
             {itemPop && JSON.stringify(itemPop) != "{}" ?
                 <ItemPop cancelItemPop={cancelItemPop} id={itemPop.id}
                     img={itemPop.image} name={itemPop.name} discription={itemPop.discription} unit={itemPop.unit}
-                    priceUnit={itemPop.price_unit} qtyStock={itemPop.quantity_stock} handleItemEdit={handleItemEdit} />
+                    priceUnit={itemPop.price_unit} priceStore={itemPop.price_store} qtyStock={itemPop.quantity_stock} handleItemEdit={handleItemEdit} />
                 :
                 <div></div>
             }

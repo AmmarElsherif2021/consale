@@ -9,6 +9,7 @@ const AddItemPop = (props) => {
     description: '',
     unit: 'length',
     price_unit: 0,
+    price_store: 0,
     quantity_stock: 0
   });
 
@@ -19,6 +20,7 @@ const AddItemPop = (props) => {
     width: 1
   });
   const [mPrice, setMPrice] = useState(0);
+  const [mStorePrice, setMStorePrice] = useState(0);
   const handleAddPopSubmit = (e) => {
     e.preventDefault();
     handleAddSubmit(e, newAddedItem);
@@ -51,7 +53,8 @@ const AddItemPop = (props) => {
     if (parameter === 'units') {
       setNewAddedItem((p) => ({
         ...p,
-        price_unit: Math.round(itemName.width * itemName.length * p.price_unit)
+        price_unit: Math.round(itemName.width * itemName.length * p.price_unit),
+        price_store: Math.round(itemName.width * itemName.length * p.price_store)
       }))
     }
   }
@@ -87,7 +90,8 @@ const AddItemPop = (props) => {
       (
         {
           ...p,
-          price_unit: Math.round(mPrice * itemName.width * itemName.length).toFixed(2)
+          price_unit: Math.round(mPrice * itemName.width * itemName.length).toFixed(2),
+          price_store: Math.round(mStorePrice * itemName.width * itemName.length).toFixed(2)
         }
       ))
         :
@@ -95,14 +99,15 @@ const AddItemPop = (props) => {
         (
           {
             ...p,
-            price_unit: mPrice
+            price_unit: mPrice,
+            price_store: mStorePrice
           }
         ))
 
 
     }
 
-    , [itemName, mPrice]
+    , [itemName, mPrice, mStorePrice]
   );
 
 
@@ -193,6 +198,13 @@ const AddItemPop = (props) => {
               onChange={(e) => {
                 setMPrice(e.target.value)
               }} />{parameter === 'units' ? (itemName.width != 1 && itemName != 1 ? 'سعر المتر' : 'سعر القطعة') : 'سعر المتر'}
+          </div>
+          <div className='form-label'>
+            جنيه<input className='input' type="number" name="price_store" placeholder='سعر متر المخزن'
+              style={{ height: "30px" }} step={1} min={0} value={mStorePrice}
+              onChange={(e) => {
+                setMStorePrice(e.target.value)
+              }} />{parameter === 'units' ? (itemName.width != 1 || itemName != 1 ? 'سعر المخزن للمتر' : 'سعر المخزن للقطعة') : 'سعر المخزن للمتر'}
           </div>
           <div className='form-label'>
             {

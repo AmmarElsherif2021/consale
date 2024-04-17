@@ -14,6 +14,7 @@ const migrations = {
       unit TEXT,
       price_unit REAL,
       quantity_stock REAL
+      
     );
   
     `,
@@ -57,22 +58,23 @@ const migrations = {
         debt INTEGER,
         FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
     );`,
+        `ALTER TABLE items_table ADD COLUMN price_store REAL`
 
     ],
-    versions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    versions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
 };
 
 async function migrateDb(db) {
     const currentVersion = await getDbVersion(db) || 0; // Get current version or default to 0
-
-    for (let i = currentVersion + 1; i <= migrations.versions.length; i++) {
+    console.log(`VVVVVVVVVVVVVVVVVVVVVVVVVV \n VVVVVVVVVVVVVVVVVVVVVVVVV \n VVVVVVVVVVVVVV ${currentVersion}`)
+    for (let i = currentVersion; i <= migrations.versions.length; i++) {
         const version = migrations.versions[i - 1];
         for (const migration of migrations.queries) {
             try {
                 await db.execute(migration);
             } catch (error) {
                 console.error('Error executing migration:', error);
-                throw error; // Re-throw for proper handling
+                throw error;
             }
         }
         // Update version in database after each successful migration
