@@ -21,7 +21,7 @@ const ItemToBill = (props) => {
          return (maxAvailable)
      }
  */
-    const { cancelItemToBill, handleItemsListPush, handleReqQty } = props;
+    const { cancelItemToBill, handleItemsListPush, handleReqQty, remainedStock } = props;
     const [reqQty, setReqQty] = useState(0);
     useEffect(() => console.log, [reqQty]);
     function handleChange(e) {
@@ -50,7 +50,7 @@ const ItemToBill = (props) => {
                         <p>سعر {props.unit === 'length' ? 'المتر' : 'الوحدة'} </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
                     <span style={styleParagraph
                     }>
-                        <p>المتاح</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.stockQty.toFixed(2)}</p></span>
+                        <p>المتاح</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.remainedStock}</p></span>
 
                 </h4>
             </div>

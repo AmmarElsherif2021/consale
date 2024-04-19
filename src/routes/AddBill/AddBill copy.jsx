@@ -40,7 +40,9 @@ const AddBill = () => {
 
   // Create new actual bill
 
-  const [newBill, setNewBill] = useState({});
+  const [newBill, setNewBill] = useState({
+
+  });
   useEffect(() =>
     setNewBill({
       bid: `b-${Math.random().toString(36).substring(2, 7).slice(0, 5)}`,
@@ -234,7 +236,7 @@ const AddBill = () => {
     e.preventDefault();
 
     if (newAdded && newAdded.id === id) {
-      setAddedItems((prev) => [...prev, newAdded]); // Add newAdded regardless of addedItems' length
+      setAddedItems((prev) => [...prev.filter(x => x.id !== id), newAdded]); // Add newAdded regardless of addedItems' length
 
     } else {
       console.log(`did not add ${JSON.stringify(newAdded)} to bill items list`);
@@ -488,7 +490,7 @@ const AddBill = () => {
     const idExists = await db.select('SELECT * FROM items_table WHERE id = ?', [id]);
     if (idExists) {
       const newQtyStock = Number(idExists[0].quantity_stock) - req_qty
-      await db.execute("UPDATE items_table SET quantity_stock=? WHERE id=?", [newQtyStock.toFixed(2), id]);
+      await db.execute("UPDATE items_table SET quantity_stock=? WHERE id=?", [newQtyStock, id]);
     }
   };
 
@@ -701,7 +703,7 @@ const AddBill = () => {
     fetchData();
   }, [oldBillPop]);
 
-  //useEffect(() => setAddedItems([]), [newBill]);
+  useEffect(() => setAddedItems([]), [newBill]);
   useEffect(() => console.log('newAdded activated'), [newAdded, countRestoredPop]);
   useEffect(() => console.log('filtering'), [filterText]);
   useEffect(() => console.log('paginating'), [resetPaginationToggle]);
@@ -743,7 +745,6 @@ const AddBill = () => {
               priceUnit={newAdded.price_unit}
 
               stockQty={newAdded.quantity_stock}
-              remainedStock={newAdded.quantity_stock - Number(addedItems.filter((x) => x.id === newAdded.id).reduce((s, x) => s + Number(x.req_qty), 0))}
               id={newAdded.id}
               total={newAdded.total}
               cancelItemToBill={cancelItemToBill}
@@ -905,20 +906,16 @@ const AddBill = () => {
               <table >
                 <tr>
                   <th> {lang == 'ar' ? 'اسم الصنف' : 'product name'}</th>
-                  <th> {lang == 'ar' ? ' العرض' : 'Width'}</th>
-                  <th> {lang == 'ar' ? ' الطول' : 'Length'}</th>
                   <th> {lang == 'ar' ? 'الكمية المطلوبة' : 'Qty. Req'}</th>
-                  <th> {lang == 'ar' ? 'النوع' : 'Unit'}</th>
+                  <th> {lang == 'ar' ? 'الوحدة' : 'Unit'}</th>
                   <th> {lang == 'ar' ? 'سعر الوحدة' : 'Price/Unit'}</th>
                   <th> {lang == 'ar' ? 'اجمالي' : 'Total'}</th>
                 </tr>
                 {newBill.items && newBill.items.length ? newBill.items.map((x) => x.req_qty > 0 &&
                   <tr key={x.ibid}>
-                    <td style={{ backgroundColor: "#5e9b88" }}>{x.name.split(':')[1]}</td>
-                    <td>{x.name.split(':')[0].split('x')[0]}</td>
-                    <td>{x.unit === 'units' ? x.name.split(':')[0].split('x')[1] : x.req_qty}</td>
-                    <td>{x.unit === 'units' ? x.req_qty : 1}</td>
-                    <td>{x.unit === 'length' ? 'رول' : 'سجادة'}</td>
+                    <td style={{ backgroundColor: "#5e9b88" }}>{x.name}</td>
+                    <td>{x.req_qty}</td>
+                    <td>{x.unit === 'length' ? 'متر' : 'وحدة'}</td>
                     <td>${x.price_unit}</td>
                     <td>${x.total}</td>
                     <td><button className='del-row' key={x.ibid} onClick={() => handleOldItem(x, newBill.bid, 7)}><img src={delIcon} style={{ width: "20px" }} /></button></td>
@@ -927,10 +924,8 @@ const AddBill = () => {
                   : (<tr></tr>)}
                 {addedItems.length ? addedItems.map((x) =>
                 (<tr key={x.ibid}>
-                  <td>{x.name.split(':')[1]}</td>
-                  <td>{x.name.split(':')[0].split('x')[0]}</td>
-                  <td>{x.unit === 'units' ? x.name.split(':')[0].split('x')[1] : x.req_qty}</td>
-                  <td>{x.unit === 'units' ? x.req_qty : 1}</td>
+                  <td>{x.name}</td>
+                  <td>{x.req_qty}</td>
                   <td>{x.unit === 'length' ? 'متر' : 'وحدة'}</td>
                   <td>${x.price_unit}</td>
                   <td>${x.total}</td>

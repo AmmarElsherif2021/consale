@@ -16,6 +16,10 @@
        /* This adds a 3px border to the moving bar */
    }
 
+   svg {
+       margin: 2px;
+   }
+
    .save-bill-pop {
        width: 66vw;
        /* 75vw */
@@ -76,7 +80,7 @@
        table {
            width: 100%;
            background-color: white;
-           border: gray solid 1px;
+           border: gray solid 0.2px;
 
            th {
                border: gray solid 1px;
