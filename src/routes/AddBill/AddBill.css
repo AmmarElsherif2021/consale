@@ -60,10 +60,10 @@
 }
 
 .right-section-header {
-    background: black;
+    background: rgb(0, 0, 0);
     position: relative;
     border: black solid 3px;
-    height: 15vh;
+    height: 16vh;
     /* 20vh */
     width: 24.5vw;
     /* 22vw */
@@ -220,18 +220,17 @@
 }
 
 .arrange-btn {
-    width: 3.7vw;
+    width: 3.9vw;
     min-height: 3.9vw;
     max-height: 3.9vw;
     position: relative;
     border: solid black 5px;
     background-color: #235945;
     border-radius: 5px;
-    margin: 1px;
 }
 
 .arrange-btn:hover {
-    width: 3.7vw;
+    width: 3.9vw;
     min-height: 3.9vw;
     max-height: 3.9vw;
     background-color: #2e755b;

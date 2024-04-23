@@ -3,21 +3,23 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import Database from "tauri-plugin-sql-api";
 
 const db = await Database.load("sqlite:test.db");
-
+//        `DROP TABLE items_table`,
 // ... Migration functions (migrateDb, getDbVersion, setDbVersion) remain the same
 const migrations = {
     queries: [
+
+
         `CREATE TABLE IF NOT EXISTS items_table (
       id TEXT PRIMARY KEY, 
       name TEXT,
       description TEXT,
       unit TEXT,
       price_unit REAL,
+      price_import REAL,
       quantity_stock REAL
-      
     );
-  
-    `,
+    `
+        ,
         `CREATE TABLE IF NOT EXISTS bills_table (
       bid TEXT PRIMARY KEY,
       c_name TEXT,
@@ -47,8 +49,6 @@ const migrations = {
 
 
         `CREATE TABLE IF NOT EXISTS records_table (
-      
-
       date TEXT PRIMARY KEY,
         bid TEXT,
         added_items TEXT,
@@ -58,15 +58,24 @@ const migrations = {
         debt INTEGER,
         FOREIGN KEY(bid) REFERENCES bills_table(bid) ON DELETE CASCADE 
     );`,
-        `ALTER TABLE items_table ADD COLUMN price_store REAL`
+
+
+
 
     ],
-    versions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+    versions: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+        26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41
+        , 42, 43, 44
+    ]
 };
+async function columnExists(db, tableName, columnName) {
+    const result = await db.select(`PRAGMA table_info(${tableName})`);
+    return result.some(row => row.name === columnName);
+}
 
 async function migrateDb(db) {
-    const currentVersion = await getDbVersion(db) || 0; // Get current version or default to 0
-    console.log(`VVVVVVVVVVVVVVVVVVVVVVVVVV \n VVVVVVVVVVVVVVVVVVVVVVVVV \n VVVVVVVVVVVVVV ${currentVersion}`)
+    const currentVersion = await getDbVersion(db) || 0;
     for (let i = currentVersion; i <= migrations.versions.length; i++) {
         const version = migrations.versions[i - 1];
         for (const migration of migrations.queries) {
@@ -77,13 +86,15 @@ async function migrateDb(db) {
                 throw error;
             }
         }
-        // Update version in database after each successful migration
         await setDbVersion(db, version);
     }
 }
+
 async function getDbVersion(db) {
     try {
+        const tableNames = await db.select(`SELECT name FROM sqlite_master WHERE type='table';`)
         const result = await db.select('PRAGMA user_version');
+        console.log(`tables name ${JSON.stringify(tableNames)}`)
         const version = result[0]?.user_version;
         console.log('Database version:', version);
         return version;
@@ -101,7 +112,6 @@ async function setDbVersion(db, version) {
         throw error; // Re-throw for proper handling
     }
 }
-
 
 const DbContext = createContext();
 

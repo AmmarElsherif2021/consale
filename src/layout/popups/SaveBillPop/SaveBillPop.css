@@ -70,8 +70,9 @@
        height: auto;
        min-height: 60vh;
        width: 100%;
+       min-width: 40vw;
        border: solid black 3px;
-
+       padding: 5px;
        background: white;
 
 

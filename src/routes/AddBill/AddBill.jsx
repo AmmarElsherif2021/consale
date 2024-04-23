@@ -702,7 +702,7 @@ const AddBill = () => {
   }, [oldBillPop]);
 
   //useEffect(() => setAddedItems([]), [newBill]);
-  useEffect(() => console.log('newAdded activated'), [newAdded, countRestoredPop]);
+  useEffect(() => console.log('newAdded activated'), [newAdded, addedItems, countRestoredPop]);
   useEffect(() => console.log('filtering'), [filterText]);
   useEffect(() => console.log('paginating'), [resetPaginationToggle]);
   useEffect(() => console.log('arranging?'), [arranged]);
@@ -852,7 +852,7 @@ const AddBill = () => {
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
                 <div style={{ display: 'flex', flexDirection: 'row', }}>
 
-                  {newBill && newBill.records && newBill.records.length > 1 ? <h4>{'Customer Name: '}{newBill.c_name}</h4>
+                  {newBill && newBill.records && newBill.records.length > 1 ? <h4>{'اسم العميل: '}{newBill.c_name}</h4>
                     :
                     <input
                       style={{ maxHeight: '30px', margin: '5px', maxWidth: '120px' }}

@@ -11,6 +11,17 @@
 }
 
 
+.header {
+    position: absolute;
+    top: 1vh;
+    background-color: none;
+    width: 78vw;
+    right: 2vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
 
 .input {
 
@@ -52,50 +63,87 @@
     justify-content: center;
     display: flex;
     flex-direction: row;
+
 }
 
 .add-item-btn {
-    position: relative;
+
     width: fit-content;
-    height: 50;
-    min-height: 50px;
-    background-color: rgb(75, 128, 75);
+    width: 5vw;
+    height: 5vw;
+    background-color: rgb(75, 122, 128);
     border: solid black 5px;
     justify-content: center;
-    margin: 10px;
+    padding: 10px;
+    margin: 2px;
 
 }
 
 .add-item-btn:hover {
-    width: 50px;
-    height: 50px;
-    background-color: rgb(72, 156, 114);
+    width: 5.1vw;
+    height: 5.1vw;
+    background-color: rgb(57, 134, 150);
     border: solid rgb(26, 24, 24) 4px;
 
 }
 
 .add-img {
-    position: absolute;
+
     width: 30px;
-    left: 5px;
-    top: 5px
 }
 
-.data-table {
-    display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    align-items: center;
-    margin-top: 1vh;
-    width: 85vw;
+.refresh-btn {
+    width: 5vw;
+    height: 5vw;
+    background-color: #268864;
+    border: solid black 5px;
+    justify-content: center;
+    padding: 10px;
+    margin: 2px;
 
 
+}
+
+.refresh-btn:hover {
+    width: 5.1vw;
+    height: 5.1vw;
+    background-color: rgb(72, 156, 114);
+    border: solid rgb(26, 24, 24) 4px;
+
+}
+
+.refresh {
+    width: 3vw
+}
+
+.export-btn {
+    width: 5vw;
+    height: 5vw;
+    background-color: #86a097;
+    border: solid black 5px;
+    justify-content: center;
+    padding: 10px;
+    margin: 2px;
+}
+
+.export-btn:hover {
+    width: 5.1vw;
+    height: 5.1vw;
+    background-color: rgb(232, 255, 243);
+    border: solid rgb(26, 24, 24) 4px;
 
 }
 
 .grid {
     background: none;
-    width: 77vw;
+    width: 70vw;
+    background-color: none;
+    position: absolute;
+    top: 35vh;
+    right: 1vw;
+
+
+
 
 
 }
@@ -137,6 +185,7 @@
 
     background: rgb(0, 0, 0);
     width: 100%;
+    margin-top: 2vh;
 
 
 
@@ -164,20 +213,4 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-}
-
-.refresh-btn {
-    width: 3.5vw;
-    height: 3.5vw;
-    background-color: #268864;
-    border: solid black 5px;
-    justify-content: center;
-    padding: 0;
-
-
-}
-
-.refresh {
-    background-color: #268864;
-    width: 2vw;
 }

@@ -33,10 +33,10 @@ const ItemPop = (props) => {
 
             <div className='item-pop-p'>
                 <div>ID: <span>{props.id}</span>
-                    <br /><span style={{ height: "30px" }}> اخر تسجيل <span style={{ width: "25px" }}>{props.priceStore} :</span></span><span><input type="number" value={priceStore} onChange={handlePriceStore} className='edit-input' style={{ width: "25px" }} /><small> {props.unit === 'length' ? 'جنيه/متر' : 'جنبه/وحدة'}</small></span>
+                    <br /><span style={{ height: "30px" }}> سعر المخزن|اخر تسجيل<span style={{ width: "25px" }}>{props.priceStore} :</span></span><span><input type="number" value={priceStore} onChange={handlePriceStore} className='edit-input' style={{ width: "25px" }} /><small> {props.unit === 'length' ? 'جنيه/متر' : 'جنبه/وحدة'}</small></span>
 
-                    <br /><span style={{ height: "30px" }}> اخر تسجيل <span style={{ width: "25px" }}>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} className='edit-input' style={{ width: "25px" }} /><small> {props.unit === 'length' ? 'جنيه/متر' : 'جنبه/وحدة'}</small></span>
-                    <br /> <small style={{ height: "30px" }}>اخر تسجيل<span style={{ width: "25px" }}>{props.qtyStock} :</span><span> <small style={{ color: 'red' }}>الكمية بعد التعديل :{Number(qty) + Number(props.qtyStock)}</small><input className='edit-input' type="number" value={qty} onChange={handleQty} style={{ width: "40px" }} /> الكميةالمضافة </span> </small>
+                    <br /><span style={{ height: "30px" }}> سعر البيع| اخر تسجيل <span style={{ width: "25px" }}>{props.priceUnit} :</span></span><span><input type="number" value={price} onChange={handlePrice} className='edit-input' style={{ width: "25px" }} /><small> {props.unit === 'length' ? 'جنيه/متر' : 'جنبه/وحدة'}</small></span>
+                    <br /> <small style={{ height: "30px" }}>الكمية| اخر تسجيل<span style={{ width: "25px" }}>{props.qtyStock} :</span><span> <small style={{ color: 'red' }}>الكمية بعد التعديل :{Number(qty) + Number(props.qtyStock)}</small><input className='edit-input' type="number" value={qty} onChange={handleQty} style={{ width: "40px" }} /> الكميةالمضافة </span> </small>
                 </div>
 
             </div>

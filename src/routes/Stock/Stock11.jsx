@@ -16,13 +16,25 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 
+
+//Start..
+
+
+
+
+
+
+//export csv component
+
 const Export = ({ onExport }) => (
     <CSVLink data={onExport()} filename={'stockData.csv'} className='export-link'>
         <small>انسخ بيانات المخزن</small>
     </CSVLink>
 );
 
+
 function Stock() {
+
     const { db, items, billsRecords, isLoading, setItems } = useDb();
     const [stockData, setStockData] = useState([]);
     const [filterText, setFilterText] = useState('');
@@ -43,6 +55,8 @@ function Stock() {
             const result = await db.select("SELECT * FROM items_table");
             //setItems(result)
             setStockData(result);
+            setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_import)) + sum, 0));
+            setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_unit)) + sum, 0))
         } catch (error) {
             console.error('Error fetching stock data:', error);
         }
@@ -114,11 +128,17 @@ function Stock() {
 
     //.............................................................................................
 
+
+
+
+
+    //Edit an item popup ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
     const handleOpenEdit = (e, iid) => {
         // Stop default form submission if applicable
-        //fetchData();
         e.preventDefault();
-        const item = stockData.filter((x) => x.id
+        const item = items.filter((x) => x.id
             == iid)[0]; // Find the correct item
 
         if (item) {
@@ -162,6 +182,10 @@ function Stock() {
         }
         cancelItemPop();
     };
+
+    //Delete Item |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
 
     const handleItemDel = (e, iid) => {
         e.preventDefault
@@ -242,6 +266,8 @@ function Stock() {
         }
     };
 
+
+
     useEffect(() => {
         fetchData();
     }, [addedItemPop, itemPop, delItemPop]);
@@ -249,24 +275,27 @@ function Stock() {
 
 
     //trigger changes
-    useEffect(() => { console.log('refresh') }, [items, itemPop, stockData, addedItemPop]);
+    useEffect(() => { console.log('refresh') }, [items, stockData, addedItemPop]);
 
-    //cummulatives of the stock
-    useEffect(() => {
-        setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.quantity_stock) * Number(obj.price_import)) + sum, 0));
-
-        console.log(`stokTotal activated`)
-    }, [stockData]);
-    useEffect(() => {
-        setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.price_unit * obj.quantity_stock)) + sum, 0));
-
-        console.log(`stockSellPrice`)
-    }, [stockData])
     //Search ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     const filteredItems = stockData && stockData.length && stockData.filter(
         item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
     );
+
+    const subHeaderComponentMemo = useMemo(() => {
+
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
+        );
+    }, [filterText, resetPaginationToggle]);
 
     const handleClear = () => {
         if (filterText) {
@@ -288,31 +317,17 @@ function Stock() {
         const csvData = stockData.map(({ id, ...rest }) => rest);
         return csvData;
     };
-
-    const actionsMemo = useMemo(() => (
-        <CSVLink data={handleExport()} filename={"my-data.csv"}>
-
-            تنزيل
-
-        </CSVLink>
-    ), []);
+    const actionsMemo = useMemo(() => <Export onExport={handleExport} />, []);
 
 
-    const subHeaderComponentMemo = useMemo(() => {
 
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
 
-        return (
-            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
-        );
-    }, [filterText, resetPaginationToggle]);
+    //TEST:
 
-    // Define columns
+
+
+
+
 
     // Define columns
     const columnDefs = [
@@ -357,8 +372,6 @@ function Stock() {
         }
     ];
 
-
-
     return (
         <div className="route-content stock">
 
@@ -386,13 +399,11 @@ function Stock() {
                         generateRandomId={generateRandomId}
                     /> : <div></div>
             }
-            <div className='header'>
-                <h1>إدارة المخزن</h1>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', width: '40vw' }}>
+            <h1>إدارة المخزن</h1>
+            <div className='add-stock'>
+                <h3>اضف صنف جديد</h3>
 
-                    <span>{stockTotal}:اجمالي قيم الشراء</span> <span>--</span> <span>{stockSellPrice}:اجمالي قيم البيع</span>
-
-
+                <div className='btns-header'>
                     <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}>
                         <img className='add-img' src={addPlus} />
                     </button>
@@ -400,15 +411,10 @@ function Stock() {
                     <button className='refresh-btn' onClick={() => { fetchData() }}>
                         <img className='refresh' src={refresh} />
                     </button>
-
-                    <button className='export-btn' >
-                        {actionsMemo}
-                    </button>
-
-
                 </div>
 
-
+            </div>
+            <div className='data-table'>
                 <div className="filter-component">
                     <FilterComponent
                         onFilter={e => setFilterText(e.target.value)}
@@ -417,36 +423,32 @@ function Stock() {
                         placeHolder={'ابحث باسم الصنف'}
                     />
                 </div>
+                <div>
+                    <table>
+                        <tr><th>اجمالي قيم الشراء</th> <th>اجمالي قيم البيع</th></tr>
+                        <tr><td>{stockTotal}</td><td>{stockSellPrice}</td></tr>
+                    </table>
+                </div>
+                <div className='grid'>
+                    <AgGridReact
+                        className='grid-table'
 
+                        rowData={filteredItems}
+                        columnDefs={columnDefs}
+                        pagination={true}
+                        paginationPageSize={7}
+                        paginationAutoPageSize={resetPaginationToggle}
+                        subHeaderComponent={subHeaderComponentMemo}
+                        rowSelection="multiple"
+                        rowHeight={55}
+                        headerHeight={40}
+
+                        domLayout='autoHeight'
+                        onGridReady={actionsMemo}
+                    />
+                </div>
 
             </div>
-
-
-
-
-
-
-
-
-
-            <AgGridReact
-                className='grid'
-
-                rowData={filteredItems}
-                columnDefs={columnDefs}
-                pagination={true}
-                paginationPageSize={7}
-                paginationAutoPageSize={resetPaginationToggle}
-                subHeaderComponent={subHeaderComponentMemo}
-                rowSelection="multiple"
-                rowHeight={55}
-                headerHeight={40}
-
-                domLayout='autoHeight'
-                onGridReady={actionsMemo}
-            />
-
-
 
         </div>
     );

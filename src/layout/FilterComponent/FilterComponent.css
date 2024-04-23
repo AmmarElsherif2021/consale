@@ -1,5 +1,6 @@
 .filter-component {
-    width: 80%;
+    width: 15vw;
+    height: 15vh;
     position: relative;
     left: 0;
     top: 0;
@@ -11,7 +12,7 @@
 }
 
 .cancel {
-    width: 3.7vw;
+    width: 3.9vw;
     min-height: 3.9vw;
     max-height: 3.9vw;
     position: relative;
