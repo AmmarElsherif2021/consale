@@ -1,9 +1,11 @@
 import './AddItemPop.css';
 import cancelIcon from '../../../assets/cancel.svg'
 import { useEffect, useState } from 'react';
+import { useLang } from '../../../langContext';
 const AddItemPop = (props) => {
     const { cancelAddItemPop, handleAddSubmit, generateRandomId, addRecord } = props;
     const [parameter, setParameter] = useState('');
+    const { lang, useLang } = useLang();
     const [newAddedItem, setNewAddedItem] = useState({
         id: generateRandomId().toString(),
         name: '',
@@ -34,7 +36,7 @@ const AddItemPop = (props) => {
         <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
             <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
             <div className='pop-body'></div>
-            <h1>اضف الى المخزن </h1>
+            <h1>{lang == 'ar' ? 'اضف الى المخزن' : 'Add to stock'}</h1>
             <div className='add-account-form'>
                 <div>
                     <div><label className='form-label'>
@@ -44,7 +46,7 @@ const AddItemPop = (props) => {
                         <input className='input' type="text" name="description" placeholder='اكتب وصف' onChange={handleInputChange} />
                     </label></div>
                     <div className='form-label labels'>
-                        <h4>الوحدة المستخدمة</h4>
+                        <h4> المستخدمة</h4>
                         <label>
                             وزن
                             <input className='input' type="radio"

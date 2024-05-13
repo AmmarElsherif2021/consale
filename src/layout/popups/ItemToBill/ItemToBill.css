@@ -51,8 +51,9 @@
 .item-bill-pop-p {
     display: flex;
     flex-direction: row;
-    background: none;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    max-height: 17vh;
+
 }
 
 .add-item-bill-btn {

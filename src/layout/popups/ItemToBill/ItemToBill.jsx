@@ -3,6 +3,7 @@ import AnonPic from "../../../assets/product.svg"
 import cancelIcon from '../../../assets/cancel.svg'
 import addPlus from '../../../assets/add-plus.svg'
 import { useState, useEffect } from 'react';
+import { useLang } from '../../../langContext';
 //const db = await Database.load("sqlite:test.db");
 
 /*
@@ -22,6 +23,7 @@ const ItemToBill = (props) => {
      }
  */
     const { cancelItemToBill, handleItemsListPush, handleReqQty, remainedStock } = props;
+    const { lang, setLang } = useLang();
     const [reqQty, setReqQty] = useState(0);
     useEffect(() => console.log, [reqQty]);
     function handleChange(e) {
@@ -29,7 +31,7 @@ const ItemToBill = (props) => {
         handleReqQty(e.target.value);
     }
 
-    const styleParagraph = { display: "flex", flexDirection: "row-reverse", alignItems: "center" }
+    const styleParagraph = { display: "flex", flexDirection: "row-reverse", alignItems: "center", justifyContent: "center", padding: 0, margin: 0 }
 
     return (
         <form className='item-bill-pop' onSubmit={(e) => handleItemsListPush(e, props.id)}>
@@ -41,27 +43,28 @@ const ItemToBill = (props) => {
                     <span style={styleParagraph
                     }>
 
-                        <p>الاسم </p> <p style={{ minWidth: "140px", marginRight: '5px' }}>{props.name}</p></span>
-                    <span style={styleParagraph
-                    }>
+                        <p>{lang == 'ar' ? 'الاسم' : 'Name'} </p> <p style={{ minWidth: "140px", marginRight: '5px' }}>{props.name}</p>
+
                     </span>
+
+
                     <span style={styleParagraph
                     }>
-                        <p>سعر {props.unit === 'length' ? 'المتر' : 'الوحدة'} </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
+                        <p>{lang == 'ar' ? 'السعر' : 'price'} {props.unit === 'length' ? 'المتر' : 'الوحدة'} </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
                     <span style={styleParagraph
                     }>
-                        <p>المتاح</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.remainedStock}</p></span>
+                        <p>{lang == 'ar' ? 'المتاح' : 'Available'}</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.remainedStock}</p></span>
 
                 </h4>
             </div>
 
             <div className='item-bill-pop-p'>
 
-                <h4 style={{ marginLeft: "5px", paddingLeft: "5px", display: "flex", flexDirection: "row-reverse", alignItems: "center", justifyContent: "space-between" }}>
+                <h4 style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: '17vh' }}>
                     <p style={styleParagraph
-                    }>الكمية المطلوبة <span><input style={{ width: "70px", margin: "5px" }} min="0" step={props.unit === 'length' ? 0.01 : 1} max={props.stockQty} type="number" id="reqQty" value={reqQty} onChange={(e) => handleChange(e)} /></span></p> <br />
+                    }>{lang == 'ar' ? 'الكمية المطلوبة' : 'Req. Qty.'}  <span><input style={{ width: "70px", margin: "5px" }} min="0" step={props.unit === 'length' ? 0.01 : 1} max={props.stockQty} type="number" id="reqQty" value={reqQty} onChange={(e) => handleChange(e)} /></span></p> <br />
                     <p style={styleParagraph
-                    }><p> اجمالي السعر </p> <span style={{ marginRight: '5px' }}>{props.unit === 'length' ? Math.round(Number(reqQty) * Number(props.priceUnit) * Number(props.name.split(':')[0])) : Math.round(Number(reqQty) * Number(props.priceUnit))}</span><br /></p>
+                    }> {lang == 'ar' ? 'اجمالي السعر' : 'Total Price'} <span style={{ marginRight: '5px' }}>{props.unit === 'length' ? Math.round(Number(reqQty) * Number(props.priceUnit) * Number(props.name.split(':')[0])) : Math.round(Number(reqQty) * Number(props.priceUnit))}</span><br /></p>
 
                 </h4>
 

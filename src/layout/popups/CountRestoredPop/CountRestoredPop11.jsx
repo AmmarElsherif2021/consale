@@ -1,7 +1,9 @@
 import './CountRestoredPop.css';
 import cancelIcon from '../../../assets/cancel.svg';
 import { useEffect, useState } from 'react';
+import { useLang } from '../../../langContext';
 const CountRestoredPop = (props) => {
+    const { lang, setLang } = useLang();
     const { cancelCountRestoredPop, confirmRestoredPop } = props;
     const [restored, setRestored] = useState(0);
     useEffect(() => console.log(`props.id=============>`, props.ibid), [])
@@ -9,7 +11,7 @@ const CountRestoredPop = (props) => {
         <div className='count-restored-pop'>
             <button className='cancel-count-restored-pop' onClick={cancelCountRestoredPop}><img className='cancel-icon' src={cancelIcon} /></button>
             <div className='card-body' style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                <h3>مرتجع</h3>
+                <h3>{lang == 'ar' ? 'مرتجع' : 'Restoring'}</h3>
 
                 <small style={{ color: "red" }}>انت الان تقوم بارجاع</small>
                 <small>{props.name} </small>

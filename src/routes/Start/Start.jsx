@@ -83,7 +83,7 @@ const Start = () => {
     }
   };
   // Side bar routes
-  const routesArr = [['Dashboard', 'لوحة التحكم'], ['Stock', 'إدارة المخزن'], ['Addbill', 'اضف فاتورة']];
+  const routesArr = [['Dashboard', ' الحسابات', 'Countings'], ['Stock', 'إدارة المخزن', 'Stock Management'], ['Addbill', 'اضف فاتورة', 'Add Bill']];
 
 
 
@@ -108,7 +108,7 @@ const Start = () => {
                 <ul className='sidebar-list'>
                   {routesArr.map((x) => (
                     <li key={x}>
-                      <Link className="sidebar-link" to={`/${x[0]}`} onClick={() => setIntro(false)}>{x[1]}</Link>
+                      <Link className="sidebar-link" to={`/${x[0]}`} onClick={() => setIntro(false)}>{lang == 'ar' ? x[1] : x[2]}</Link>
                     </li>
                   ))}
                 </ul>

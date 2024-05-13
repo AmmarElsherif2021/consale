@@ -7,7 +7,7 @@ import { BillProvider, useBill } from '../../../billContext';
 import { ProgressBar } from 'react-bootstrap';
 import { Table } from '@material-ui/core';
 import { useDb } from '../../../stockContext';
-
+import { useLang } from '../../../langContext';
 import ReactToPrint from 'react-to-print';
 
 
@@ -119,24 +119,24 @@ const SaveBillPop = (props) => {
         <div style={{ overflowY: 'auto', height: '60vh', overflowX: 'hidden' }}>
           <div className="current-space" ref={currentRef}>
             <table>
-              <tr><th>تاريخ</th><th>تليفون</th><th>الاسم</th></tr>
+              <tr><th>{lang == 'ar' ? 'التاريخ' : 'Date'}</th><th>{lang == 'ar' ? 'موبايل' : 'Phone'}</th><th>{lang == 'ar' ? 'الاسم' : 'Name'}</th></tr>
               <tr><td>{props.date}</td><td>{props.cPhone}</td><td>{props.cName}</td></tr>
 
             </table>
             <table>
               <tr>
                 <td>
-                  الاسم
+                  {lang == 'ar' ? 'الاسم' : 'Name'}
                 </td>
                 <td>
-                  الكمية المطلوبة
+                  {lang == 'ar' ? 'الكمية المطلوبة' : 'Req. Qty'}
                 </td>
 
                 <td>
-                  سعر الوحدة
+                  {lang == 'ar' ? 'سعر الوحدة' : 'Price/Unit'}
                 </td>
                 <td>
-                  الاجمالي
+                  {lang == 'ar' ? 'اجمالي' : 'Total'}
                 </td>
               </tr>
               {props.items.map((x) => (x.req_qty > 0 &&
@@ -150,7 +150,7 @@ const SaveBillPop = (props) => {
               ))}
 
               <tr>
-                <td>اجمالي الفاتورة</td>
+                <td>{lang == 'ar' ? 'اجمالي الفاتورة' : 'Bill Total'} </td>
                 <td style={{ backgroundColor: "#a5a08e" }}>{billTotal}</td>
               </tr>
               <tr><td colSpan={4}>-------------------------</td></tr>
@@ -162,7 +162,7 @@ const SaveBillPop = (props) => {
 
 
           <div ref={historyRef}>
-            <h4>تاريخ المعاملات</h4>
+            <h4>{lang == 'ar' ? 'المعاملات السابقة' : 'History of Ops.'} </h4>
             {records && records.length ?
               records.map((y) =>
               (y && y.date &&
@@ -170,31 +170,31 @@ const SaveBillPop = (props) => {
 
                 <div key={y.date} className="records" style={{ border: 'solid' }}>
                   <table style={{ overflowY: "auto", alignItems: "center" }}>
-                    <tr style={{ boreder: 'dashed' }}>بضاعة مضافة</tr>
-                    {y && y.added_items && y.added_items ? <tr style={{ backgroundColor: "#a5a08e" }}><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : ` `}
-                    {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)}
-                    <tr style={{ boreder: 'dashed' }}>مرتجع</tr>
-                    {y && y.restored_items && y.restored_items !== "" ? <tr style={{ backgroundColor: "#a5a08e" }}><th>الاسم</th><th>كمية</th><th>اجمالي</th></tr> : <tr></tr>}
+                    <tr style={{ boreder: 'dashed' }}>{lang == 'ar' ? 'بصاعة مضافة' : 'Added Items'} </tr>
+                    {y && y.added_items && y.added_items ? <tr style={{ backgroundColor: "#a5a08e" }}><th>{lang == 'ar' ? 'الاسم' : 'Name'}</th><th>{lang == 'ar' ? 'الكمية' : 'Qty'}</th><th>{lang == 'ar' ? 'اجمالي' : 'Total'}</th></tr> : <tr></tr>}
+                    {y && y.added_items && y.added_items !== "" ? JSON.parse(y.added_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.req_qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">--</td>  </tr>)}
+                    <tr style={{ boreder: 'dashed' }}>{lang == 'ar' ? 'مرتجع' : 'Restored'}</tr>
+                    {y && y.restored_items && y.restored_items !== "" ? <tr style={{ backgroundColor: "#a5a08e" }}><th>{lang == 'ar' ? 'الاسم' : 'Name'}</th><th>{lang == 'ar' ? 'الكمية' : 'Qty'}</th><th>{lang == 'ar' ? 'اجمالي' : 'Total'}</th></tr> : <tr></tr>}
 
-                    {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">----------</td>  </tr>)
+                    {y && y.restored_items && y.restored_items ? JSON.parse(y.restored_items).map((z) => z.ibid && <tr key={z.ibid}><td>{z.name}</td><td>{z.qty}</td><td>{z.total}</td></tr>) : (<tr><td colSpan="3">---</td>  </tr>)
                     }
-                    <tr><td colSpan={3}>-------------------------</td></tr>
+                    <tr><td colSpan={3}>---</td></tr>
                   </table>
 
 
                   <table>
 
                     <tr style={{ boreder: 'dashed' }} >
-                      <th style={{ backgroundColor: "#a5a08e" }}>تاريخ المعاملة</th><td>{y.date}</td>
+                      <th style={{ backgroundColor: "#a5a08e" }}>{lang == 'ar' ? 'تاريخ المعاملة' : 'Op. Date'} </th><td>{y.date}</td>
                     </tr>
-                    <tr><th style={{ backgroundColor: "#a5a08e" }}>المطلوب</th><td>{y.debt}</td></tr>
-                    <tr><th style={{ backgroundColor: "#a5a08e" }}>تم دفع </th><td>{y.paid}</td></tr>
-                    <tr><th style={{ backgroundColor: "#a5a08e" }}>اجمالي الفاتورة</th><td>{y.b_total}</td></tr>
-                    <tr><td colSpan={4}>-------------------------</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}>{lang == 'ar' ? 'المطلوب' : 'Req.'}</th><td>{y.debt}</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}>{lang == 'ar' ? 'اجمالي المدفوع' : 'Total Paid'}  </th><td>{y.paid}</td></tr>
+                    <tr><th style={{ backgroundColor: "#a5a08e" }}> {lang == 'ar' ? 'اجمالي الفاتورة' : 'Total of Bill'}</th><td>{y.b_total}</td></tr>
+                    <tr><td colSpan={4}>---</td></tr>
                   </table>
 
                 </div>
-              )) : <div>لا توجد معاملات سابقة</div>}
+              )) : <div>ل{lang == 'ar' ? 'لا توجد معاملات سابقة' : 'No Previous Operations'}</div>}
           </div>
         </div>
       </div>
@@ -214,7 +214,7 @@ const SaveBillPop = (props) => {
 
 
           <span style={{ minWidth: "200px", display: "flex", flexDirection: "row-reverse", justifyContent: "space-between", alignItems: "center" }}>
-            <h4>مدفوع</h4>
+            <h4>{lang == 'ar' ? 'المدفوع' : 'Paid'}</h4>
             <input
               type="number"
               min={0}
@@ -224,14 +224,14 @@ const SaveBillPop = (props) => {
               style={{ height: "2vh", width: "3.7vw", border: "solid", marginLeft: "5px" }}
             />
 
-            <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>المطلوب</h4>
+            <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>{lang == 'ar' ? 'المطلوب' : 'Required'}</h4>
             <h5 style={{ color: "red" }}>{debt}</h5>
             <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>
-              اجمالي الفاتورة
+              {lang == 'ar' ? 'اجمالي الفاتورة' : 'Bill`s Total'}
 
             </h4>
             <h5>{billTotal}</h5>
-            <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>كمية السداد السابقة </h4><h5> {props.paid}</h5>
+            <h4 style={{ marginLeft: "5px", marginRight: "10px" }}>{lang == 'ar' ? 'كمية السداد السابقة' : 'Total Paid'}</h4><h5> {props.paid}</h5>
           </span>
 
 
@@ -242,14 +242,14 @@ const SaveBillPop = (props) => {
             onClick={(e) => handleSaveClick(e)
             }
           >
-            تأكيد
+            {lang == 'ar' ? 'تأكيد' : 'Confirm'}
           </button>
 
           <button
             className="cancel-save"
             onClick={() => cancelSaveBillPop()}
           >
-            الغاء
+            {lang == 'ar' ? 'الغاء' : 'Cancel'}
           </button>
         </div>
       </div>
