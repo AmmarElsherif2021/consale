@@ -6,6 +6,8 @@ import { useTranslation, Trans } from 'react-i18next';
 import startGif from "../../assets/bill.gif"
 // using the Tauri API npm package:
 import { invoke } from '@tauri-apps/api/tauri'
+
+
 import './Start.css'
 import { useLang } from "../../langContext";
 //const invoke = window.__TAURI__.invoke;
@@ -31,33 +33,41 @@ const Start = () => {
   const [password, setPassword] = useState('');
   const users = [
     {
-      username: "hozifa",
-      password: "8433"
+      username: 'hozifa'
+
     }
     ,
     {
       username: "m2",
-      password: "43310"
+
     }
-  ]
-  const matchUsers = (name, pass) => {
-    const result = users.filter((x) => x.username === name && x.password === pass);
-    return (Boolean(result.length))
-  }
+  ];
+
+  // const matchUsers = (name, pass) => {
+  //   const result = users.filter((x) => x.username === name && x.password === pass);
+  //   return (Boolean(result.length))
+  // };
+
   // handle log in / log out
-  const handleClick = (e) => {
+  const handleClick = async (e) => {
     e.preventDefault();
-    if (matchUsers(userName, password) && user.isLogged == false) {
-      setUser((prev) => ({
-        userName: userName,
-        password: password,
-        isLogged: true
-      }));
-    }
-    if (user.isLogged == true) {
+    if (!user.isLogged) {
+      const result = await invoke('check_credentials', { username: userName, password: password });
+      if (result === 'Credentials are valid') {
+        setUser((prev) => ({
+          userName: "hozifa",
+          isLogged: true
+        }));
+      }
+      if (result === 'Invalid credentials') {
+        setUser((prev) => ({
+          userName: "",
+          isLogged: false
+        }));
+      }
+    } else {
       setUser((prev) => ({
         userName: "",
-        password: "",
         isLogged: false
       }));
     }
@@ -77,11 +87,11 @@ const Start = () => {
   useEffect(() => console.log('lang changed'), [lang])
   //handle enter press:
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !user.isLogged) {
-      handleClick();
-    }
-  };
+  // const handleKeyDown = (event) => {
+  //   if (event.key === 'Enter' && !user.isLogged) {
+  //     handleClick();
+  //   }
+  // };
   // Side bar routes
   const routesArr = [['Dashboard', ' الحسابات', 'Countings'], ['Stock', 'إدارة المخزن', 'Stock Management'], ['Addbill', 'اضف فاتورة', 'Add Bill']];
 

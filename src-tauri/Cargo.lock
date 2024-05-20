@@ -85,11 +85,13 @@ checksum = "080e9890a082662b09c1ad45f567faeeb47f22b5fb23895fbe1e651e718e25ca"
 name = "arabic-consale"
 version = "0.0.0"
 dependencies = [
+ "dotenv",
  "serde",
  "serde_json",
  "tauri",
  "tauri-build",
  "tauri-plugin-sql",
+ "tauri-plugin-store",
 ]
 
 [[package]]
@@ -685,6 +687,12 @@ name = "dispatch"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bd0c93bb4b0c6d9b77f4435b0ae98c24d17f1c45b2ff844c6151a07256ca923b"
+
+[[package]]
+name = "dotenv"
+version = "0.15.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "77c90badedccf4105eca100756a0b1289e191f6fcbdadd3cee1d2f614f97da8f"
 
 [[package]]
 name = "dotenvy"
@@ -3420,7 +3428,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-sql"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#056a458d3025963874b113ff6cfe897373baf944"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#5e3900e682e13f3759b439116ae2f77a6d389ca2"
 dependencies = [
  "futures-core",
  "log",
@@ -3431,6 +3439,18 @@ dependencies = [
  "thiserror",
  "time",
  "tokio",
+]
+
+[[package]]
+name = "tauri-plugin-store"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#5e3900e682e13f3759b439116ae2f77a6d389ca2"
+dependencies = [
+ "log",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
 ]
 
 [[package]]
