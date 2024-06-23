@@ -822,8 +822,11 @@ const AddBill = () => {
 
           <div className='bill-data-box' style={{ color: "white" }}>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+
               <div className="section-header">
                 <ControllableStates options={stockData} handleNewItemPop={handleNewItemPop} />
+
                 <button style={{ width: "60px", height: "60px", padding: "10px", margin: "5px", backgroundColor: "#428d82" }} onClick={() => {
 
                   setNewBill(() => ({
@@ -840,15 +843,14 @@ const AddBill = () => {
 
                     ],
                   })
-                  );
-
-
-                  ;
-
+                  )
                 }}>
                   <img src={refresh} style={{ width: "40px" }} />
                 </button>
               </div>
+
+
+
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-evenly" }}>
                 <div style={{ display: 'flex', flexDirection: 'row', }}>
 
@@ -973,8 +975,12 @@ const AddBill = () => {
             <div className='filter-bills'>
               <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={lang == 'ar' ? 'ابحث باسم العميل' : 'Search by name'} />
             </div>
-            <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "1.5em", margin: "0px" }} src={sortIcon} /></button>
-            <button onClick={deleteAnonBills} className='del-anon-btn'><img src={cleanIcon} style={{ width: "1.5vw", margin: "0px" }} /></button>
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <button className='arrange-btn' onClick={(e) => handleArrange(e)} ><img style={{ width: "1.5em", margin: "0px" }} src={sortIcon} /></button>
+              <button onClick={deleteAnonBills} className='del-anon-btn'><img src={cleanIcon} style={{ width: "1.5vw", margin: "0px" }} /></button>
+            </div>
+
           </div>
 
 

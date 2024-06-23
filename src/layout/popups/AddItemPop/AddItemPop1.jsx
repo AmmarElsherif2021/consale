@@ -1,7 +1,15 @@
 import './AddItemPop.css';
 import cancelIcon from '../../../assets/cancel.svg'
 import { useEffect, useState } from 'react';
+import { useLang } from '../../../langContext';
 const AddItemPop = (props) => {
+
+
+
+  //lang context
+  let { lang } = useLang();
+
+  // props fns
   const { cancelAddItemPop, handleAddSubmit, generateRandomId, addRecord } = props;
   const [newAddedItem, setNewAddedItem] = useState({
     id: generateRandomId().toString(),
@@ -13,6 +21,7 @@ const AddItemPop = (props) => {
     quantity_stock: 0
   });
 
+  //parameters
   const [parameter, setParameter] = useState('');
   const [itemName, setItemName] = useState({
     name: '',
@@ -115,114 +124,144 @@ const AddItemPop = (props) => {
     <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
       <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
 
-      <h1>اضف الى المخزن </h1>
+      <h1>{lang == 'ar' ? 'اضف الى المخزن' : 'Add to stock'} </h1>
       <h2>{newAddedItem.name}</h2>
 
-      <div className='add-account-form'>
+      <div className='item-info'>
+        <div className='add-account-form'>
 
-        <div>
+          <div>
 
-          <div className='form-label labels'>
+            <div className='form-label labels'>
 
-            <label style={{ display: 'flex', flexDirection: 'row' }}>
+              <label style={{ display: 'flex', flexDirection: 'row' }}>
 
-              <div>
-                رول
-                <input
-                  className='radio-input'
-                  type="radio"
-                  value="length"
-                  name="parameter"
-                  checked={parameter === 'length'} // Check if parameter is "length"
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              <div>
-                سجاد
-                <input
-                  className='radio-input'
-                  type="radio"
-                  value="units"
-                  name="parameter"
-                  checked={parameter === 'units'} // Check if parameter is "units"
-                  onChange={handleInputChange}
-                />
-              </div>
-            </label>
-          </div>
-
-
-          <div><label className='form-label'>
-
-            {parameter === 'units' &&
-              <div>
-                <input className='input' type="number" name="length" step="0.1" placeholder={1}
-                  onChange={(e) => setItemName(() => ({
-                    ...itemName,
-                    length: e.target.value
-                  }))} />طول
-              </div>}
-            {parameter === 'units' ?
-              <div>
-                <input className='input' type="number" name="width" step="0.1" placeholder={1} onChange={(e) => setItemName(() => ({
-                  ...itemName,
-                  width: e.target.value
-                }))} /> عرض
-              </div>
-              :
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <label><input name='width' type='radio' value={0.6} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.6</label>
-                <label><input name='width' type='radio' value={0.8} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.8</label>
-                <label><input name='width' type='radio' value={1.0} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.0</label>
-                <label><input name='width' type='radio' value={1.2} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.2</label>
-                <label><input name='width' type='radio' value={1.5} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.5</label>
-              </div>
-            }
-          </label>
-            <label className='form-label'><input className='input' type="text" name="name" placeholder='سجل اسم' onChange={(e) => setItemName(() => ({
-              ...itemName,
-              name: e.target.value
-            }))} /></label>
-            <label className='form-label'>
-              <input className='input' type="text" name="description" placeholder='اكتب وصف' onChange={(e) => handleInputChange(e)} />
-            </label>
-          </div>
-
-
-
-
-          <div className='form-label'>
-            جنيه<input className='input' type="number" name="price_unit" placeholder='سعر المتر'
-              style={{ height: "30px" }} step={1} min={0} value={mPrice}
-              onChange={(e) => {
-                setMPrice(e.target.value)
-              }} />{parameter === 'units' ? (itemName.width != 1 && itemName != 1 ? 'سعر المتر' : 'سعر القطعة') : 'سعر المتر'}
-          </div>
-          <div className='form-label'>
-            جنيه<input className='input' type="number" name="price_import" placeholder='سعر متر المخزن'
-              style={{ height: "30px" }} step={1} min={0} value={mStorePrice}
-              onChange={(e) => {
-                setMStorePrice(e.target.value)
-              }} />{parameter === 'units' ? (itemName.width != 1 || itemName != 1 ? 'سعر المخزن للمتر' : 'سعر المخزن للقطعة') : 'سعر المخزن للمتر'}
-          </div>
-          <div className='form-label'>
-            {
-              parameter === 'length' ?
                 <div>
-                  الطول<input className='input' type="number" step={0.1} name="quantity_stock" placeholder='حدد الطول' value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} /> متر
+                  {lang == 'ar' ? 'رول' : 'roll'}
+                  <input
+                    className='radio-input'
+                    type="radio"
+                    value="length"
+                    name="parameter"
+                    checked={parameter === 'length'} // Check if parameter is "length"
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                <div>
+                  {lang == 'ar' ? 'سجاد' : 'carpet'}
+
+                  <input
+                    className='radio-input'
+                    type="radio"
+                    value="units"
+                    name="parameter"
+                    checked={parameter === 'units'} // Check if parameter is "units"
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </label>
+            </div>
+
+
+            <div><label className='form-label'>
+
+              {parameter === 'units' &&
+                <div>
+                  <input className='input' type="number" name="length" step="0.1" placeholder={1}
+                    onChange={(e) => setItemName(() => ({
+                      ...itemName,
+                      length: e.target.value
+                    }))} />
+                  {lang == 'ar' ? 'طول' : 'Length'}
+
+                </div>}
+              {parameter === 'units' ?
+                <div>
+                  <input className='input' type="number" name="width" step="0.1" placeholder={1} onChange={(e) => setItemName(() => ({
+                    ...itemName,
+                    width: e.target.value
+                  }))} />               {lang == 'ar' ? 'عرض' : 'width'}
+
                 </div>
                 :
-                <div>
-                  وحدة<input className='input' step={1} type="number" min={0} name="quantity_stock" placeholder='حدد الكمية' value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} />
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <label><input name='width' type='radio' value={0.6} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.6</label>
+                  <label><input name='width' type='radio' value={0.8} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 0.8</label>
+                  <label><input name='width' type='radio' value={1.0} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.0</label>
+                  <label><input name='width' type='radio' value={1.2} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.2</label>
+                  <label><input name='width' type='radio' value={1.5} onChange={(e) => setItemName((p) => ({ ...p, width: e.target.value }))} /> 1.5</label>
                 </div>
-            }
-          </div>
-          <div>{newAddedItem.unit === 'units' && `${newAddedItem.price_unit} سعر السجادة`}</div>
+              }
+            </label>
 
-          <div className='form-label'><button onClick={(e) => parameter != '' && handleAddPopSubmit(e)} type="submit">أضف</button></div>
+              <label className='form-label'><input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'سجل الاسم ' : 'insert name'} onChange={(e) => setItemName(() => ({
+                ...itemName,
+                name: e.target.value
+              }))} />
+                <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'اكتب الوصف ' : 'Add description'} onChange={(e) => handleInputChange(e)} />
+
+              </label>
+
+            </div>
+
+
+
+
+            <div className='form-label'>
+
+
+              <div className='form-label'>
+                <small>{lang == 'ar' ? 'جنيه' : '$'}</small>
+                <input className='input' type="number" name="price_unit" placeholder={0}
+                  style={{ height: "30px" }} step={1} min={0} value={mPrice}
+                  onChange={(e) => {
+                    setMPrice(e.target.value)
+                  }} />
+                <label>
+                  {(itemName.width != 1 && itemName != 1 || parameter != 'units') ? (lang == 'ar' ? 'سعر المتر' : 'price/m') : (lang == 'ar' ? 'سعر القطعة' : 'Price/piece')}
+
+                </label>
+              </div>
+
+
+
+              <div className='form-label'>
+                <small>{lang == 'ar' ? 'جنيه' : '$'}</small>
+                <input className='input' type="number" name="price_import" placeholder={lang == 'ar' ? ' سعر المتر للمخزن' : 'imported price/m'}
+                  style={{ height: "30px" }} step={1} min={0} value={mStorePrice}
+                  onChange={(e) => {
+                    setMStorePrice(e.target.value)
+                  }} />
+                <label>
+                  {parameter === 'units' ? (lang == 'ar' ? 'سعر المخزن' : 'imported price') : (lang == 'ar' ? 'سعر المتر  للمخزن' : 'imported price/m')}
+                </label>
+              </div>
+
+            </div>
+            <div className='form-label'>
+              {
+
+                parameter === 'length' ?
+                  <div>
+                    {lang == 'ar' ? 'الطول' : 'length'}
+                    <input className='input' type="number" step={0.1} name="quantity_stock" placeholder='حدد الطول' value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} /> {lang == 'ar' ? 'م طول' : 'length/m'}
+                  </div>
+                  :
+                  <div>
+                    {lang == 'ar' ? 'وحدة' : 'unit'}<input className='input' step={1} type="number" min={0} name="quantity_stock" placeholder={lang == 'ar' ? '  الكمية ' : 'set quantity'} value={newAddedItem.quantity_stock} onChange={(e) => { setNewAddedItem((p) => ({ ...p, quantity_stock: e.target.value })) }} />
+                  </div>
+              }
+            </div>
+            ${lang == 'ar' ? ' سعر السجادة  ' : 'carpet price'}
+            <div>{newAddedItem.unit === 'units' ? `${newAddedItem.price_unit}` : `${newAddedItem.price_unit * newAddedItem.quantity_stock * itemName.width}`}</div>
+
+            <div className='form-label'><button onClick={(e) => parameter != '' && handleAddPopSubmit(e)} type="submit">{lang == 'ar' ? ' اضف  ' : 'submit'}</button></div>
+          </div>
         </div>
       </div>
+
+
     </form>
   );
 }

@@ -85,14 +85,7 @@ const Start = () => {
     )
   }
   useEffect(() => console.log('lang changed'), [lang])
-  //handle enter press:
 
-  // const handleKeyDown = (event) => {
-  //   if (event.key === 'Enter' && !user.isLogged) {
-  //     handleClick();
-  //   }
-  // };
-  // Side bar routes
   const routesArr = [['Dashboard', ' الحسابات', 'Countings'], ['Stock', 'إدارة المخزن', 'Stock Management'], ['Addbill', 'اضف فاتورة', 'Add Bill']];
 
 

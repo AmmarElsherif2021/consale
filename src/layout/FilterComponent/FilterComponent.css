@@ -1,5 +1,5 @@
 .filter-component {
-    width: 15vw;
+    width: 55vw;
     height: 15vh;
     position: relative;
     left: 0;
@@ -8,6 +8,19 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    background-color: none;
+    margin-bottom: 2vh;
+
+
+    input {
+
+
+
+        ul {
+            width: 100%;
+            background-color: orange;
+        }
+    }
 
 }
 
@@ -28,15 +41,4 @@
     max-height: 3.9vw;
     background-color: rgb(255, 72, 72);
     border: solid rgb(26, 24, 24) 4px;
-}
-
-
-
-.search-table {
-
-    border: solid black 2px;
-    display: flex;
-    flex-direction: row;
-    width: 70%;
-    max-width: 20vw;
 }

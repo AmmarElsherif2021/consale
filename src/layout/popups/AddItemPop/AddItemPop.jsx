@@ -40,10 +40,10 @@ const AddItemPop = (props) => {
             <div className='add-account-form'>
                 <div>
                     <div><label className='form-label'>
-                        <input className='input' type="text" name="name" placeholder='سجل اسم' onChange={handleInputChange} />
+                        <input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'ادخل اسم القطعة' : 'Insert item name'} onChange={handleInputChange} />
                     </label></div>
                     <div><label className='form-label'>
-                        <input className='input' type="text" name="description" placeholder='اكتب وصف' onChange={handleInputChange} />
+                        <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'الوصف' : 'Desciption'} onChange={handleInputChange} />
                     </label></div>
                     <div className='form-label labels'>
                         <h4> المستخدمة</h4>

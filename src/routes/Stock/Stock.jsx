@@ -10,7 +10,7 @@ import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
 import refresh from '../../assets/refresh.svg';
 import { useDb } from '../../stockContext';
-
+import { useLang } from '../../langContext';
 //searchbar and teble import
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
@@ -31,7 +31,7 @@ function Stock() {
     const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-
+    let { lang } = useLang();
     //Get the totals of the stock
     const [stockTotal, setStockTotal] = useState(0);
     const [stockSellPrice, setStockSellPrice] = useState(0)
@@ -292,7 +292,7 @@ function Stock() {
     const actionsMemo = useMemo(() => (
         <CSVLink data={handleExport()} filename={"my-data.csv"}>
 
-            تنزيل
+            {lang == 'ar' ? 'تنزيل' : 'Save'}
 
         </CSVLink>
     ), []);
@@ -316,13 +316,13 @@ function Stock() {
 
     // Define columns
     const columnDefs = [
-        { headerName: 'ID', field: 'id', Width: 95 },
-        { headerName: 'اسم الصنف', field: 'name', width: 95 },
-        { headerName: 'وصف', field: 'description', width: 95 },
-        { headerName: 'وحدة القياس', field: 'unit', width: 95 },
-        { headerName: 'سعر المخزن', field: 'price_import', width: 95 },
-        { headerName: 'سعر الوحدة', field: 'price_unit', width: 95 },
-        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 95 },
+        { headerName: 'ID', field: 'id', Width: 99 },
+        { headerName: lang == 'ar' ? 'اسم' : 'Name', field: 'name', width: 99 },
+        { headerName: lang == 'ar' ? 'وصف' : 'Description', field: 'description', width: 99 },
+        { headerName: lang == 'ar' ? 'وحدة القياس' : 'Unit', field: 'unit', width: 99 },
+        { headerName: lang == 'ar' ? 'سعر المخزن' : 'Imported price', field: 'price_import', width: 99 },
+        { headerName: lang == 'ar' ? 'سعر الوحدة' : 'Unit price', field: 'price_unit', width: 99 },
+        { headerName: lang == 'ar' ? 'الكميةالمتاحة' : 'Stock quantity', field: 'quantity_stock', width: 99 },
         {
             headerName: '',
             field: 'actions',
@@ -331,7 +331,7 @@ function Stock() {
                 <div>
                     <button
                         className='table-btn edit'
-                        onClick={(e) => handleOpenEdit(e, params.data.id)} // Replace with your edit logic
+                        onClick={(e) => handleOpenEdit(e, params.data.id)}
                     >
                         <img src={editIcon} style={{ width: "20px" }} />
                     </button>
@@ -364,7 +364,7 @@ function Stock() {
 
             {itemPop && JSON.stringify(itemPop) != "{}" ?
                 <ItemPop cancelItemPop={cancelItemPop} id={itemPop.id}
-                    img={itemPop.image} name={itemPop.name} discription={itemPop.discription} unit={itemPop.unit}
+                    img={itemPop.image} name={itemPop.name} description={itemPop.description} unit={itemPop.unit}
                     priceUnit={itemPop.price_unit} priceStore={itemPop.price_import} qtyStock={itemPop.quantity_stock} handleItemEdit={handleItemEdit} />
                 :
                 <div></div>
@@ -387,12 +387,8 @@ function Stock() {
                     /> : <div></div>
             }
             <div className='header'>
-                <h1>إدارة المخزن</h1>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', width: '40vw' }}>
-
-                    <span>{stockTotal}:اجمالي قيم الشراء</span> <span>--</span> <span>{stockSellPrice}:اجمالي قيم البيع</span>
-
-
+                <h1>{lang == 'ar' ? 'ادارة المخزن' : ' Stock Management'} </h1>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '40vw' }}>
                     <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}>
                         <img className='add-img' src={addPlus} />
                     </button>
@@ -404,30 +400,23 @@ function Stock() {
                     <button className='export-btn' >
                         {actionsMemo}
                     </button>
-
-
                 </div>
+                <div className="filter-component">
+                    <span>{stockTotal}: <small>{lang == 'ar' ? 'اجمالي قيم الشراء' : 'Total imported prices'}</small></span>
+                    |
 
+                    <span>{stockSellPrice}: <small>{lang == 'ar' ? 'اجمالي قيم البيع' : 'Total exported prices'}</small></span>
+                </div>
 
                 <div className="filter-component">
                     <FilterComponent
                         onFilter={e => setFilterText(e.target.value)}
                         onClear={handleClear}
                         filterText={filterText}
-                        placeHolder={'ابحث باسم الصنف'}
+                        placeHolder={lang == 'ar' ? 'ابحث باسم الصنف' : 'Search by name'}
                     />
                 </div>
-
-
             </div>
-
-
-
-
-
-
-
-
 
             <AgGridReact
                 className='grid'

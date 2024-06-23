@@ -25,12 +25,16 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, Legend } from 'r
 
 import { useEffect, useState } from "react";
 import { useDb } from "../../stockContext";
+import { useLang } from '../../langContext';
+
 //####################################################################
 const Dashboard = () => {
 
     //Receiver dir. 
     //const appDataDir = BaseDirectory.AppData;
     //accounts state carries accounts.json records
+
+    const { lang } = useLang();
     const [accounts, setAccounts] = useState([]);
     useEffect(() => {
         setAccounts([...data])
@@ -179,32 +183,32 @@ GROUP BY id`);
             }
 
 
-            <h1>بيانات المدفوعات والمستحقات</h1>
+            <h1>{lang == 'ar' ? 'بيانات المدفوعات والمستحقات' : 'Payments and Billings Management'}  </h1>
             <div className="charts">
                 <LineChart width={600} height={300} data={lineChartData}>
                     <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="paid" stroke="#8884d8" name="المدفوع" />
-                    <Line type="monotone" dataKey="debt" stroke="#f56a00" name="مستحق" />
-                    <Line type="monotone" dataKey="total" stroke="#28a745" name="اجمالي" />
+                    <Line type="monotone" dataKey="paid" stroke="#8884d8" name={lang == 'ar' ? 'مدفوعات' : 'Paid'} />
+                    <Line type="monotone" dataKey="debt" stroke="#f56a00" name={lang == 'ar' ? 'مستحق' : 'Debt'} />
+                    <Line type="monotone" dataKey="total" stroke="#28a745" name={lang == 'ar' ? 'اجمالي' : 'Total'} />
                     <Legend />
                 </LineChart>
             </div>
 
-            <h1>بيان المبيعات</h1>
+            <h1>{lang == 'ar' ? 'بيانات المبيعات' : 'Sales Data'} </h1>
             <div className="charts">
                 <BarChart width={600} height={300} data={salesArr}>
                     <XAxis dataKey="name" tickFormatter={name => (name.length > 15 ? `${name.slice(0, 15)}...` : name)} />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="total_exports" fill="#ffc107" name="الصادر" />
-                    <Bar dataKey="item_sales" fill="#4caf50" name="عدد مرات التصدير" />
+                    <Bar dataKey="total_exports" fill="#ffc107" name={lang == 'ar' ? 'الصادر' : 'Exported'} />
+                    <Bar dataKey="item_sales" fill="#4caf50" name={lang == 'ar' ? 'عدد مرات التصدير' : 'Number of exports'} />
                     <Legend />
                 </BarChart>
             </div>
             <div className='delete-tables'>
-                <h1>حذف السجلات</h1>
+                <h1>{lang == 'ar' ? 'حذف السجلات' : 'Delete Records'} </h1>
                 {
                     password != '43310' ?
                         <div>

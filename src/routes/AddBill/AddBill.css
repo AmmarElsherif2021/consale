@@ -63,7 +63,7 @@
     background: rgb(0, 0, 0);
     position: relative;
     border: black solid 3px;
-    height: 16vh;
+    height: fit-content;
     /* 20vh */
     width: 24.5vw;
     /* 22vw */
@@ -79,7 +79,7 @@
 .section-header {
     background: white;
     border: #235945 solid 4px;
-    height: auto;
+    height: 10vh;
     width: 44vw;
     /* 43.9vw */
     margin: 1vw;
@@ -93,8 +93,7 @@
         height: auto;
         position: absolute;
         background: #9ad6c3;
-        width: 42vw;
-
+        width: 100%;
     }
 }
 
@@ -220,19 +219,19 @@
 }
 
 .arrange-btn {
-    width: 3.9vw;
+    width: 3.7vw;
     min-height: 3.9vw;
     max-height: 3.9vw;
+    margin: 2px;
     position: relative;
     border: solid black 5px;
     background-color: #235945;
-    border-radius: 5px;
+    border-radius: 1vw;
+
 }
 
 .arrange-btn:hover {
-    width: 3.9vw;
-    min-height: 3.9vw;
-    max-height: 3.9vw;
+
     background-color: #2e755b;
     border: solid rgb(26, 24, 24) 4px;
 }
@@ -241,17 +240,15 @@
     width: 3.7vw;
     min-height: 3.9vw;
     max-height: 3.9vw;
+    margin: 2px;
     position: relative;
     border: solid black 5px;
     background-color: #82b0b0;
-    border-radius: 5px;
+    border-radius: 1vw;
     margin: 1px;
 }
 
 .del-anon-btn:hover {
-    width: 3.7vw;
-    min-height: 3.9vw;
-    max-height: 3.9vw;
     background-color: #2e7475;
     border: solid rgb(26, 24, 24) 4px;
 }

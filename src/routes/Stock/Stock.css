@@ -136,11 +136,11 @@
 
 .grid {
     background: none;
-    width: 70vw;
+    width: 75vw;
     background-color: none;
     position: absolute;
-    top: 35vh;
-    right: 1vw;
+    top: 40vh;
+    left: 0vw;
 
 
 
@@ -183,8 +183,9 @@
 
 .filter-component {
 
-    background: rgb(0, 0, 0);
+
     width: 100%;
+    height: fit-content;
     margin-top: 2vh;
 
 
