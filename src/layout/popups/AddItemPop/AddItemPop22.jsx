@@ -30,9 +30,10 @@ const AddItemPop = (props) => {
   });
   const [mPrice, setMPrice] = useState(0);
   const [mStorePrice, setMStorePrice] = useState(0);
+
   const handleAddPopSubmit = (e) => {
     e.preventDefault();
-    handleAddSubmit(e, newAddedItem);
+    handleAddSubmit(newAddedItem);
   };
 
   //handle input change

@@ -4,27 +4,17 @@ import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import './Stock.css';
 import ItemPop from '../../layout/popups/ItemPop/ItemPop';
 import DelItemPop from '../../layout/popups/DelItemPop/DelItemPop';
-import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop1';
+import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop22';
 import addPlus from '../../assets/add-plus.svg'
 import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
 import refresh from '../../assets/refresh.svg';
 import { useDb } from '../../stockContext';
-
+import { useLang } from '../../langContext';
 //searchbar and teble import
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
-
-
-//Start..
-
-
-
-
-
-
-//export csv component
 
 const Export = ({ onExport }) => (
     <CSVLink data={onExport()} filename={'stockData.csv'} className='export-link'>
@@ -32,9 +22,7 @@ const Export = ({ onExport }) => (
     </CSVLink>
 );
 
-
 function Stock() {
-
     const { db, items, billsRecords, isLoading, setItems } = useDb();
     const [stockData, setStockData] = useState([]);
     const [filterText, setFilterText] = useState('');
@@ -43,7 +31,7 @@ function Stock() {
     const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-
+    let { lang } = useLang();
     //Get the totals of the stock
     const [stockTotal, setStockTotal] = useState(0);
     const [stockSellPrice, setStockSellPrice] = useState(0)
@@ -55,8 +43,6 @@ function Stock() {
             const result = await db.select("SELECT * FROM items_table");
             //setItems(result)
             setStockData(result);
-            setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_import)) + sum, 0));
-            setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_unit)) + sum, 0))
         } catch (error) {
             console.error('Error fetching stock data:', error);
         }
@@ -128,17 +114,11 @@ function Stock() {
 
     //.............................................................................................
 
-
-
-
-
-    //Edit an item popup ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-
     const handleOpenEdit = (e, iid) => {
         // Stop default form submission if applicable
+        //fetchData();
         e.preventDefault();
-        const item = items.filter((x) => x.id
+        const item = stockData.filter((x) => x.id
             == iid)[0]; // Find the correct item
 
         if (item) {
@@ -182,10 +162,6 @@ function Stock() {
         }
         cancelItemPop();
     };
-
-    //Delete Item |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-
 
     const handleItemDel = (e, iid) => {
         e.preventDefault
@@ -266,8 +242,6 @@ function Stock() {
         }
     };
 
-
-
     useEffect(() => {
         fetchData();
     }, [addedItemPop, itemPop, delItemPop]);
@@ -275,27 +249,24 @@ function Stock() {
 
 
     //trigger changes
-    useEffect(() => { console.log('refresh') }, [items, stockData, addedItemPop]);
+    useEffect(() => { console.log('refresh') }, [items, itemPop, stockData, addedItemPop]);
 
+    //cummulatives of the stock
+    useEffect(() => {
+        setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.quantity_stock) * Number(obj.price_import)) + sum, 0));
+
+        console.log(`stokTotal activated`)
+    }, [stockData]);
+    useEffect(() => {
+        setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.price_unit * obj.quantity_stock)) + sum, 0));
+
+        console.log(`stockSellPrice`)
+    }, [stockData])
     //Search ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     const filteredItems = stockData && stockData.length && stockData.filter(
         item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
     );
-
-    const subHeaderComponentMemo = useMemo(() => {
-
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
-
-        return (
-            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
-        );
-    }, [filterText, resetPaginationToggle]);
 
     const handleClear = () => {
         if (filterText) {
@@ -317,27 +288,41 @@ function Stock() {
         const csvData = stockData.map(({ id, ...rest }) => rest);
         return csvData;
     };
-    const actionsMemo = useMemo(() => <Export onExport={handleExport} />, []);
+
+    const actionsMemo = useMemo(() => (
+        <CSVLink data={handleExport()} filename={"my-data.csv"}>
+
+            {lang == 'ar' ? 'تنزيل' : 'Save'}
+
+        </CSVLink>
+    ), []);
 
 
+    const subHeaderComponentMemo = useMemo(() => {
 
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
 
-    //TEST:
+        return (
+            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
+        );
+    }, [filterText, resetPaginationToggle]);
 
-
-
-
-
+    // Define columns
 
     // Define columns
     const columnDefs = [
-        { headerName: 'ID', field: 'id', Width: 95 },
-        { headerName: 'اسم الصنف', field: 'name', width: 95 },
-        { headerName: 'وصف', field: 'description', width: 95 },
-        { headerName: 'وحدة القياس', field: 'unit', width: 95 },
-        { headerName: 'سعر المخزن', field: 'price_import', width: 95 },
-        { headerName: 'سعر الوحدة', field: 'price_unit', width: 95 },
-        { headerName: 'الكمية المتاحة', field: 'quantity_stock', width: 95 },
+        { headerName: 'ID', field: 'id', Width: 99 },
+        { headerName: lang == 'ar' ? 'اسم' : 'Name', field: 'name', width: 99 },
+        { headerName: lang == 'ar' ? 'وصف' : 'Description', field: 'description', width: 99 },
+        { headerName: lang == 'ar' ? 'وحدة القياس' : 'Unit', field: 'unit', width: 99 },
+        { headerName: lang == 'ar' ? 'سعر المخزن' : 'Imported price', field: 'price_import', width: 99 },
+        { headerName: lang == 'ar' ? 'سعر الوحدة' : 'Unit price', field: 'price_unit', width: 99 },
+        { headerName: lang == 'ar' ? 'الكميةالمتاحة' : 'Stock quantity', field: 'quantity_stock', width: 99 },
         {
             headerName: '',
             field: 'actions',
@@ -346,7 +331,7 @@ function Stock() {
                 <div>
                     <button
                         className='table-btn edit'
-                        onClick={(e) => handleOpenEdit(e, params.data.id)} // Replace with your edit logic
+                        onClick={(e) => handleOpenEdit(e, params.data.id)}
                     >
                         <img src={editIcon} style={{ width: "20px" }} />
                     </button>
@@ -372,12 +357,14 @@ function Stock() {
         }
     ];
 
+
+
     return (
         <div className="route-content stock">
 
             {itemPop && JSON.stringify(itemPop) != "{}" ?
                 <ItemPop cancelItemPop={cancelItemPop} id={itemPop.id}
-                    img={itemPop.image} name={itemPop.name} discription={itemPop.discription} unit={itemPop.unit}
+                    img={itemPop.image} name={itemPop.name} description={itemPop.description} unit={itemPop.unit}
                     priceUnit={itemPop.price_unit} priceStore={itemPop.price_import} qtyStock={itemPop.quantity_stock} handleItemEdit={handleItemEdit} />
                 :
                 <div></div>
@@ -399,11 +386,9 @@ function Stock() {
                         generateRandomId={generateRandomId}
                     /> : <div></div>
             }
-            <h1>إدارة المخزن</h1>
-            <div className='add-stock'>
-                <h3>اضف صنف جديد</h3>
-
-                <div className='btns-header'>
+            <div className='header'>
+                <h1>{lang == 'ar' ? 'ادارة المخزن' : ' Stock Management'} </h1>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '40vw' }}>
                     <button className='add-item-btn' onClick={(e) => handleAddItemClick(e)}>
                         <img className='add-img' src={addPlus} />
                     </button>
@@ -411,44 +396,46 @@ function Stock() {
                     <button className='refresh-btn' onClick={() => { fetchData() }}>
                         <img className='refresh' src={refresh} />
                     </button>
+
+                    <button className='export-btn' >
+                        {actionsMemo}
+                    </button>
+                </div>
+                <div className="filter-component">
+                    <span>{stockTotal}: <small>{lang == 'ar' ? 'اجمالي قيم الشراء' : 'Total imported prices'}</small></span>
+                    |
+
+                    <span>{stockSellPrice}: <small>{lang == 'ar' ? 'اجمالي قيم البيع' : 'Total exported prices'}</small></span>
                 </div>
 
-            </div>
-            <div className='data-table'>
                 <div className="filter-component">
                     <FilterComponent
                         onFilter={e => setFilterText(e.target.value)}
                         onClear={handleClear}
                         filterText={filterText}
-                        placeHolder={'ابحث باسم الصنف'}
+                        placeHolder={lang == 'ar' ? 'ابحث باسم الصنف' : 'Search by name'}
                     />
                 </div>
-                <div>
-                    <table>
-                        <tr><th>اجمالي قيم الشراء</th> <th>اجمالي قيم البيع</th></tr>
-                        <tr><td>{stockTotal}</td><td>{stockSellPrice}</td></tr>
-                    </table>
-                </div>
-                <div className='grid'>
-                    <AgGridReact
-                        className='grid-table'
-
-                        rowData={filteredItems}
-                        columnDefs={columnDefs}
-                        pagination={true}
-                        paginationPageSize={7}
-                        paginationAutoPageSize={resetPaginationToggle}
-                        subHeaderComponent={subHeaderComponentMemo}
-                        rowSelection="multiple"
-                        rowHeight={55}
-                        headerHeight={40}
-
-                        domLayout='autoHeight'
-                        onGridReady={actionsMemo}
-                    />
-                </div>
-
             </div>
+
+            <AgGridReact
+                className='grid'
+
+                rowData={filteredItems}
+                columnDefs={columnDefs}
+                pagination={true}
+                paginationPageSize={7}
+                paginationAutoPageSize={resetPaginationToggle}
+                subHeaderComponent={subHeaderComponentMemo}
+                rowSelection="multiple"
+                rowHeight={55}
+                headerHeight={40}
+
+                domLayout='autoHeight'
+                onGridReady={actionsMemo}
+            />
+
+
 
         </div>
     );

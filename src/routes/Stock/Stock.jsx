@@ -4,25 +4,34 @@ import FilterComponent from '../../layout/FilterComponent/FilterComponent';
 import './Stock.css';
 import ItemPop from '../../layout/popups/ItemPop/ItemPop';
 import DelItemPop from '../../layout/popups/DelItemPop/DelItemPop';
-import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop1';
+import AddItemPop from '../../layout/popups/AddItemPop/AddItemPop';
 import addPlus from '../../assets/add-plus.svg'
 import delIcon from '../../assets/del.svg';
 import editIcon from '../../assets/edit.svg';
 import refresh from '../../assets/refresh.svg';
 import { useDb } from '../../stockContext';
 import { useLang } from '../../langContext';
+
 //searchbar and teble import
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 
-const Export = ({ onExport }) => (
-    <CSVLink data={onExport()} filename={'stockData.csv'} className='export-link'>
-        <small>انسخ بيانات المخزن</small>
-    </CSVLink>
-);
+
+//Start..
+
+
+
+
+
+
+//export csv component
+
+
+
 
 function Stock() {
+    const { lang } = useLang()
     const { db, items, billsRecords, isLoading, setItems } = useDb();
     const [stockData, setStockData] = useState([]);
     const [filterText, setFilterText] = useState('');
@@ -31,7 +40,12 @@ function Stock() {
     const [addedItemPop, setAddedItemPop] = useState({}); // Item add popup state
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
-    let { lang } = useLang();
+    const Export = ({ onExport }) => (
+        <CSVLink data={onExport()} filename={'stockData.csv'} >
+            <small>{lang == 'ar' ? 'حفظ' : 'save'}  </small>
+        </CSVLink>
+    );
+
     //Get the totals of the stock
     const [stockTotal, setStockTotal] = useState(0);
     const [stockSellPrice, setStockSellPrice] = useState(0)
@@ -43,6 +57,8 @@ function Stock() {
             const result = await db.select("SELECT * FROM items_table");
             //setItems(result)
             setStockData(result);
+            setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_import)) + sum, 0));
+            setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.stockQty) * Number(obj.price_unit)) + sum, 0))
         } catch (error) {
             console.error('Error fetching stock data:', error);
         }
@@ -66,7 +82,7 @@ function Stock() {
             await db.execute(`
         INSERT INTO items_table (id, name, description, unit, price_unit, price_import, quantity_stock)
         VALUES (?,?,?,?,?,?,?);
-      `, [item.id, item.name, item.description, item.unit, item.price_unit, item.price_import, item.quantity_stock]);
+      `, [item.id, item.name, item.description, item.unit, item.price_unit, 0, item.quantity_stock]);
 
             console.log('Item added successfully!');
 
@@ -114,11 +130,17 @@ function Stock() {
 
     //.............................................................................................
 
+
+
+
+
+    //Edit an item popup ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
     const handleOpenEdit = (e, iid) => {
         // Stop default form submission if applicable
-        //fetchData();
         e.preventDefault();
-        const item = stockData.filter((x) => x.id
+        const item = items.filter((x) => x.id
             == iid)[0]; // Find the correct item
 
         if (item) {
@@ -162,6 +184,10 @@ function Stock() {
         }
         cancelItemPop();
     };
+
+    //Delete Item |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
 
     const handleItemDel = (e, iid) => {
         e.preventDefault
@@ -222,25 +248,32 @@ function Stock() {
     }
 
     //confirm add submit............................................................................................
-    const handleAddSubmit = (e, newAdded) => {
+    const handleAddSubmit = (newAdded) => {
         // e.preventDefault();
         // Destructure the id out of newAdded
         const { id, ...restOfNewAdded } = newAdded;
         // Update addedItemPop state
-        if (id && restOfNewAdded.name && restOfNewAdded.quantity_stock && restOfNewAdded.price_unit && restOfNewAdded.price_import && restOfNewAdded.unit) {
+        if (id &&
+            restOfNewAdded.name &&
+            restOfNewAdded.quantity_stock &&
+            restOfNewAdded.price_unit &&
+            restOfNewAdded.unit) {
             setAddedItemPop((prev) => ({
                 id: prev.id,
                 ...restOfNewAdded
             }));
-            addItem({ ...newAdded });
+            addItem({ ...addedItemPop });
 
             //setStockData(items);
             // Reset addedItemPop state
-            setAddedItemPop({})
-            fetchData()
 
         }
+        setAddedItemPop({
+        })
+        fetchData();
     };
+
+
 
     useEffect(() => {
         fetchData();
@@ -249,24 +282,27 @@ function Stock() {
 
 
     //trigger changes
-    useEffect(() => { console.log('refresh') }, [items, itemPop, stockData, addedItemPop]);
+    useEffect(() => { console.log('refresh') }, [items, stockData, addedItemPop]);
 
-    //cummulatives of the stock
-    useEffect(() => {
-        setStockTotal(() => stockData.reduce((sum, obj) => (Number(obj.quantity_stock) * Number(obj.price_import)) + sum, 0));
-
-        console.log(`stokTotal activated`)
-    }, [stockData]);
-    useEffect(() => {
-        setStockSellPrice(() => stockData.reduce((sum, obj) => (Number(obj.price_unit * obj.quantity_stock)) + sum, 0));
-
-        console.log(`stockSellPrice`)
-    }, [stockData])
     //Search ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
     const filteredItems = stockData && stockData.length && stockData.filter(
         item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
     );
+
+    const subHeaderComponentMemo = useMemo(() => {
+
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+
+        return (
+            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
+        );
+    }, [filterText, resetPaginationToggle]);
 
     const handleClear = () => {
         if (filterText) {
@@ -288,31 +324,17 @@ function Stock() {
         const csvData = stockData.map(({ id, ...rest }) => rest);
         return csvData;
     };
-
-    const actionsMemo = useMemo(() => (
-        <CSVLink data={handleExport()} filename={"my-data.csv"}>
-
-            {lang == 'ar' ? 'تنزيل' : 'Save'}
-
-        </CSVLink>
-    ), []);
+    const actionsMemo = useMemo(() => <Export onExport={handleExport} />, []);
 
 
-    const subHeaderComponentMemo = useMemo(() => {
 
-        const handleClear = () => {
-            if (filterText) {
-                setResetPaginationToggle(!resetPaginationToggle);
-                setFilterText('');
-            }
-        };
 
-        return (
-            <div className='filter'><FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} placeHolder={'ابحث باسم الصنف'} /></div>
-        );
-    }, [filterText, resetPaginationToggle]);
+    //TEST:
 
-    // Define columns
+
+
+
+
 
     // Define columns
     const columnDefs = [
@@ -356,7 +378,6 @@ function Stock() {
             ),
         }
     ];
-
 
 
     return (

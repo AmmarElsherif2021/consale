@@ -5,7 +5,7 @@ import { useLang } from '../../../langContext';
 const AddItemPop = (props) => {
     const { cancelAddItemPop, handleAddSubmit, generateRandomId, addRecord } = props;
     const [parameter, setParameter] = useState('');
-    const { lang, useLang } = useLang();
+    const { lang } = useLang();
     const [newAddedItem, setNewAddedItem] = useState({
         id: generateRandomId().toString(),
         name: '',
@@ -17,8 +17,7 @@ const AddItemPop = (props) => {
 
     const handleAddPopSubmit = (e) => {
         e.preventDefault();
-
-        handleAddSubmit(e, newAddedItem);
+        handleAddSubmit(newAddedItem);
         //addRecord(newAddedItem);
 
     }
@@ -39,21 +38,28 @@ const AddItemPop = (props) => {
             <h1>{lang == 'ar' ? 'اضف الى المخزن' : 'Add to stock'}</h1>
             <div className='add-account-form'>
                 <div>
-                    <div><label className='form-label'>
-                        <input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'ادخل اسم القطعة' : 'Insert item name'} onChange={handleInputChange} />
-                    </label></div>
-                    <div><label className='form-label'>
-                        <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'الوصف' : 'Desciption'} onChange={handleInputChange} />
-                    </label></div>
-                    <div className='form-label labels'>
-                        <h4> المستخدمة</h4>
+                    <div>
+                        <label className='form-label'><input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'سجل الاسم ' : 'insert name'} onChange={(e) => setNewAddedItem(() => ({
+                            ...newAddedItem,
+                            name: e.target.value
+                        }))} />
+
+                        </label>
                         <label>
-                            وزن
+                            <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'اكتب الوصف ' : 'Add description'} onChange={(e) => handleInputChange(e)} />
+
+                        </label>
+
+                    </div>
+                    <div className='form-label labels'>
+                        <h4> {lang == 'ar' ? ' الوحدة المستخدمة ' : ' Unit used'}</h4>
+                        <label>
+                            {lang == 'ar' ? ' وزن ' : ' weight'}
                             <input className='input' type="radio"
                                 value="weight" name="parameter"
                                 onChange={
-                                    (e) => {
-                                        handleInputChange(e);
+                                    () => {
+                                        //handleInputChange(e);
                                         setParameter('weight');
                                     }
                                 } />
@@ -69,7 +75,7 @@ const AddItemPop = (props) => {
                             )}
                         </label>
                         <label>
-                            طول
+                            {lang == 'ar' ? ' طول ' : 'length'}
                             <input className='input' type="radio" value="length" name="parameter"
                                 onChange={(e) => {
                                     handleInputChange(e);
@@ -90,7 +96,7 @@ const AddItemPop = (props) => {
                             )}
                         </label>
                         <label>
-                            وحدات
+                            {lang == 'ar' ? 'وحدات  ' : ' units'}
                             <input className='input' type="radio"
                                 value="units" name="unit"
                                 onChange={(e) => {
@@ -100,12 +106,12 @@ const AddItemPop = (props) => {
                         </label>
                     </div>
                     <div className='form-label'>
-                        جنيه<input className='input' type="number" name="price_unit" placeholder='سعر الوحدة' style={{ height: "30px" }} onChange={handleInputChange} />
+                        {lang == 'ar' ? 'جنيه ' : ' $'}<input className='input' type="number" name="price_unit" placeholder={lang == 'ar' ? 'سعر الوحدة  ' : 'unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
                     </div>
                     <div className='form-label'>
-                        وحدة<input className='input' type="number" name="quantity_stock" placeholder='حدد الكمية' onChange={handleInputChange} />
+                        {lang == 'ar' ? ' وحدة ' : ' unit'}<input className='input' type="number" name="quantity_stock" placeholder={lang == 'ar' ? ' حدد الكمية ' : ' set quantity'} onChange={handleInputChange} />
                     </div>
-                    <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">أضف</button></div>
+                    <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">{lang == 'ar' ? 'اضف  ' : ' Add'}</button></div>
                 </div>
             </div>
         </form>

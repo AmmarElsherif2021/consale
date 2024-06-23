@@ -26,7 +26,7 @@
 .input {
 
     border: black solid 3px;
-
+    width: 30%;
 
 }
 
@@ -119,8 +119,9 @@
 .export-btn {
     width: 5vw;
     height: 5vw;
-    background-color: #86a097;
-    border: solid black 5px;
+    background-color: #ffffff;
+    color: #c00000;
+    border: solid rgb(115, 115, 115) 5px;
     justify-content: center;
     padding: 10px;
     margin: 2px;
@@ -151,35 +152,6 @@
 
 
 
-
-
-.export-link {
-    position: fixed;
-    right: 75px;
-    top: 210px;
-    font-size: 18px;
-    text-decoration: none;
-    color: black;
-    width: 100px;
-    height: 30px;
-    background: rgb(75, 128, 75);
-    border: solid black 5px;
-    border-radius: 10px;
-    justify-content: center;
-    padding: 7px;
-    z-index: 900;
-}
-
-.export-link:hover {
-    width: 102px;
-    height: 33px;
-    background-color: rgb(72, 156, 114);
-    border: solid rgb(26, 24, 24) 4px;
-
-    text-decoration: none;
-
-
-}
 
 .filter-component {
 
