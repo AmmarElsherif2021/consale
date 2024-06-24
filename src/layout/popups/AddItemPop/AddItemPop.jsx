@@ -3,21 +3,27 @@ import cancelIcon from '../../../assets/cancel.svg'
 import { useEffect, useState } from 'react';
 import { useLang } from '../../../langContext';
 const AddItemPop = (props) => {
-    const { cancelAddItemPop, handleAddSubmit, generateRandomId, addRecord } = props;
+    const { popId, cancelAddItemPop, handleAddSubmit } = props;
     const [parameter, setParameter] = useState('');
     const { lang } = useLang();
     const [newAddedItem, setNewAddedItem] = useState({
-        id: generateRandomId().toString(),
+        id: popId,
         name: '',
         description: '',
         unit: '',
         price_unit: 0,
+        price_import: 0,
         quantity_stock: 0
     });
 
-    const handleAddPopSubmit = (e) => {
+    const handleAddPopSubmit = async (e) => {
         e.preventDefault();
-        handleAddSubmit(newAddedItem);
+        try {
+            handleAddSubmit(newAddedItem)
+            console.log(`POP ADDING THIS ${JSON.stringify(newAddedItem)}`)
+        } catch (error) {
+            console.log(`Error submittin,, ${error}`)
+        };
         //addRecord(newAddedItem);
 
     }
@@ -34,25 +40,26 @@ const AddItemPop = (props) => {
     return (
         <form className='add-item-pop' onSubmit={(e) => handleAddPopSubmit(e)}>
             <button className='cancel-add-item-pop' onClick={() => cancelAddItemPop()}><img className='cancel-icon' src={cancelIcon} /></button>
-            <div className='pop-body'></div>
+
             <h1>{lang == 'ar' ? 'اضف الى المخزن' : 'Add to stock'}</h1>
-            <div className='add-account-form'>
-                <div>
-                    <div>
-                        <label className='form-label'><input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'سجل الاسم ' : 'insert name'} onChange={(e) => setNewAddedItem(() => ({
-                            ...newAddedItem,
-                            name: e.target.value
-                        }))} />
+            <div className='pop-body'>
 
-                        </label>
-                        <label>
-                            <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'اكتب الوصف ' : 'Add description'} onChange={(e) => handleInputChange(e)} />
 
-                        </label>
+                <label className='form-label'><input className='input' type="text" name="name" placeholder={lang == 'ar' ? 'سجل الاسم ' : 'insert name'} onChange={(e) => setNewAddedItem(() => ({
+                    ...newAddedItem,
+                    name: e.target.value
+                }))} />
 
-                    </div>
-                    <div className='form-label labels'>
-                        <h4> {lang == 'ar' ? ' الوحدة المستخدمة ' : ' Unit used'}</h4>
+                </label>
+                <label className='form-label'>
+                    <input className='input' type="text" name="description" placeholder={lang == 'ar' ? 'اكتب الوصف ' : 'Add description'} onChange={(e) => handleInputChange(e)} />
+
+                </label>
+
+
+                <div className='labels'>
+                    <h4> {lang == 'ar' ? ' الوحدة المستخدمة ' : ' Unit used'}</h4>
+                    <div className='radios-pack'>
                         <label>
                             {lang == 'ar' ? ' وزن ' : ' weight'}
                             <input className='input' type="radio"
@@ -105,15 +112,21 @@ const AddItemPop = (props) => {
                                 }} />
                         </label>
                     </div>
-                    <div className='form-label'>
-                        {lang == 'ar' ? 'جنيه ' : ' $'}<input className='input' type="number" name="price_unit" placeholder={lang == 'ar' ? 'سعر الوحدة  ' : 'unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
-                    </div>
-                    <div className='form-label'>
-                        {lang == 'ar' ? ' وحدة ' : ' unit'}<input className='input' type="number" name="quantity_stock" placeholder={lang == 'ar' ? ' حدد الكمية ' : ' set quantity'} onChange={handleInputChange} />
-                    </div>
-                    <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">{lang == 'ar' ? 'اضف  ' : ' Add'}</button></div>
                 </div>
+                <div className='form-label'>
+                    {lang == 'ar' ? 'جنيه ' : ' $'}
+                    <input className='input' type="number" name="price_unit" placeholder={lang == 'ar' ? 'سعر الوحدة  ' : 'unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
+                </div>
+                <div className='form-label'>
+                    {lang == 'ar' ? 'جنيه ' : ' $'}
+                    <input className='input' type="number" name="price_import" placeholder={lang == 'ar' ? 'سعر الوحدة - جملة  ' : 'imported unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
+                </div>
+                <div className='form-label'>
+                    {lang == 'ar' ? ' وحدة ' : ' unit'}<input className='input' type="number" name="quantity_stock" placeholder={lang == 'ar' ? ' حدد الكمية ' : ' set quantity'} onChange={handleInputChange} />
+                </div>
+                <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">{lang == 'ar' ? 'اضف  ' : ' Add'}</button></div>
             </div>
+
         </form>
     );
 }

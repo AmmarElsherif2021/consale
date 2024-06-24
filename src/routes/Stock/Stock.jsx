@@ -82,9 +82,9 @@ function Stock() {
             await db.execute(`
         INSERT INTO items_table (id, name, description, unit, price_unit, price_import, quantity_stock)
         VALUES (?,?,?,?,?,?,?);
-      `, [item.id, item.name, item.description, item.unit, item.price_unit, 0, item.quantity_stock]);
+      `, [item.id, item.name, item.description, item.unit, item.price_unit, item.price_import, item.quantity_stock]);
 
-            console.log('Item added successfully!');
+            console.log(`Item added successfully ${JSON.stringify(item)}`);
 
         } catch (error) {
             console.error('Error adding item:', error);
@@ -94,7 +94,7 @@ function Stock() {
 
 
     //modify rcord
-    async function updateItem(itemId, newPrice, stockQty, priceStore) {
+    async function updateItem(itemId, newPrice, stockQty, priceImport) {
 
         try {
             await db.execute(`
@@ -103,7 +103,7 @@ function Stock() {
       ,quantity_stock=?
       ,price_import=?
       WHERE id = ?;
-    `, [newPrice, stockQty, priceStore, itemId]);
+    `, [newPrice, stockQty, priceImport, itemId]);
             console.log('Item price updated successfully!');
         } catch (error) {
             console.error('Error updating item price:', error);
@@ -160,7 +160,7 @@ function Stock() {
         console.log(`ItemPop ----->${{ ...itemPop }}`)
     };
     // Edit item (handle data validation, error handling)
-    const handleItemEdit = async (iid, qty, p, pStore) => {
+    const handleItemEdit = async (iid, qty, p, pImp) => {
         if (!itemPop.id || itemPop.id !== iid) {
             console.warn('Invalid item ID or popup mismatch:', iid);
             return; // Prevent unintended updates
@@ -173,7 +173,7 @@ function Stock() {
             }
 
             //modify db
-            updateItem(iid, p, qty, pStore);
+            updateItem(iid, p, qty, pImp);
 
             setItemPop({}); // Close popup
 
@@ -251,25 +251,21 @@ function Stock() {
     const handleAddSubmit = (newAdded) => {
         // e.preventDefault();
         // Destructure the id out of newAdded
-        const { id, ...restOfNewAdded } = newAdded;
+
         // Update addedItemPop state
-        if (id &&
-            restOfNewAdded.name &&
-            restOfNewAdded.quantity_stock &&
-            restOfNewAdded.price_unit &&
-            restOfNewAdded.unit) {
-            setAddedItemPop((prev) => ({
-                id: prev.id,
-                ...restOfNewAdded
-            }));
-            addItem({ ...addedItemPop });
+        if (newAdded.id &&
+            newAdded.name &&
+            newAdded.quantity_stock &&
+            newAdded.price_unit &&
+            newAdded.unit) {
+
+            addItem({ ...newAdded });
 
             //setStockData(items);
             // Reset addedItemPop state
 
         }
-        setAddedItemPop({
-        })
+        setAddedItemPop({})
         fetchData();
     };
 
@@ -401,10 +397,9 @@ function Stock() {
             {
                 addedItemPop && addedItemPop.id ?
                     <AddItemPop
-                        addRecord={addItem}
+                        popId={addedItemPop.id}
                         handleAddSubmit={handleAddSubmit}
                         cancelAddItemPop={cancelAddItemPop}
-                        generateRandomId={generateRandomId}
                     /> : <div></div>
             }
             <div className='header'>

@@ -15,13 +15,17 @@
 
 }
 
-.item-info {
+.pop-body {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     left: 0;
     top: 0%;
-    max-height: 40%;
+    max-height: 90%;
     max-width: 100%;
-    background-color: none;
+    background: none;
+
 }
 
 .cancel-add-item-pop {
@@ -42,21 +46,9 @@
     top: 0
 }
 
-.pop-body {
-    display: grid;
-    grid-template-rows: 1fr 3fr;
-    background: aqua;
-    width: 100%;
-    justify-content: center;
-}
-
-.add-account-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 
 
-}
+
 
 .form-label {
 
@@ -70,12 +62,18 @@
     align-items: center;
     position: relative;
     width: 100%;
-    margin-left: 5px;
 
 
 
 
 
+
+}
+
+.labels {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .radio-input {
@@ -88,7 +86,7 @@
 .input {
 
     border: black solid 3px;
-    width: 50%;
+    width: auto;
     margin-left: 1px;
 
 
@@ -102,8 +100,9 @@
 
 .radios-pack {
 
-    border: solid 2px black;
 
+    display: flex;
+    flex-direction: row;
 }
 
 .add-item-parameters {
