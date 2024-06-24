@@ -10,6 +10,9 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@ag-grid-community/core": "^31.3.2",
+    "@ag-grid-community/react": "^31.3.2",
+    "@ag-grid-enterprise/menu": "^31.3.2",
     "@progress/kendo-react-charts": "^7.2.3",
     "@tauri-apps/api": "^1.5.2",
     "ag-grid-community": "^31.0.3",

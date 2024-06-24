@@ -439,15 +439,14 @@ function Stock() {
 
                 rowData={filteredItems}
                 columnDefs={columnDefs}
-                pagination={true}
-                paginationPageSize={7}
+                pagination={false}
+
                 paginationAutoPageSize={resetPaginationToggle}
                 subHeaderComponent={subHeaderComponentMemo}
                 rowSelection="multiple"
-                rowHeight={55}
+                rowHeight={50}
                 headerHeight={40}
-
-                domLayout='autoHeight'
+                debounceVerticalScrollbar={false}
                 onGridReady={actionsMemo}
             />
 
