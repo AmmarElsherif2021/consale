@@ -2,9 +2,9 @@
 
 This is a desktop software app for handling billing system.
 
-Features:
+##Features:
 
--setting accounts data for workers.
+-Setting accounts data for workers.
 -Managing store by:
     1- adding customized items 
     2- editing store items data (stock quantity and unit price) 
@@ -19,9 +19,11 @@ Features:
     7-arranging bills due to debt.
     8-deleting a particular bill record.
     9-printing bill items table and/or operations history.
-Screens:
+##Screens:
 [!screen1]
+![Seq diagra](/SeqDiagram.drawio.png "Seq Diagram")
 (https://github.com/AmmarElsherif2021/consale-arabic/blob/master/screenshots/tauri1.jpeg)
+![Seq diagra](/SeqDiagram.drawio.png "Seq Diagram")
 [!screen2]
 (https://github.com/AmmarElsherif2021/consale-arabic/blob/master/screenshots/Web%20capture_21-2-2024_212435_tauri.localhost.jpeg)
 [!screen3]
