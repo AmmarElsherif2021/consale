@@ -21,10 +21,10 @@ This is a desktop software app for handling billing system.
     9-printing bill items table and/or operations history.
 
 # Screens:
-##Login page:
+## Login page:
  you can also alter language context from top-left toggle
 ![S](/screenshots/s-3.jpeg "Screen")
-##Stock management section:
+## Stock management section:
 User can add, modify and delete items to/from the stock all items are defined by their IID, names, price/unit and their unit type (i.e weights in kg or gm length in m or mm ,,etc)
 ![S](/screenshots/s1.jpeg "Screen")
 
@@ -39,7 +39,7 @@ User can add, modify and delete items to/from the stock all items are defined by
 User can edit added items by adding or substracting from the quantity of the stock but user can not change the entire quantity of the stock for unintended possible accounting mistakes, Also, the import price and export price are editable.
 ![S](/screenshots/s6.jpeg "Screen")
 
-##Add Bill section
+## Add Bill section
 This section is divided by two main columns the left hand is the new bill space each bill is distinguished by its BID (written in red) and customer name and (not required) his/her phone.
 The right side is an old bills archive.
 ![S](/screenshots/s7.jpeg "Screen")
