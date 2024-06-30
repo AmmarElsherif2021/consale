@@ -2,7 +2,7 @@
 
 This is a desktop software app for handling billing system.
 
-##Features:
+## Features:
 
 -Setting accounts data for workers.
 -Managing store by:
@@ -78,5 +78,9 @@ Back to the bill, now user can try return the item back and withdraw his money b
 If user checked in a bill in _ve amount of the bill debt, the bill card is colored green.
 ![S](/screenshots/s20.jpeg "Screen")
 ![S](/screenshots/s21.jpeg "Screen")
+
+## Accounting section
+![S](/screenshots/s22.jpeg "Screen")
+![S](/screenshots/s23.jpeg "Screen")
 
 
