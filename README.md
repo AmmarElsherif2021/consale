@@ -21,5 +21,5 @@ This is a desktop software app for handling billing system.
     9-printing bill items table and/or operations history.
 ##Screens:
 [!screen1]
-![S](/screenshots/s1.drawio.png "Screen")
+![S](/screenshots/s1.jpeg "Screen")
 
