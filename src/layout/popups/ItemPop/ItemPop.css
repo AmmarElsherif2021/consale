@@ -2,16 +2,16 @@
     min-width: 35vw;
 
 
-    min-height: 55vh;
+    min-height: 75vh;
 
     /* 50vh */
     padding-bottom: 50px;
     position: fixed;
     left: 35vw;
     /* 40vw */
-    top: 15vh;
+    top: 5vh;
     /* 15vh */
-    background: rgb(126, 167, 179);
+    background: rgb(184, 223, 209);
     border: solid black 5px;
     z-index: 1000;
 }
@@ -69,7 +69,8 @@
 
 .item-pop-btn {
     border: solid black 2px;
-    background-color: #307c5b;
+    background-color: #05130d;
+    color: antiquewhite;
     margin: 3px;
     width: 6vw;
 

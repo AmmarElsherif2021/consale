@@ -115,7 +115,7 @@ const Start = () => {
                     </li>
                   ))}
                 </ul>
-                <button className='logout-btn' onClick={(e) => handleClick(e)}>تسجيل خروج</button>
+                <button className='logout-btn' onClick={(e) => handleClick(e)}>{lang == 'ar' ? 'تسجيل خروج' : 'Log out'} </button>
 
               </div>
               {intro && <img src={startGif} style={{ position: "absolute", top: "60px", left: "650px", width: "400px" }} />}

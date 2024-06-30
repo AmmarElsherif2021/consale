@@ -114,17 +114,17 @@ const AddItemPop = (props) => {
                     </div>
                 </div>
                 <div className='form-label'>
-                    {lang == 'ar' ? 'جنيه ' : ' $'}
+                    {lang == 'ar' ? 'جنيه ' : '$ '}
                     <input className='input' type="number" name="price_unit" placeholder={lang == 'ar' ? 'سعر الوحدة  ' : 'unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
                 </div>
                 <div className='form-label'>
-                    {lang == 'ar' ? 'جنيه ' : ' $'}
+                    {lang == 'ar' ? 'جنيه  ' : '$ '}
                     <input className='input' type="number" name="price_import" placeholder={lang == 'ar' ? 'سعر الوحدة - جملة  ' : 'imported unit price'} style={{ height: "30px" }} onChange={handleInputChange} />
                 </div>
                 <div className='form-label'>
                     {lang == 'ar' ? ' وحدة ' : ' unit'}<input className='input' type="number" name="quantity_stock" placeholder={lang == 'ar' ? ' حدد الكمية ' : ' set quantity'} onChange={handleInputChange} />
                 </div>
-                <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} type="submit">{lang == 'ar' ? 'اضف  ' : ' Add'}</button></div>
+                <div className='form-label'><button onClick={(e) => handleAddPopSubmit(e)} className='btn' type="submit">{lang == 'ar' ? 'اضف  ' : ' Add'}</button></div>
             </div>
 
         </form>

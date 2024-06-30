@@ -26,11 +26,11 @@
        height: 83vh;
        /* 90vh */
        position: fixed;
-       left: 28vw;
+       left: 21vw;
        /* 12vw */
-       top: 4vh;
+       top: 3vh;
        /* 1vh */
-       background: #DACCA0;
+       background: #61c47f;
        border: solid black 5px;
        border-radius: 35px;
        padding: 10px;

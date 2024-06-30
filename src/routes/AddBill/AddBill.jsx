@@ -217,9 +217,9 @@ const AddBill = () => {
       {
         ...prev,
         req_qty: reqQty,
-        total: prev.unit === 'units' ? Math.round(Number(reqQty) * Number(newAdded.price_unit))
-          :
-          Math.round(Number(reqQty) * Number(newAdded.price_unit) * Number(newAdded.name.split(':')[0]))
+        total: Math.round(Number(reqQty) * Number(newAdded.price_unit))
+        // :
+        // Math.round(Number(reqQty) * Number(newAdded.price_unit) * Number(newAdded.name.split(':')[0]))
       }))
   };
 
@@ -907,20 +907,17 @@ const AddBill = () => {
               <table >
                 <tr>
                   <th> {lang == 'ar' ? 'اسم الصنف' : 'product name'}</th>
-                  <th> {lang == 'ar' ? ' العرض' : 'Width'}</th>
-                  <th> {lang == 'ar' ? ' الطول' : 'Length'}</th>
                   <th> {lang == 'ar' ? 'الكمية المطلوبة' : 'Qty. Req'}</th>
                   <th> {lang == 'ar' ? 'النوع' : 'Unit'}</th>
                   <th> {lang == 'ar' ? 'سعر الوحدة' : 'Price/Unit'}</th>
                   <th> {lang == 'ar' ? 'اجمالي' : 'Total'}</th>
+                  <th></th>
                 </tr>
                 {newBill.items && newBill.items.length ? newBill.items.map((x) => x.req_qty > 0 &&
                   <tr key={x.ibid}>
-                    <td style={{ backgroundColor: "#5e9b88" }}>{x.name.split(':')[1]}</td>
-                    <td>{x.name.split(':')[0].split('x')[0]}</td>
-                    <td>{x.unit === 'units' ? x.name.split(':')[0].split('x')[1] : x.req_qty}</td>
-                    <td>{x.unit === 'units' ? x.req_qty : 1}</td>
-                    <td>{x.unit === 'length' ? 'رول' : 'سجادة'}</td>
+                    <td style={{ backgroundColor: "#5e9b88" }}>{x.name}</td>
+                    <td>{x.req_qty}</td>
+                    <td>{x.unit}</td>
                     <td>${x.price_unit}</td>
                     <td>${x.total}</td>
                     <td><button className='del-row' key={x.ibid} onClick={() => handleOldItem(x, newBill.bid, 7)}><img src={delIcon} style={{ width: "20px" }} /></button></td>
@@ -929,11 +926,10 @@ const AddBill = () => {
                   : (<tr></tr>)}
                 {addedItems.length ? addedItems.map((x) =>
                 (<tr key={x.ibid}>
-                  <td>{x.name.split(':')[1]}</td>
-                  <td>{x.name.split(':')[0].split('x')[0]}</td>
-                  <td>{x.unit === 'units' ? x.name.split(':')[0].split('x')[1] : x.req_qty}</td>
-                  <td>{x.unit === 'units' ? x.req_qty : 1}</td>
-                  <td>{x.unit === 'length' ? 'متر' : 'وحدة'}</td>
+
+                  <td>{x.name/*x.unit === 'units' ? x.name.split(':')[0].split('x')[1] : x.req_qty*/}</td>
+                  <td>{x.req_qty}</td>
+                  <td>{x.unit}</td>
                   <td>${x.price_unit}</td>
                   <td>${x.total}</td>
                   <td><button className='del-row' onClick={() => deleteNewItem(x)}><img src={delIcon} style={{ width: "20px" }} /></button></td>

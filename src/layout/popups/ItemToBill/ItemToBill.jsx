@@ -31,7 +31,7 @@ const ItemToBill = (props) => {
         handleReqQty(e.target.value);
     }
 
-    const styleParagraph = { display: "flex", flexDirection: "row-reverse", alignItems: "center", justifyContent: "center", padding: 0, margin: 0 }
+    const styleParagraph = { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", padding: 0, marginRight: "5px" }
 
     return (
         <form className='item-bill-pop' onSubmit={(e) => handleItemsListPush(e, props.id)}>
@@ -50,23 +50,23 @@ const ItemToBill = (props) => {
 
                     <span style={styleParagraph
                     }>
-                        <p>{lang == 'ar' ? 'السعر' : 'price'} {props.unit === 'length' ? 'المتر' : 'الوحدة'} </p><p style={{ minWidth: "110px", marginRight: '5px' }}>{props.priceUnit}</p></span>
+                        <p style={{ minWidth: "110px", marginRight: '5px' }}>{lang == 'ar' ? 'السعر' : 'Price'}:  </p>   <p>{props.priceUnit} / {props.unit === 'length' ? 'm' : 'unit'}</p></span>
                     <span style={styleParagraph
                     }>
-                        <p>{lang == 'ar' ? 'المتاح' : 'Available'}</p><p style={{ minWidth: "140px", marginRight: '5px' }}>{props.unit === 'length' ? 'متر ' : 'وحدة'} {props.remainedStock}</p></span>
+                        <p style={{ minWidth: "140px", marginRight: '3px' }}>{lang == 'ar' ? 'المتاح' : 'Available'}: </p>  <p > {props.remainedStock} {props.unit === 'length' ? 'm' : 'Unit'}</p></span>
 
                 </h4>
             </div>
 
             <div className='item-bill-pop-p'>
 
-                <h4 style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: '17vh' }}>
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", maxHeight: '17vh' }}>
                     <p style={styleParagraph
                     }>{lang == 'ar' ? 'الكمية المطلوبة' : 'Req. Qty.'}  <span><input style={{ width: "70px", margin: "5px" }} min="0" step={props.unit === 'length' ? 0.01 : 1} max={props.stockQty} type="number" id="reqQty" value={reqQty} onChange={(e) => handleChange(e)} /></span></p> <br />
                     <p style={styleParagraph
-                    }> {lang == 'ar' ? 'اجمالي السعر' : 'Total Price'} <span style={{ marginRight: '5px' }}>{props.unit === 'length' ? Math.round(Number(reqQty) * Number(props.priceUnit) * Number(props.name.split(':')[0])) : Math.round(Number(reqQty) * Number(props.priceUnit))}</span><br /></p>
+                    }> {lang == 'ar' ? 'اجمالي السعر' : 'Total Price'} <span style={{ marginLeft: '5px' }}>{Math.round(Number(reqQty) * Number(props.priceUnit))}</span><br /></p>
 
-                </h4>
+                </div>
 
                 <div ><button className='add-item-bill-btn' type='submit'><img src={addPlus} className='add-plus' /></button></div>
 

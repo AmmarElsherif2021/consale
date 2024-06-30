@@ -8,7 +8,7 @@
     /* 35vw */
     top: 23vh;
     /* 15vh */
-    background: #d4dbd8;
+    background: #f2db5d;
     border: 5px solid black;
     border-radius: 35px;
     z-index: 10000;
@@ -60,11 +60,16 @@
     position: relative;
     top: 0;
     left: 0;
-    width: 7vw;
+    width: 7.6vw;
     height: 7vw;
-    background-color: #235945;
+    background-color: #048151;
+    color: antiquewhite;
     border: solid black 5px;
 
+}
+
+.add-item-bill-btn:hover {
+    background-color: #1b9f6c;
 }
 
 .add-plus {

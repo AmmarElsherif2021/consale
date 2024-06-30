@@ -42,7 +42,9 @@ const ItemPop = (props) => {
                         <input className='edit-input' type="number" value={qty} onChange={handleQty} style={{ width: "40px" }} /> {lang == 'ar' ? 'الكمية المضافة' : 'Added quantity'} </span> </small>
                 </div>
             </div>
-            <button type='submit' className='item-pop-btn'>{lang == 'ar' ? 'حفظ' : 'Save'}</button>
+            <div>
+                <button type='submit' className='item-pop-btn'>{lang == 'ar' ? 'حفظ' : 'Save'}</button>
+            </div>
         </form>
     )
 }

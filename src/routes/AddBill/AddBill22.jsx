@@ -12,7 +12,7 @@ import saveBill from '../../assets/saveBill.svg';
 import PrintPop from '../../layout/popups/printPop/PrintPop';
 import ControllableStates from './ControllableStates';
 import FilterComponent from '../../layout/FilterComponent/FilterComponent';
-import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop';
+import SaveBillPop from '../../layout/popups/SaveBillPop/SaveBillPop1';
 import { useDb } from '../../stockContext';
 import CountRestoredPop from '../../layout/popups/CountRestoredPop/CountRestoredPop11';
 import { useUser } from '../../userContext';
