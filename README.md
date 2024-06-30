@@ -4,8 +4,8 @@ This is a desktop software app for handling billing system.
 
 ## Features:
 
--Setting accounts data for workers.
--Managing store by:
+-Setting accounts data for workers.<br/> 
+-Managing store by:<br/> 
     1- adding customized items<br/> 
     2- editing store items data (stock quantity and unit price) <br/> 
     3- deleting items.<br/> 
