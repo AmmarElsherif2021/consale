@@ -1,4 +1,4 @@
-# Tauri + React + SqLite
+# Tauri + React + SQLite
 
 This is a desktop software app for handling billing system.
 
