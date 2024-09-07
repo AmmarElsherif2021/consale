@@ -1,5 +1,6 @@
-![S](https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7 "Screen") ![S]( https://www.vermilliontech.com/assets/images/technology/db-sqlite@2x.png "Screen") 
-![S](https://th.bing.com/th/id/OIP.eIbvS5c_i8O406kgxKJN0wHaHa?rs=1&pid=ImgDetMain "Screen")
+![S](https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7 "Screen") 
+![S](https://th.bing.com/th/id/OIP.sN90_oDckKYPHjDtBoGd2wAAAA?w=300&h=188&rs=1&pid=ImgDetMain "Screen") 
+![S](https://th.bing.com/th/id/OIP.Jv7VMAu90MSqruPd-tazwAAAAA?w=200&h=200&rs=1&pid=ImgDetMain "Screen")
 
 # Tauri + React + SQLite
 This is an initial release of <strong>consale</strong> a desktop software app for handling billing system.<br/>
