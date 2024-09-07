@@ -1,6 +1,6 @@
 # Tauri + React + SQLite
-
 This is a desktop software app for handling billing system.
+To get the installer open bundle directory and choose msi or nsis.
 
 ## Features:
 
