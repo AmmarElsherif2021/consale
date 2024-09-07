@@ -1,7 +1,8 @@
 # Tauri + React + SQLite
 This is a desktop software app for handling billing system.<br/>
 To get the installer open bundle directory and choose msi or nsis. <br/>
-username: admin  password:123
+username: admin <br/>
+password:123
 
 ## Features:
 
