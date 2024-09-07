@@ -1,5 +1,5 @@
-![S](https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7 "Screen") ![S]([https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7](https://th.bing.com/th/id/OIP.peLVdISDRGNzHHrmBe1P2gHaFW?pid=ImgDet&w=206&h=149&c=7) "Screen") 
-![S]([https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7](https://th.bing.com/th?id=OIP.Tpo0do4FnIyuhxRRUnFWjwHaHA&w=256&h=243&c=8&rs=1&qlt=90&r=0&o=6&pid=3.1&rm=2) "Screen")
+![S](https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7 "Screen") ![S]([[https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7](https://th.bing.com/th/id/OIP.peLVdISDRGNzHHrmBe1P2gHaFW?pid=ImgDet&w=206&h=149&c=7)](https://www.file-extensions.org/imgs/app-icon/128/5236/sqlite-icon.png) "Screen") 
+![S](https://camo.githubusercontent.com/976c27d1ec593a45edfc66bd0a3e4dcab797cc087a18348687a3cbbb0c5ee449/68747470733a2f2f7777772e706e6766696e642e636f6d2f706e67732f6d2f3638352d363835343937305f72656163742d6c6f676f2d706e672d706e672d646f776e6c6f61642d6c6f676f2d706e672d72656163746a732e706e67 "Screen")
 
 # Tauri + React + SQLite
 This is an initial release of <strong>consale</strong> a desktop software app for handling billing system.<br/>
