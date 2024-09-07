@@ -1,8 +1,8 @@
 # Tauri + React + SQLite
-This is an initial release of  <strong>consale</strong> a desktop software app for handling billing system.<br/>
+This is an initial release of <strong>consale</strong> a desktop software app for handling billing system.<br/>
 To get the installer open bundle directory and choose msi or nsis. <br/>
-username: admin <br/>
-password:123
+<strong>username </strong>: admin <br/>
+<strong>password</strong>:123
 
 ## Features:
 
