@@ -6,12 +6,12 @@ To get the installer open bundle directory and choose msi or nsis. <br/>
 
 ## Features:
 
--Setting accounts data for workers.<br/> 
--Managing store by:<br/> 
+<strong>Setting accounts data for workers.</strong><br/> 
+<strong>Managing store by:</strong><br/> 
     1- adding customized items<br/> 
     2- editing store items data (stock quantity and unit price) <br/> 
     3- deleting items.<br/> 
--Adding a new bill: <br/> 
+<strong>Adding a new bill:</strong> <br/> 
     1-setting its name and phone number <br/> 
     2-adding new items to the bill <br/> 
     3-removing old added items to bill with regarding its pre-setted price. <br/> 
