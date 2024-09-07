@@ -1,4 +1,4 @@
-![S](https://res.cloudinary.com/practicaldev/image/fetch/s--NeqsK5cr--/c_fill,f_auto,fl_progressive,h_320,q_auto,w_320/https://dev-to-uploads.s3.amazonaws.com/uploads/organization/profile_image/1152/330e5f5d-c094-4e92-bb84-a1aefc3bac38.png "Screen")
+![S](https://th.bing.com/th/id/OIP.-eISho4afY_xVZZINR5buQAAAA?w=156&h=178&c=7&r=0&o=5&pid=1.7 "Screen")
 # Tauri + React + SQLite
 This is an initial release of <strong>consale</strong> a desktop software app for handling billing system.<br/>
 To get the installer open bundle directory and choose msi or nsis. <br/>
