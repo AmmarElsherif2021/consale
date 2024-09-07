@@ -1,3 +1,4 @@
+![S]([[/screenshots/s22.jpeg](https://www.pngfind.com/pngs/m/685-6854970_react-logo-png-png-download-logo-png-reactjs.png)](https://tauri.app/zh-cn/meta/tauri_logo_light.svg) "Screen") ![S](/screenshots/s22.jpeg "Screen") ![S](https://th.bing.com/th/id/R.113c7c9c8cdc3effea3f2632dafe3349?rik=dtdZHmybhQO11A&pid=ImgRaw&r=0 "Screen")
 # Tauri + React + SQLite
 This is an initial release of <strong>consale</strong> a desktop software app for handling billing system.<br/>
 To get the installer open bundle directory and choose msi or nsis. <br/>
